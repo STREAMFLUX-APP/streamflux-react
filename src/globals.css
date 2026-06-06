@@ -1,0 +1,26 @@
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060608;--bg1:#0c0c10;--bg2:#111118;
+  --border:#1e1e28;--border2:#252530;
+  --aqua:#2AB8D4;--gold:#C9963A;--green:#22c55e;--red:#ef4444;
+  --white:#ffffff;--muted:rgba(240,240,248,0.45);
+  --font:'Syne',sans-serif;--mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);background:var(--bg);color:var(--white);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;line-height:1.6
+}
+input,textarea,button,select{font-family:var(--font)}
+input,textarea{color:rgba(255,255,255,0.55)!important}
+::placeholder{color:rgba(255,255,255,0.55)!important;opacity:1!important}
+::-webkit-input-placeholder{color:rgba(255,255,255,0.55)!important}
+::-moz-placeholder{color:rgba(255,255,255,0.55)!important}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg1)}
+::-webkit-scrollbar-thumb{background:#2e2e3a;border-radius:2px}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--aqua)!important}
+input,textarea{caret-color:#2AB8D4}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn 0.3s ease forwards}
