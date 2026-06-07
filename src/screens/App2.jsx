@@ -213,7 +213,7 @@ export default function App2({ state: appState, setScreen }) {
     const safe = async(p,s,t)=>{try{return await apiClaude(p,s,t)||{}}catch(e){return{}}}
     const ag = s.agentName||"Agent"
     const ctx = `CLIENT: ${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}|URGENCY:${s.urgency||"medium"}|TONE:${s.tone||"professional"}
-PROPERTY: ${s.propAddress||"N/A"}|$${s.propPrice||"N/A"}|${s.propType||""}|Beds:${s.propBeds||""}|Baths:${s.propBaths||}|${s.propHighlights||""}
+PROPERTY: ${s.propAddress||"N/A"}|$${s.propPrice||"N/A"}|${s.propType||""}|Beds:${s.propBeds||""}|Baths:${s.propBaths||""}|${s.propHighlights||""}
 ${s.propInterior.length?`INTERIOR:${s.propInterior.slice(0,8).join(",")}`:""} ${s.propOutdoor.length?`OUTDOOR:${s.propOutdoor.slice(0,6).join(",")}`:""} ${s.propBuilding.length?`BUILDING:${s.propBuilding.slice(0,5).join(",")}`:""} 
 ${isBuyer()?`BUYER CRITERIA:${s.buyerCriteria.map(b=>typeof b==="object"?b.label:b).join(",")||"not specified"}`:""}${isSeller()?`SELLER SITUATION:${s.sellerSituation.join(",")||"not specified"}`:""}
 ${s.customSituation?"AGENT CONTEXT (use above all else): "+s.customSituation:""}
