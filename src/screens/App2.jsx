@@ -5,13 +5,13 @@ import { Chips } from '../components/shared/Chips.jsx'
 
 const INTERIOR_EN = ["Open Plan Living","High Ceilings","Double Height Ceilings","Exposed Beams","Hardwood Floors","Marble Floors","Porcelain Floors","Polished Concrete Floors","Radiant Floor Heating","Modern Kitchen","Chef's Kitchen","Gourmet Kitchen","Granite Countertops","Quartz Countertops","Marble Countertops","Kitchen Island","Butler's Pantry","Scullery / Second Kitchen","Stainless Steel Appliances","High-End Appliances","Wine Refrigerator","Built-in Coffee Machine","Master Suite","Suite with Terrace","Walk-in Wardrobe","His & Hers Wardrobes","En-suite Bathrooms","Double Vanity","Freestanding Soaking Tub","Jetted / Whirlpool Tub","Rainfall Shower","Frameless Glass Shower","Sauna","Steam Room","Home Office","Media Room / Cinema","Game Room","Music Room","Library / Study","Art Studio","Indoor Gym","Flex / Bonus Room","Fireplace","Double-Sided Fireplace","Wet Bar","Climate-Controlled Wine Cellar","Tasting Room","Laundry Room","Laundry Room with Sink","Finished Basement","Finished Attic / Loft","Smart Home System","Multi-Zone Audio","Smart Lighting","Motorized Blinds / Shades","Smart Thermostat","Video Intercom","App-Controlled Home","Cat6 / Fibre Wiring","Security Alarm System","Surveillance Cameras","Fingerprint / Keypad Entry","Built-in Safe","Solar Panels","Solar Battery Storage","Whole-Home Generator","Premium Insulation","Triple-Glazed Windows","Underfloor Heating","Multi-Zone A/C","Heat Recovery Ventilation","Wheelchair Accessible","Private Elevator","Access Ramp","Adapted Bathroom","Wide Doorways"]
 const OUTDOOR_EN = ["Private Pool","Heated Pool","Infinity Pool","Overflow Pool","Pool with Waterfall","Natural / Bio Pool","Hot Tub / Outdoor Spa","Outdoor Shower","Rooftop Terrace","Terrace with Views","Covered Patio / Pergola","Rear Patio","Front Porch","Private Garden","Landscaped Yard","Zen Garden","Tropical Garden","Winter Garden / Greenhouse","Full Outdoor Kitchen","Built-in BBQ / Grill","Wood-Fired Pizza Oven","Fire Pit / Outdoor Fireplace","Outdoor Bar","Outdoor Dining Area","Private Boat Dock","Marina Slip","Boat Launch Ramp","Boat Storage","Private Beach Access","Private Ocean Access","Private Lake Access","Tennis Court","Padel Court","Basketball Court","Putting Green","Boules / Petanque Court","Playground / Play Area","Guest House / Casita","Pool House","Garden Studio / Office","Garage (1 Car)","Garage (2 Car)","Garage (3+ Car)","Boat / RV Garage","Workshop / Storage","EV Charging Station","Gated Entry","Automatic Gate","Outdoor Security Cameras","Landscape Lighting","Solar Lighting","Paved Driveway","Green Roof","Vegetable Garden / Orchard","Private Well","Automated Irrigation System","Running / Jogging Track"]
-const BUILDING_EN = ["24/7 Concierge Service","Digital Concierge","Doorman","Overnight Doorman","Valet Parking","24/7 Security","Private Security Guard","Access Control System","Key Fob / App Access","Rooftop Pool","Indoor Pool","Outdoor Community Pool","Jacuzzi / Hot Tub Area","Sundeck / Solarium","Private Beach Club","Full Fitness Center","Yoga Studio","Pilates Studio","Boxing Gym","Squash Court","Full-Service Spa","Shared Sauna","Massage Room","Beauty Salon","Co-working Space","Meeting Rooms","Conference Center","Business Center","Community Library","Community Cinema","Party / Event Room","Social Lounge","Community Rooftop Terrace","BBQ Area","Children's Play Area","Dog Park","Pet-Friendly","Pet Care Services","Housekeeping Service","Laundry Service","Private Storage Unit","Bike Storage","Low HOA Fees","No HOA","Utilities Included","Maintenance Service Included","Covered Parking","Double Parking","Visitor Parking","EV Charging in Parking","LEED Certified","Energy Class A Building","BREEAM Certified","Community Solar Panels","Disability Access","High-Capacity Elevator","Smart Package Lockers","Bike Share / E-Bike Program"]
+const BUILDING_EN = ["24/7 Concierge Service","Digital Concierge","Doorman","Overnight Doorman","Valet Parking","24/7 Security","Private Security Guard","Access Control System","Key Fob / App Access","Rooftop Pool","Indoor Pool","Outdoor Community Pool","Jacuzzi / Hot Tub Area","Sundeck / Solarium","Private Beach Club","Full Fitness Center","Yoga Studio","Pilates Studio","Boxing Gym","Squash Court","Full-Service Spa","Shared Sauna","Massage Room","Beauty Salon","Co-working Space","Meeting Rooms","Conference Center","Business Center","Community Library","Community Cinema","Party / Event Room","Social Lounge","Community Rooftop Terrace","BBQ Area","Children\'s Play Area","Dog Park","Pet-Friendly","Pet Care Services","Housekeeping Service","Laundry Service","Private Storage Unit","Bike Storage","Low HOA Fees","No HOA","Utilities Included","Maintenance Service Included","Covered Parking","Double Parking","Visitor Parking","EV Charging in Parking","LEED Certified","Energy Class A Building","BREEAM Certified","Community Solar Panels","Disability Access","High-Capacity Elevator","Smart Package Lockers","Bike Share / E-Bike Program"]
 
 const REASONS_BUYER_EN = [
   {value:"new_listing",label:"New Listing Match",desc:"Property matches their criteria"},
   {value:"price_drop",label:"Price Reduction",desc:"Property they liked dropped"},
   {value:"first_contact",label:"First Outreach",desc:"Never contacted before"},
-  {value:"reconnect",label:"Reconnecting",desc:"Haven't spoken in a while"},
+  {value:"reconnect",label:"Reconnecting",desc:"Haven\'t spoken in a while"},
   {value:"open_house",label:"Open House Invite",desc:"Invite to view"},
   {value:"market_update",label:"Market Update",desc:"Relevant market news"},
   {value:"off_market",label:"Off-Market Deal",desc:"Exclusive property"},
@@ -22,12 +22,12 @@ const REASONS_BUYER_EN = [
 ]
 const REASONS_SELLER_EN = [
   {value:"first_contact",label:"First Outreach",desc:"Never contacted before"},
-  {value:"reconnect",label:"Reconnecting",desc:"Haven't spoken in a while"},
+  {value:"reconnect",label:"Reconnecting",desc:"Haven\'t spoken in a while"},
   {value:"free_valuation",label:"Free Valuation Offer",desc:"No obligation appraisal"},
   {value:"market_update",label:"Market Update",desc:"Relevant market news"},
   {value:"just_sold",label:"Property Sold Nearby",desc:"Builds credibility"},
   {value:"price_discussion",label:"Price Reduction Discussion",desc:"Help adjust expectations"},
-  {value:"expired_listing",label:"Expired Listing",desc:"Their property didn't sell"},
+  {value:"expired_listing",label:"Expired Listing",desc:"Their property didn\'t sell"},
   {value:"buyer_match",label:"Buyer Match Found",desc:"I have an interested buyer"},
   {value:"timeline_checkin",label:"Timeline Check-In",desc:"Has their timeline changed?"},
   {value:"neighbour_sale",label:"Neighbourhood Sale Alert",desc:"Property sold near them"},
@@ -37,7 +37,7 @@ const REASONS_SELLER_EN = [
 ]
 const REASONS_COLD_EN = [
   {value:"first_contact",label:"First Outreach",desc:"Never contacted before"},
-  {value:"reconnect",label:"Reconnecting",desc:"Haven't spoken in a while"},
+  {value:"reconnect",label:"Reconnecting",desc:"Haven\'t spoken in a while"},
   {value:"market_update",label:"Market Update",desc:"Relevant market news"},
   {value:"just_sold",label:"Property Sold Nearby",desc:"Builds credibility"},
   {value:"free_valuation",label:"Free Valuation Offer",desc:"No obligation appraisal"},
@@ -45,7 +45,7 @@ const REASONS_COLD_EN = [
   {value:"objection_handle",label:"Handle Objection",desc:"They said no"},
 ]
 const REASONS_PAST_EN = [
-  {value:"reconnect",label:"Reconnecting",desc:"Haven't spoken in a while"},
+  {value:"reconnect",label:"Reconnecting",desc:"Haven\'t spoken in a while"},
   {value:"referral_request",label:"Referral Request",desc:"Ask after closing a deal"},
   {value:"anniversary",label:"Home Anniversary",desc:"1 year+ since they bought"},
   {value:"market_update",label:"Market Update",desc:"Relevant market news"},
@@ -54,7 +54,6 @@ const REASONS_PAST_EN = [
   {value:"neighbourhood_news",label:"Neighbourhood News",desc:"Something affecting their property"},
   {value:"objection_handle",label:"Handle Objection",desc:"They said no"},
 ]
-
 const CLIENT_TYPES_EN = [
   {value:"buyer_active",label:"🔥 Active Buyer",desc:"Looking now, ready to move"},
   {value:"buyer_passive",label:"👀 Passive Buyer",desc:"Interested but not urgent"},
@@ -90,35 +89,70 @@ const initState = (lang) => ({
   language:lang||"English", clientName:"", clientType:"", contactReason:"",
   urgency:"", tone:"", objection:"", objectionText:"",
   visitedProperty:null,
+  // property
   propAddress:"", propPrice:"", propOldPrice:"", propNewPrice:"", propType:"",
-  propBeds:"", propBaths:"", propSqft:"", propCondition:"", propHighlights:"",
+  propBeds:"", propBaths:"", propSqft:"", propCondition:"", propHighlights:"", propKeyFeatures:"",
   propInterior:[], propOutdoor:[], propBuilding:[],
-  buyerBudget:"", buyerCriteria:[], buyerNeeds:"", buyerProfile:[],
-  buyerWantsInterior:[], buyerWantsOutdoor:[], buyerWantsBuilding:[],
+  // comparable
+  compAddress:"", compPrice:"", compBeds:"", compBaths:"", compSqft:"",
+  compCondition:"", compKeyFeatures:"", compDaysOnMarket:"", compAboveBelow:"",
+  // buyer profile box
+  buyerBudget:"", buyerCriteria:[], buyerNeeds:"", buyerProfile:[], buyerMotivations:[],
+  buyerSpecificReqs:"", customSituation:"",
+  // objection specific
+  partnerNotConvincedReason:"",
+  seenProperties:"", missingFromViewed:[], missingFromViewedOther:"",
+  uncertaintyReasons:[], uncertaintyOther:"",
+  rentAmount:"", rentingYears:"",
+  currentPropAddress:"", currentPropValue:"", currentPropBeds:"", currentPropBaths:"",
+  currentPropSqft:"", currentPropCondition:"", currentPropKeyFeatures:"",
+  currentPropMortgage:"", currentPropTargetPrice:"",
+  currentPropListedStatus:null, currentPropAgentStatus:null,
+  currentPropMotivation:[], currentPropConcern:[], currentPropBuyerContext:"",
+  badTimingReasons:[], badTimingHowLong:null, badTimingOther:"",
+  notApprovedReason:"", spokeToLender:null, approvalConcerns:[],
+  needMoreTimeReasons:[], needMoreTimeHowLong:null, needMoreTimeOther:"",
+  scaredReasons:[], scaredOther:"",
+  locationConcerns:[], locationOther:"",
+  pressuredWhatHappened:"",
+  waitingReasons:[], waitingOther:"",
+  // financing
+  financingRateQuoted:"", financingLoanAmount:"",
+  financingOptions:[], financingNews:"",
+  // seller
   sellerSituation:[],
-  comparableAddress:"", comparablePrice:"", comparableDays:"", comparableAboveBelow:"",
-  seenProperties:"", missingFromViewed:[], rentAmount:"", rentingYears:"",
-  currentPropAddress:"", currentPropValue:"", currentPropStatus:"",
-  notApprovedReason:"", spokeToLender:null, uncertaintyReasons:[],
+  // sold nearby
   soldAddress:"", soldPrice:"", soldBeds:"", soldBaths:"", soldType:"",
   soldDaysOnMarket:"", soldAboveBelow:"", soldDate:"", soldCondition:"",
   soldNumOffers:"", soldPricePerSqft:"",
   clientPropAddress:"", clientPropPrice:"", clientPropBeds:"", clientPropBaths:"",
   clientPropSqft:"", clientPropYearsOwned:"", clientPropCondition:"",
   clientPropMortgage:"", clientPropDecisionMakers:"",
+  // market
   marketLocation:"", marketDirection:[], marketInsight:"", marketStats:"",
-  financingOptions:[], financingNews:"",
+  // reconnect
   reconnectSituation:[], lookingFor:"",
+  // first contact
   introSource:[], introComeAcross:[],
   leadSource:null, knownAboutProperty:"",
+  // price discussion
   daysOnMarket:"", priceReasons:[], sellerUrgency:[],
+  // expired
   expOrigPrice:"", expDays:"", expiredReasons:[], relistStrategy:[], relistDifferent:"",
+  // pre-listing
   preListingItems:[],
+  // timeline
   originalTimeline:"", timelineChanges:[], timelineEmotion:[], newTimeline:"", timelineContext:"",
-  buyerType:"",
-  offerBudget:"", offerPosition:[], offerLevers:[], offerMarket:[], sellerPriorities:"",
+  // buyer match
+  buyerType:"", buyerWantsInterior:[], buyerWantsOutdoor:[], buyerWantsBuilding:[],
+  // offer
+  offerAskingPrice:"", offerAmount:"", offerDaysOnMarket:"",
+  offerPosition:null, offerMarket:[], offerLevers:[], offerDeposit:"", offerClosing:"", sellerPriorities:"",
+  // fsbo
   fsboReasons:"", fsboAdvantages:[],
+  // anniversary
   anniversaryYears:"",
+  // CMA
   cmaSubject:{address:"",price:"",beds:"",baths:"",sqft:"",yearBuilt:"",parking:"",condition:"",recentRenovations:"",hoaFees:"",features:""},
   cmaComps:[
     {address:"",salePrice:"",saleDate:"",daysOnMarket:"",beds:"",baths:"",sqft:"",pricePerSqft:"",aboveBelow:"",condition:"",notes:""},
@@ -126,8 +160,7 @@ const initState = (lang) => ({
     {address:"",salePrice:"",saleDate:"",daysOnMarket:"",beds:"",baths:"",sqft:"",pricePerSqft:"",aboveBelow:"",condition:"",notes:""},
   ],
   agentName:"", agentPhone:"", agencyName:"",
-  customSituation:"",
-  regenContext:"", regenLoading:false,
+  regenContext:"", regenLoading:false, fuSubTab:"noreply",
   loading:false, loadingMsg:"", result:null, error:"", activeTab:"messages",
 })
 
@@ -136,44 +169,56 @@ const lbl = {display:"block",fontSize:"10px",fontWeight:"700",letterSpacing:"0.1
 const card = {background:"#0c0c10",border:"1px solid #252530",borderRadius:"12px",padding:"22px",marginBottom:"16px"}
 const ctxStyle = {background:"rgba(255,255,255,0.04)",border:"1.5px solid rgba(255,255,255,0.12)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}
 
+// ── BUYER PROFILE BOX ────────────────────────────────────
 function BuyerProfileBox({ s, update, tog }) {
   return (
     <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:"12px",padding:"22px",marginBottom:"16px"}}>
       <h2 style={{fontSize:"16px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>👤 Buyer Profile, Criteria & Context</h2>
-      <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px",lineHeight:"1.5"}}>The more you tell us about this buyer, the more precisely the AI handles this objection.</p>
-      <div style={{marginBottom:"14px"}}>
+      <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The more detail here, the more precisely the AI handles this objection.</p>
+
+      <Chips label="Buyer Profile — Who Are They?" options={[
+        {value:"cash_buyer",label:"💵 Cash Buyer"},{value:"pre_approved",label:"✅ Pre-Approved"},
+        {value:"first_time",label:"🏠 First-Time Buyer"},{value:"chain_free",label:"⚡ Chain-Free"},
+        {value:"self_employed",label:"💼 Self-Employed"},{value:"high_net_worth",label:"💎 High Net Worth"},
+        {value:"foreign_national",label:"🌍 Foreign National"},{value:"buy_to_let",label:"🏢 Buy-to-Let"},
+        {value:"quick_decision",label:"⚡ Quick Decision Maker"},{value:"very_motivated",label:"🔥 Very Motivated"},
+        {value:"seen_many",label:"🏠 Viewed Many Properties"},{value:"flexible_close",label:"📅 Flexible Closing"},
+      ]} selected={s.buyerProfile||[]} onToggle={v=>update({buyerProfile:tog(s.buyerProfile||[],v)})}/>
+
+      <Chips label="What They Are Looking For & Why" options={[
+        {value:"house",label:"House"},{value:"apt",label:"Apartment"},{value:"condo",label:"Condo"},
+        {value:"villa",label:"Villa"},{value:"townhouse",label:"Townhouse"},
+        {value:"pool",label:"Pool"},{value:"garden",label:"Garden"},{value:"seaview",label:"Sea View"},
+        {value:"home_office",label:"Home Office"},{value:"schools",label:"Good Schools"},
+        {value:"quiet",label:"Quiet Area"},{value:"citycenter",label:"City Center"},
+        {value:"waterfront",label:"Waterfront"},{value:"gated",label:"Gated Community"},
+        {value:"new_build",label:"New Build"},{value:"turnkey",label:"Turn-Key Ready"},
+        {value:"parking",label:"Parking"},{value:"no_hoa",label:"No HOA"},
+        {value:"starting_family",label:"🍼 Starting a Family"},{value:"work_from_home",label:"💻 Work From Home"},
+        {value:"investment_wealth",label:"💰 Investment / Building Wealth"},
+        {value:"first_home_milestone",label:"🏆 First Home Milestone"},
+        {value:"school_catchment",label:"🏫 School Catchment Priority"},
+        {value:"lifestyle_upgrade",label:"⭐ Lifestyle Upgrade"},
+        {value:"downsizing",label:"📦 Downsizing"},{value:"upsizing",label:"📈 Upsizing"},
+        {value:"forever_home",label:"🏡 Forever Home"},
+        {value:"status_prestige",label:"💎 Status & Prestige"},
+        {value:"outdoor_nature",label:"🌿 Outdoor / Nature Lifestyle"},
+        {value:"safety_security",label:"🔒 Safety & Security Priority"},
+        {value:"relocating",label:"✈️ Relocating"},
+        {value:"investment_rental",label:"🏢 Investment / Rental Income"},
+      ]} selected={s.buyerCriteria||[]} onToggle={v=>update({buyerCriteria:tog(s.buyerCriteria||[],v)})}/>
+
+      <div style={{marginBottom:"12px"}}>
         <label style={lbl}>Budget Range</label>
         <input type="text" placeholder="e.g. $400K-$600K" style={inp} value={s.buyerBudget||""} onChange={e=>update({buyerBudget:e.target.value})}/>
       </div>
-      <Chips label="Buyer Profile" options={[
-        {value:"cash_buyer",label:"💵 Cash Buyer"},{value:"pre_approved",label:"✅ Pre-Approved"},
-        {value:"first_time",label:"🏠 First-Time Buyer"},{value:"chain_free",label:"⚡ Chain-Free"},
-        {value:"relocating",label:"✈️ Relocating"},{value:"investor",label:"💰 Investor"},
-        {value:"high_net_worth",label:"💎 High Net Worth"},{value:"self_employed",label:"💼 Self-Employed"},
-        {value:"quick_decision",label:"⚡ Quick Decision Maker"},{value:"very_motivated",label:"🔥 Very Motivated"},
-        {value:"seen_many",label:"🏠 Viewed Many Properties"},{value:"flexible_close",label:"📅 Flexible Closing"},
-        {value:"downsizer",label:"📦 Downsizer"},{value:"upsizer",label:"📈 Upsizer"},
-        {value:"foreign_national",label:"🌍 Foreign National"},{value:"buy_to_let",label:"🏢 Buy-to-Let"},
-      ]} selected={s.buyerProfile||[]} onToggle={v=>update({buyerProfile:tog(s.buyerProfile||[],v)})}/>
-      <Chips label="What They Are Looking For" options={[
-        {value:"u500",label:"Under $500K"},{value:"500_1m",label:"$500K-$1M"},{value:"1m_2m",label:"$1M-$2M"},
-        {value:"2m_5m",label:"$2M-$5M"},{value:"5m_plus",label:"$5M+"},
-        {value:"1bed",label:"1 Bed"},{value:"2bed",label:"2 Beds"},{value:"3bed",label:"3 Beds"},{value:"4bed",label:"4+ Beds"},
-        {value:"house",label:"House"},{value:"apt",label:"Apartment"},{value:"condo",label:"Condo"},
-        {value:"villa",label:"Villa"},{value:"townhouse",label:"Townhouse"},{value:"pool",label:"Pool"},
-        {value:"garden",label:"Garden"},{value:"seaview",label:"Sea View"},{value:"schools",label:"Good Schools"},
-        {value:"quiet",label:"Quiet Area"},{value:"citycenter",label:"City Center"},{value:"home_office",label:"Home Office"},
-        {value:"parking",label:"Parking"},{value:"waterfront",label:"Waterfront"},{value:"gated",label:"Gated"},
-        {value:"new_build",label:"New Build"},{value:"turnkey",label:"Turn-Key"},{value:"no_hoa",label:"No HOA"},
-        {value:"petfriendly",label:"Pet Friendly"},{value:"investment",label:"Investment"},
-      ]} selected={s.buyerCriteria||[]} onToggle={v=>update({buyerCriteria:tog(s.buyerCriteria||[],v)})}/>
       <div style={{marginBottom:"12px"}}>
         <label style={lbl}>Specific Requirements</label>
-        <input type="text" placeholder="e.g. Must be near good schools, needs home office..." style={inp} value={s.buyerNeeds||""} onChange={e=>update({buyerNeeds:e.target.value})}/>
+        <input type="text" placeholder="e.g. Must be near good schools, needs home office, dog-friendly..." style={inp} value={s.buyerSpecificReqs||""} onChange={e=>update({buyerSpecificReqs:e.target.value})}/>
       </div>
       <div>
         <label style={lbl}>Personal Context</label>
-        <textarea placeholder="e.g. Sarah has been looking for 3 months. Two kids, tight timeline, husband needs convincing. Responds well to WhatsApp." rows={3} style={{...inp,resize:"vertical"}} value={s.customSituation||""} onChange={e=>update({customSituation:e.target.value})}/>
+        <textarea placeholder="e.g. Sarah has been looking 3 months. Two kids, tight timeline, husband needs convincing. Responds well to WhatsApp." rows={3} style={{...inp,resize:"vertical"}} value={s.customSituation||""} onChange={e=>update({customSituation:e.target.value})}/>
       </div>
     </div>
   )
@@ -242,7 +287,7 @@ export default function App2({ state: appState, setScreen }) {
     const langI = isSpa?"\n\nCRITICO: Escribe TODO completamente en espanol.":""
     const safe = async(p,sys,t)=>{try{return await apiClaude(p,sys,t)||{}}catch(e){return{}}}
     const ag = s.agentName||"Agent"
-    const buyerCtx = isBuyer()&&isObjection?`BUYER BUDGET:${s.buyerBudget||"not specified"}|PROFILE:${(s.buyerProfile||[]).join(",")||"not specified"}|LOOKING FOR:${(s.buyerCriteria||[]).join(",")||"not specified"}|NEEDS:${s.buyerNeeds||"not specified"}|CONTEXT:${s.customSituation||"none"}`:"" 
+    const buyerCtx = isBuyer()&&isObjection?`BUYER PROFILE:${(s.buyerProfile||[]).join(",")||"not specified"}|LOOKING FOR:${(s.buyerCriteria||[]).join(",")||"not specified"}|BUDGET:${s.buyerBudget||"not specified"}|SPECIFIC REQS:${s.buyerSpecificReqs||"not specified"}|CONTEXT:${s.customSituation||"none"}`:"" 
     const ctx = `CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}|URGENCY:${s.urgency||"medium"}|TONE:${s.tone||"professional"}
 PROPERTY:${s.propAddress||"N/A"}|$${s.propPrice||"N/A"}|${s.propType||""}|Beds:${s.propBeds||""}|Baths:${s.propBaths||""}|${s.propHighlights||""}
 ${s.propInterior.length?"INTERIOR:"+s.propInterior.slice(0,8).join(","):""}${s.propOutdoor.length?" OUTDOOR:"+s.propOutdoor.slice(0,6).join(","):""}
@@ -257,19 +302,22 @@ AGENT:${ag}${s.agentPhone?"|"+s.agentPhone:""}${s.agencyName?"|"+s.agencyName:""
       if(isObjection) {
         const objDetail = s.objectionText||s.objection||"general objection"
         const visitCtx = s.visitedProperty==="yes"?"The buyer HAS visited the property in person.":s.visitedProperty==="no"?"The buyer has NOT visited — only seen details online.":""
-        const objCtx = `${ctx}\nOBJECTION:"${objDetail}"\n${visitCtx}\nCOMPARABLE:${s.comparableAddress?s.comparableAddress+" sold $"+s.comparablePrice+" "+s.comparableDays+" days "+s.comparableAboveBelow:"not provided"}`
+        const compCtx = s.compAddress?`COMPARABLE: ${s.compAddress} sold $${s.compPrice} | ${s.compBeds}bed/${s.compBaths}bath | ${s.compSqft}sqft | ${s.compCondition} | ${s.compKeyFeatures} | ${s.compDaysOnMarket} days on market | ${s.compAboveBelow}`:"No comparable provided"
+        const objCtx = `${ctx}
+OBJECTION:"${objDetail}"
+${visitCtx}
+${compCtx}`
         update({loadingMsg:"✦ Crafting 3 powerful approaches..."})
         const objPrompt = `${objCtx}${langI}
 
 This client raised the objection: "${objDetail}"
 Generate 3 completely different approaches. Each attacks from a different angle.
 Return ONLY JSON:
-{"v1_label":"Data & Market Proof","v1_whatsapp":"60-80 words. Handle using market data and proof. Use ${s.clientName} first name.","v1_sms":"Max 160 chars. Data-driven.","v1_voice":"Call script DATA approach: OPENING, ACKNOWLEDGE, MARKET PROOF, REFRAME, CLOSE. Labelled.","v1_email_subject":"Subject under 9 words.","v1_email":"120-140 word email. Data approach. Signed by ${ag}.","v2_label":"Empathy & Relationship","v2_whatsapp":"60-80 words. Empathy, emotional intelligence. Use ${s.clientName} first name.","v2_sms":"Max 160 chars. Empathetic.","v2_voice":"Call script EMPATHY approach: OPENING, DEEP EMPATHY, UNDERSTAND, GENTLE REFRAME, CLOSE. Labelled.","v2_email_subject":"Subject under 9 words.","v2_email":"120-140 word email. Empathy approach. Signed by ${ag}.","v3_label":"Urgency & Bold Reframe","v3_whatsapp":"60-80 words. Confident, bold reframe, urgency. Use ${s.clientName} first name.","v3_sms":"Max 160 chars. Bold.","v3_voice":"Call script BOLD approach: OPENING, CONFIDENT REFRAME, COST OF WAITING, STRONG CLOSE. Labelled.","v3_email_subject":"Subject under 9 words.","v3_email":"120-140 word email. Bold reframe. Signed by ${ag}."}`
-
+{"v1_label":"Data & Market Proof","v1_whatsapp":"60-80 words. Handle using market data and proof. Use ${s.clientName} first name.","v1_sms":"Max 160 chars. Data-driven.","v1_voice":"Call script DATA approach: OPENING, ACKNOWLEDGE, MARKET PROOF, REFRAME, CLOSE. Labelled.","v1_email_subject":"Subject under 9 words.","v1_email":"120-140 word email. Data approach. Signed by ${ag}.","v2_label":"Empathy & Relationship","v2_whatsapp":"60-80 words. Deep empathy, emotional intelligence. Use ${s.clientName} first name.","v2_sms":"Max 160 chars. Empathetic.","v2_voice":"Call script EMPATHY approach: OPENING, DEEP EMPATHY, UNDERSTAND, GENTLE REFRAME, CLOSE. Labelled.","v2_email_subject":"Subject under 9 words.","v2_email":"120-140 word email. Empathy approach. Signed by ${ag}.","v3_label":"Urgency & Bold Reframe","v3_whatsapp":"60-80 words. Confident, bold reframe, urgency. Use ${s.clientName} first name.","v3_sms":"Max 160 chars. Bold.","v3_voice":"Call script BOLD approach: OPENING, CONFIDENT REFRAME, COST OF WAITING, STRONG CLOSE. Labelled.","v3_email_subject":"Subject under 9 words.","v3_email":"120-140 word email. Bold reframe. Signed by ${ag}."}`
         const objResult = await safe(objPrompt, SYSTEM, 2500)
         update({loadingMsg:"✦ Building follow-up plan..."})
-        const fuResult = await safe(`CLIENT:${s.clientName}|OBJECTION:${objDetail}|AGENT:${ag}${langI}\n\nReturn ONLY JSON:\n{"followup_1":"Day 3. 50-60 words. New angle.","followup_2":"Week 1. 50-60 words. Value add.","followup_3":"Week 2. 40-50 words. Casual.","followup_4":"Month 1. 40-50 words. Final touch."}`,SYSTEM,700)
-        const schedResult = await safe(`CLIENT:${s.clientName}|REASON:objection_handle\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"🛡️","tasks":["Send your chosen approach","If no reply 4 hours, send SMS","Note client status"]},{"day":"Day 3","icon":"💬","tasks":["Send Follow-Up #1","Don't repeat the same angle"]},{"day":"Day 7","icon":"📞","tasks":["Send Follow-Up #2","Make a phone call — listen first"]},{"day":"Day 14","icon":"🔄","tasks":["Send Follow-Up #3","Share market update"]},{"day":"Day 30","icon":"🌱","tasks":["Send Follow-Up #4","80% of deals close between touch 5-12"]}]}`,SYSTEM,500)
+        const fuResult = await safe(`CLIENT:${s.clientName}|OBJECTION:${objDetail}|AGENT:${ag}${langI}\n\nReturn ONLY JSON:\n{"followup_1":"Day 3. 50-60 words. New angle, no pressure.","followup_2":"Week 1. 50-60 words. Add value.","followup_3":"Week 2. 40-50 words. Casual.","followup_4":"Month 1. 40-50 words. Warm touch.","followup_5":"Month 2. 30-40 words. Final. Keep door open."}`,SYSTEM,800)
+        const schedResult = await safe(`CLIENT:${s.clientName}|REASON:objection_handle\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"🛡️","tasks":["Send your chosen approach (pick 1 of 3)","If no reply 4 hours, send SMS","Note client status"]},{"day":"Day 3","icon":"💬","tasks":["Send Follow-Up #1 — new angle","Don\'t repeat the same approach"]},{"day":"Day 7","icon":"📞","tasks":["Send Follow-Up #2 — add value","Make a call — listen more than pitch"]},{"day":"Day 14","icon":"🔄","tasks":["Send Follow-Up #3 — casual","Share market update if relevant"]},{"day":"Day 30","icon":"🌱","tasks":["Send Follow-Up #4 — warm touch"]},{"day":"Day 60","icon":"🌟","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,600)
         const result = {...objResult,...fuResult,...schedResult}
         update({result,activeTab:"messages"})
         SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
@@ -279,13 +327,13 @@ Return ONLY JSON:
 
       let p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word WhatsApp. Warm, use ${s.clientName} first name. End with easy question.","sms":"SMS max 160 chars.","voice_script":"Call script: OPENING, REASON, VALUE PITCH, CLOSE. Labelled.","email_subject":"Subject under 10 words.","email_body":"130-160 word email. Opener, opportunity, CTA. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
       if(s.contactReason==="referral_request")p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word referral request. Warm, celebrate, ask naturally.","sms":"Referral SMS max 160 chars.","voice_script":"Referral call: OPENING, CELEBRATION, ASK, CLOSE. Labelled.","email_subject":"Subject under 9 words.","email_body":"120-140 word referral email. Signed by ${ag}."}`;
-      if(s.contactReason==="anniversary")p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word anniversary WhatsApp. Warm, celebratory, no hard sell.","sms":"Anniversary SMS max 160 chars.","voice_script":"Anniversary call: OPENING, CELEBRATE, MARKET UPDATE, SOFT CTA. Labelled.","email_subject":"Subject under 9 words.","email_body":"120-140 word anniversary email. Signed by ${ag}."}`;
+      if(s.contactReason==="anniversary")p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word anniversary WhatsApp. Warm, celebratory.","sms":"Anniversary SMS max 160 chars.","voice_script":"Anniversary call: OPENING, CELEBRATE, MARKET UPDATE, SOFT CTA. Labelled.","email_subject":"Subject under 9 words.","email_body":"120-140 word anniversary email. Signed by ${ag}."}`;
       if(isCMA)p1=`${ctx}\nSUBJECT:${s.cmaSubject.address}|$${s.cmaSubject.price}|${s.cmaSubject.beds}bed/${s.cmaSubject.baths}bath\nCOMPS:${s.cmaComps.map((c,i)=>`${i+1}. ${c.address} sold $${c.salePrice} ${c.saleDate}`).join("|")}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word WhatsApp. Warm, valuation complete, booking question.","sms":"SMS max 160 chars.","voice_script":"Call: OPENING, CMA COMPLETE, INSIGHT, BOOK MEETING. Labelled.","email_subject":"Subject under 10 words.","email_body":"140-160 word email. Valuation, insight, invite meeting. Signed by ${ag}."}`;
       const part1=await safe(p1,SYSTEM,1300)
       update({loadingMsg:"✦ Writing letter & follow-ups..."})
-      const part2=await safe(`${ctx}${langI}\n\nReturn ONLY JSON:\n{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words.","followup_2":"Week 1. 50-60 words.","followup_3":"Week 2. 40-50 words.","followup_4":"Month 1. 40-50 words."}`,SYSTEM,1300)
+      const part2=await safe(`${ctx}${langI}\n\nReturn ONLY JSON:\n{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words.","followup_2":"Week 1. 50-60 words.","followup_3":"Week 2. 40-50 words.","followup_4":"Month 1. 40-50 words.","followup_5":"Month 2. 30-40 words. Final touch."}`,SYSTEM,1300)
       update({loadingMsg:"✦ Building schedule..."})
-      const part3=await safe(`CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"🚀","tasks":["Send WhatsApp","If no reply 2 hours, send SMS","Save in CRM"]},{"day":"Day 3","icon":"💬","tasks":["Send Follow-Up #1","Check if email opened"]},{"day":"Day 7","icon":"📞","tasks":["Send Follow-Up #2","Make phone call — listen first"]},{"day":"Day 14","icon":"🔄","tasks":["Send Follow-Up #3","Share market update"]},{"day":"Day 30","icon":"🌱","tasks":["Send Follow-Up #4","80% of deals close between touch 5-12"]}]}`,SYSTEM,500)
+      const part3=await safe(`CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"🚀","tasks":["Send WhatsApp","If no reply 2 hours, send SMS","Save in CRM"]},{"day":"Day 3","icon":"💬","tasks":["Send Follow-Up #1","Check if email opened"]},{"day":"Day 7","icon":"📞","tasks":["Send Follow-Up #2","Make phone call — listen first"]},{"day":"Day 14","icon":"🔄","tasks":["Send Follow-Up #3","Share market update"]},{"day":"Day 30","icon":"🌱","tasks":["Send Follow-Up #4"]},{"day":"Day 60","icon":"🌟","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,500)
       const result={...part1,...part2,...part3}
       update({result,activeTab:"messages"})
       SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
@@ -293,6 +341,7 @@ Return ONLY JSON:
     update({loading:false})
   }
 
+  // ── RESULTS VIEW ─────────────────────────────────────────
   if(s.result){
     const r = s.result
     const isObj = !!(r.v1_whatsapp)
@@ -319,9 +368,9 @@ Return ONLY JSON:
           {s.activeTab==="messages"&&(isObj?(
             <>
               <p style={{color:"rgba(255,255,255,0.6)",fontSize:"13px",margin:"0 0 16px"}}>Three approaches to handle this objection. Pick the one that fits — or use all three across different follow-ups.</p>
-              {[["v1","#2AB8D4"],["v2","#C9963A"],["v3","#22c55e"]].map(([v,color])=>(
-                r[v+"_whatsapp"]&&<div key={v} style={{background:"#0c0c10",border:`1px solid ${color}44`,borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
-                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color,marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
+              {["v1","v2","v3"].map(v=>(
+                r[v+"_whatsapp"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
+                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
                   <CopyCard title="WhatsApp" content={r[v+"_whatsapp"]||""} icon="💬" lang={s.language}/>
                   <CopyCard title="SMS" content={r[v+"_sms"]||""} icon="📱" lang={s.language}/>
                 </div>
@@ -333,9 +382,9 @@ Return ONLY JSON:
 
           {s.activeTab==="email"&&(isObj?(
             <>
-              {[["v1","#2AB8D4"],["v2","#C9963A"],["v3","#22c55e"]].map(([v,color])=>(
-                r[v+"_email"]&&<div key={v} style={{background:"#0c0c10",border:`1px solid ${color}44`,borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
-                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color,marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
+              {["v1","v2","v3"].map(v=>(
+                r[v+"_email"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
+                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
                   <CopyCard title="Email Subject" content={r[v+"_email_subject"]||""} icon="📧" lang={s.language}/>
                   <CopyCard title="Email Body" content={r[v+"_email"]||""} icon="📨" lang={s.language}/>
                 </div>
@@ -348,46 +397,56 @@ Return ONLY JSON:
           {s.activeTab==="voice"&&(isObj?(
             <>
               <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 16px"}}>Three call scripts — each a different approach. Read naturally.</p>
-              {[["v1","#2AB8D4"],["v2","#C9963A"],["v3","#22c55e"]].map(([v,color])=>(
-                r[v+"_voice"]&&<div key={v} style={{background:"#0c0c10",border:`1px solid ${color}44`,borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
-                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color,marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
+              {["v1","v2","v3"].map(v=>(
+                r[v+"_voice"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
+                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
                   <CopyCard title="Phone Call Script" content={r[v+"_voice"]||""} icon="🎙️" lang={s.language}/>
                 </div>
               ))}
             </>
           ):(
             <><p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 12px"}}>Read naturally — don't sound like you're reading a script.</p>
-            <CopyCard title="Phone Call Script" content={r.voice_script||"No call script generated. Please regenerate."} icon="🎙️" lang={s.language}/></>
+            <CopyCard title="Phone Call Script" content={r.voice_script||"No call script generated — please regenerate."} icon="🎙️" lang={s.language}/></>
           ))}
 
           {s.activeTab==="followups"&&(
             <>
-              <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"14px 16px",marginBottom:"16px"}}>
-                <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.6)",marginBottom:"4px"}}>📋 PHASE 1 — IF NO REPLY</div>
-                <p style={{fontSize:"12px",color:"rgba(255,255,255,0.45)",margin:"0"}}>Use these if your client goes quiet. 80% of deals close between touch 5-12. Don't stop.</p>
+              <div style={{display:"flex",gap:"4px",marginBottom:"20px",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid #252530"}}>
+                <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",background:s.fuSubTab==="noreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="noreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📋 No Reply Plan</button>
+                <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",background:s.fuSubTab==="gotreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="gotreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📲 Got a Response?</button>
               </div>
-              <CopyCard title="Follow-Up #1 — Day 3" content={r.followup_1||""} icon="💬" lang={s.language}/>
-              <CopyCard title="Follow-Up #2 — Week 1" content={r.followup_2||""} icon="💬" lang={s.language}/>
-              <CopyCard title="Follow-Up #3 — Week 2" content={r.followup_3||""} icon="💬" lang={s.language}/>
-              <CopyCard title="Follow-Up #4 — Month 1" content={r.followup_4||""} icon="💬" lang={s.language}/>
-              <div style={{background:"rgba(255,255,255,0.04)",border:"1.5px solid rgba(255,255,255,0.15)",borderRadius:"10px",padding:"18px",marginTop:"24px"}}>
-                <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#fff",marginBottom:"6px"}}>📲 PHASE 2 — LOG WHAT HAPPENED</div>
-                <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"12px",lineHeight:"1.6"}}>Got a response? Describe what happened — positive, objection, went cold, anything. The AI generates 4 brand new tailored follow-ups. Use this every time something changes.</p>
-                <textarea placeholder="e.g. She replied and said she liked it but her husband isn't convinced. She asked if we could do anything on the price..." rows={3}
-                  value={s.regenContext||""} onChange={e=>update({regenContext:e.target.value})}
-                  style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.15)",background:"#0d0d0d",marginBottom:"10px"}}/>
-                <button onClick={async()=>{
-                  if(!s.regenContext||s.regenLoading)return
-                  update({regenLoading:true})
-                  try{
-                    const regen=await apiClaude(`Original: CLIENT ${s.clientName}|${s.contactReason}\nWhat happened: ${s.regenContext}\n\nReturn ONLY JSON:\n{"followup_1":"New Day 3. 50-60 words.","followup_2":"New Week 1. 50-60 words.","followup_3":"New Week 2. 40-50 words.","followup_4":"New Month 1. 40-50 words."}`,SYSTEM,700)
-                    update({result:{...s.result,...regen},regenContext:""})
-                  }catch(e){update({error:"Failed: "+e.message})}
-                  update({regenLoading:false})
-                }} style={{background:s.regenLoading?"#1a1a1a":"#2AB8D4",color:s.regenLoading?"rgba(255,255,255,0.5)":"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
-                  {s.regenLoading?"Generating...":"✦ Get New Follow-Ups Based on Response"}
-                </button>
-              </div>
+
+              {s.fuSubTab==="noreply"&&(
+                <>
+                  <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 16px",lineHeight:"1.6"}}>Use these if your client goes quiet. Send in order. 80% of deals close between touch 5–12 — don't stop.</p>
+                  <CopyCard title="Follow-Up #1 — Day 3" content={r.followup_1||""} icon="💬" lang={s.language}/>
+                  <CopyCard title="Follow-Up #2 — Week 1" content={r.followup_2||""} icon="💬" lang={s.language}/>
+                  <CopyCard title="Follow-Up #3 — Week 2" content={r.followup_3||""} icon="💬" lang={s.language}/>
+                  <CopyCard title="Follow-Up #4 — Month 1" content={r.followup_4||""} icon="💬" lang={s.language}/>
+                  <CopyCard title="Follow-Up #5 — Month 2" content={r.followup_5||""} icon="💬" lang={s.language}/>
+                </>
+              )}
+
+              {s.fuSubTab==="gotreply"&&(
+                <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:"10px",padding:"20px"}}>
+                  <div style={{fontSize:"13px",fontWeight:"700",color:"#fff",marginBottom:"6px"}}>📲 Log What Happened — Get New Follow-Ups</div>
+                  <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px",lineHeight:"1.6"}}>Got a response? Describe what happened — positive reply, objection, went cold, anything. The AI generates 4 brand new tailored follow-ups instantly. Use this every time something changes.</p>
+                  <textarea placeholder="e.g. She replied and said she liked it but her husband isn't convinced. She asked if we could do anything on price..." rows={4}
+                    value={s.regenContext||""} onChange={e=>update({regenContext:e.target.value})}
+                    style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.15)",background:"#0d0d0d",marginBottom:"12px"}}/>
+                  <button onClick={async()=>{
+                    if(!s.regenContext||s.regenLoading)return
+                    update({regenLoading:true})
+                    try{
+                      const regen=await apiClaude(`Original: CLIENT ${s.clientName}|${s.contactReason}\nWhat happened: ${s.regenContext}\n\nReturn ONLY JSON:\n{"followup_1":"New Day 3. 50-60 words.","followup_2":"New Week 1. 50-60 words.","followup_3":"New Week 2. 40-50 words.","followup_4":"New Month 1. 40-50 words."}`,SYSTEM,700)
+                      update({result:{...s.result,...regen},regenContext:""})
+                    }catch(e){update({error:"Failed: "+e.message})}
+                    update({regenLoading:false})
+                  }} style={{background:s.regenLoading?"#1a1a1a":"#2AB8D4",color:s.regenLoading?"rgba(255,255,255,0.5)":"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
+                    {s.regenLoading?"Generating...":"✦ Get New Follow-Ups Based on Response"}
+                  </button>
+                </div>
+              )}
             </>
           )}
 
@@ -416,6 +475,7 @@ Return ONLY JSON:
     )
   }
 
+  // ── FORM VIEW ─────────────────────────────────────────────
   return (
     <div style={{minHeight:"100vh",background:"#060608"}}>
       <div style={{background:"#0c0c10",borderBottom:"1px solid #222",padding:"0 22px",display:"flex",alignItems:"center",justifyContent:"space-between",height:"56px",position:"sticky",top:"0",zIndex:"1000"}}>
@@ -466,7 +526,7 @@ Return ONLY JSON:
               {value:"high_energy",label:"⚡ High Energy & Bold",desc:"Enthusiastic, unstoppable"},
               {value:"persistent_tenacious",label:"💪 Persistent & Tenacious",desc:"Never give up"},
               {value:"empathetic_listener",label:"👂 Empathetic Listener",desc:"Understanding, patient"},
-              {value:"strategic_partner",label:"🧠 Strategic Partner",desc:"Problem-solver, consultant"},
+              {value:"strategic_partner",label:"🧠 Strategic Partner",desc:"Problem-solver"},
               {value:"market_authority",label:"🏆 Market Authority",desc:"Industry leader"},
               {value:"creative_storyteller",label:"🎬 Creative Storyteller",desc:"Content-first approach"},
             ]} selected={s.introComeAcross} onToggle={v=>update({introComeAcross:tog(s.introComeAcross,v)})}/>
@@ -497,7 +557,7 @@ Return ONLY JSON:
               {value:"market_fear",label:"📉 Scared of Market"},{value:"partner_disagreed",label:"🤝 Partner Disagreed"},
               {value:"found_something",label:"🏠 Found Something Themselves"},{value:"timing",label:"⏰ Bad Timing"},
               {value:"overwhelmed",label:"😓 Overwhelmed"},{value:"lost_touch",label:"📵 Just Lost Touch"},
-              {value:"not_ready",label:"🛑 Wasn't Ready"},{value:"changed_jobs",label:"💼 Changed Jobs"},
+              {value:"not_ready",label:"🛑 Wasn\'t Ready"},{value:"changed_jobs",label:"💼 Changed Jobs"},
               {value:"got_divorced",label:"⚖️ Got Divorced"},{value:"had_baby",label:"👶 Had a Baby"},
               {value:"inheritance",label:"💰 Inheritance Received"},{value:"partner_now_ready",label:"✅ Partner Now On Board"},
               {value:"lease_ending",label:"📅 Rental Lease Ending"},{value:"sold_other",label:"🏡 Sold Another Property"},
@@ -513,8 +573,8 @@ Return ONLY JSON:
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📊 Market Update Details</h2>
             <div style={{marginBottom:"12px"}}><label style={lbl}>City / Market Area</label><input type="text" placeholder="e.g. Miami Beach" style={inp} value={s.marketLocation||""} onChange={e=>update({marketLocation:e.target.value})}/></div>
-            <Chips label="Market Direction" options={["📈 Rising Prices","📊 Stable Market","📉 Cooling Down","🔥 High Demand","📦 Low Inventory","⏱️ Good Time to Buy","🏆 Seller's Market","🤝 Buyer's Market","🏗️ Infrastructure Development","📊 Record Sales Volume","🌍 International Buyer Interest","💼 Job Market Growing","🏫 New Schools Opening","🚇 New Transport Links","🏢 New Commercial Development","📉 Motivated Sellers","📐 Price Per Sq Ft Rising","🏚️ Foreclosure Activity","💎 Luxury Market Booming","🏦 Interest Rate Changing","⚡ Off-Market Activity Increasing"]} selected={s.marketDirection||[]} onToggle={v=>update({marketDirection:tog(s.marketDirection||[],v)})}/>
-            <div style={{marginBottom:"12px"}}><label style={lbl}>Your Market Insight</label><textarea placeholder="e.g. Prices up 3%, inventory tightening, days on market dropped to 22..." rows={3} style={{...inp,resize:"vertical"}} value={s.marketInsight||""} onChange={e=>update({marketInsight:e.target.value})}/></div>
+            <Chips label="Market Direction" options={["📈 Rising Prices","📊 Stable Market","📉 Cooling Down","🔥 High Demand","📦 Low Inventory","⏱️ Good Time to Buy","🏆 Seller\'s Market","🤝 Buyer\'s Market","🏗️ Infrastructure Development","📊 Record Sales Volume","🌍 International Buyer Interest","💼 Job Market Growing","🏫 New Schools Opening","🚇 New Transport Links","🏢 New Commercial Development","📉 Motivated Sellers","📐 Price Per Sq Ft Rising","🏚️ Foreclosure Activity","💎 Luxury Market Booming","🏦 Interest Rate Changing","⚡ Off-Market Activity Increasing"]} selected={s.marketDirection||[]} onToggle={v=>update({marketDirection:tog(s.marketDirection||[],v)})}/>
+            <div style={{marginBottom:"12px"}}><label style={lbl}>Your Market Insight</label><textarea placeholder="e.g. Prices up 3%, inventory tightening..." rows={3} style={{...inp,resize:"vertical"}} value={s.marketInsight||""} onChange={e=>update({marketInsight:e.target.value})}/></div>
             <div><label style={lbl}>Specific Stats (optional)</label><input type="text" placeholder="e.g. Median $850K, 12% more sales YOY" style={inp} value={s.marketStats||""} onChange={e=>update({marketStats:e.target.value})}/></div>
           </div>
         )}
@@ -551,11 +611,23 @@ Return ONLY JSON:
         {isOfferStrategy&&(
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🎯 Offer Strategy</h2>
+            <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>Build the full offer context so the AI positions your buyer to win.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"12px"}}>
+              <div><label style={lbl}>Asking Price ($)</label><input type="text" placeholder="850,000" style={inp} value={s.offerAskingPrice||""} onChange={e=>update({offerAskingPrice:e.target.value})}/></div>
+              <div><label style={lbl}>Offer Amount ($)</label><input type="text" placeholder="820,000" style={inp} value={s.offerAmount||""} onChange={e=>update({offerAmount:e.target.value})}/></div>
+            </div>
+            <div style={{marginBottom:"12px"}}><label style={lbl}>Days on Market</label><input type="text" placeholder="e.g. 45 days" style={inp} value={s.offerDaysOnMarket||""} onChange={e=>update({offerDaysOnMarket:e.target.value})}/></div>
             <Chips label="Offer Position" options={[
-              {value:"first_offer",label:"1️⃣ First Offer"},{value:"counter",label:"🔄 Counter Offer"},
-              {value:"competing",label:"⚔️ Competing"},{value:"final_best",label:"🏁 Final Best Offer"},
-            ]} selected={s.offerPosition} onToggle={v=>update({offerPosition:tog(s.offerPosition,v)})} single/>
-            <div style={{marginBottom:"12px"}}><label style={lbl}>Buyer's Budget / Offer Range</label><input type="text" placeholder="e.g. $480K-$510K" style={inp} value={s.offerBudget||""} onChange={e=>update({offerBudget:e.target.value})}/></div>
+              {value:"first_offer",label:"1️⃣ First Offer"},
+              {value:"counter",label:"🔄 Counter Offer"},
+              {value:"competing",label:"⚔️ Competing with Others"},
+              {value:"final_best",label:"🏁 Final Best Offer"},
+            ]} selected={s.offerPosition?[s.offerPosition]:[]} onToggle={v=>update({offerPosition:s.offerPosition===v?null:v})} single/>
+            <Chips label="Market Situation" options={[
+              {value:"multiple_offers",label:"⚔️ Multiple Offers"},{value:"motivated_seller",label:"🔥 Motivated Seller"},
+              {value:"long_on_market",label:"📅 Long on Market"},{value:"fresh_listing",label:"🆕 Fresh Listing"},
+              {value:"price_reduced",label:"📉 Already Reduced"},
+            ]} selected={s.offerMarket} onToggle={v=>update({offerMarket:tog(s.offerMarket,v)})}/>
             <Chips label="Negotiation Levers" options={[
               {value:"clean_offer",label:"✅ Clean Offer"},{value:"quick_close",label:"⚡ Quick Closing"},
               {value:"escalation",label:"📈 Escalation Clause"},{value:"personal_letter",label:"💌 Personal Letter"},
@@ -564,13 +636,13 @@ Return ONLY JSON:
               {value:"cash",label:"💵 All Cash"},{value:"pre_approved",label:"🏦 Pre-Approved"},
               {value:"appraisal_gap",label:"📊 Appraisal Gap"},{value:"as_is",label:"🔨 As-Is Purchase"},
               {value:"leaseback",label:"🔑 Seller Leaseback"},{value:"sight_unseen",label:"👁️ Sight-Unseen"},
+              {value:"attorney_review",label:"⚖️ Attorney Review"},{value:"closing_costs",label:"💰 Seller Closing Costs"},
             ]} selected={s.offerLevers} onToggle={v=>update({offerLevers:tog(s.offerLevers,v)})}/>
-            <Chips label="Market Situation" options={[
-              {value:"multiple_offers",label:"⚔️ Multiple Offers"},{value:"motivated_seller",label:"🔥 Motivated Seller"},
-              {value:"long_on_market",label:"📅 Long on Market"},{value:"fresh_listing",label:"🆕 Fresh Listing"},
-            ]} selected={s.offerMarket} onToggle={v=>update({offerMarket:tog(s.offerMarket,v)})}/>
-            <div style={{marginTop:"8px"}}><label style={lbl}>What Matters Most to the Seller?</label><input type="text" placeholder="e.g. Quick closing, no repairs" style={inp} value={s.sellerPriorities||""} onChange={e=>update({sellerPriorities:e.target.value})}/></div>
-            <PropCard s={s} update={update} tog={tog} title="🏠 The Property" showFeatures={true}/>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginTop:"4px",marginBottom:"12px"}}>
+              <div><label style={lbl}>Deposit Amount</label><input type="text" placeholder="e.g. $25,000" style={inp} value={s.offerDeposit||""} onChange={e=>update({offerDeposit:e.target.value})}/></div>
+              <div><label style={lbl}>Closing Timeline</label><input type="text" placeholder="e.g. 30 days, flexible" style={inp} value={s.offerClosing||""} onChange={e=>update({offerClosing:e.target.value})}/></div>
+            </div>
+            <div><label style={lbl}>What Matters Most to the Seller?</label><input type="text" placeholder="e.g. Quick close, no repairs, stay 30 days after sale" style={inp} value={s.sellerPriorities||""} onChange={e=>update({sellerPriorities:e.target.value})}/></div>
           </div>
         )}
 
@@ -580,7 +652,7 @@ Return ONLY JSON:
             <Chips label="Objection They Raised" options={[
               {value:"too_expensive",label:"💰 Too Expensive"},
               {value:"rates_too_high",label:"📈 Mortgage Rates Too High"},
-              {value:"not_right_property",label:"🏠 Haven't Found Right Property"},
+              {value:"not_right_property",label:"🏠 Haven\'t Found Right Property"},
               {value:"partner_not_convinced",label:"🤝 Partner Not Convinced"},
               {value:"waiting_prices_drop",label:"📉 Waiting for Prices to Drop"},
               {value:"market_uncertain",label:"🌊 Market Too Uncertain"},
@@ -592,11 +664,12 @@ Return ONLY JSON:
               {value:"need_more_time",label:"🕐 Need More Time"},
               {value:"scared_commitment",label:"😰 Scared of Commitment"},
               {value:"location",label:"📍 Not Sure About Location"},
-              {value:"doesnt_like_pressure",label:"🙅 Doesn't Like to Be Pressured"},
+              {value:"doesnt_like_pressure",label:"🙅 Doesn\'t Like to Be Pressured"},
             ]} selected={s.objection} onToggle={v=>update({objection:v})} single/>
+
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
               <label style={lbl}>Write the Exact Objection in Their Words (optional)</label>
-              <textarea placeholder="e.g. She said: I just feel like prices are going to drop more, and I don't want to buy now and regret it..." rows={3} style={{...inp,resize:"vertical"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
+              <textarea placeholder="e.g. She said: I just feel like prices are going to drop more..." rows={3} style={{...inp,resize:"vertical"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
             </div>
 
             {s.objection==="too_expensive"&&(
@@ -605,28 +678,46 @@ Return ONLY JSON:
                   <label style={lbl}>Did They Visit the Property?</label>
                   <div style={{display:"flex",gap:"8px",marginTop:"8px",flexWrap:"wrap"}}>
                     {[["yes","✅ Yes — visited in person"],["no","📱 No — only seen online"],["viewing_booked","📅 Viewing booked"]].map(([v,l])=>(
-                      <button key={v} onClick={()=>update({visitedProperty:v})} style={{background:s.visitedProperty===v?"rgba(42,184,212,0.15)":"#060608",border:`1px solid ${s.visitedProperty===v?"#2AB8D4":"#252530"}`,borderRadius:"8px",padding:"8px 12px",fontSize:"12px",color:s.visitedProperty===v?"#2AB8D4":"rgba(255,255,255,0.65)",cursor:"pointer",fontFamily:"inherit",fontWeight:s.visitedProperty===v?"700":"400"}}>{l}</button>
+                      <button key={v} onClick={()=>update({visitedProperty:v})} style={{background:s.visitedProperty===v?"rgba(42,184,212,0.15)":"#060608",border:`1px solid ${s.visitedProperty===v?"#2AB8D4":"#252530"}`,borderRadius:"8px",padding:"8px 14px",fontSize:"12px",color:s.visitedProperty===v?"#2AB8D4":"rgba(255,255,255,0.65)",cursor:"pointer",fontFamily:"inherit",fontWeight:s.visitedProperty===v?"700":"400"}}>{l}</button>
                     ))}
                   </div>
                 </div>
-                <div style={{background:"rgba(42,184,212,0.04)",border:"1px solid rgba(42,184,212,0.2)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#2AB8D4",marginBottom:"10px"}}>📊 Market Comparable (optional but powerful)</div>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px"}}>
-                    <div><label style={lbl}>Comparable Address</label><input type="text" placeholder="14 Oak St, Miami" style={inp} value={s.comparableAddress||""} onChange={e=>update({comparableAddress:e.target.value})}/></div>
-                    <div><label style={lbl}>Sold Price ($)</label><input type="text" placeholder="485,000" style={inp} value={s.comparablePrice||""} onChange={e=>update({comparablePrice:e.target.value})}/></div>
-                    <div><label style={lbl}>Days on Market</label><input type="text" placeholder="12" style={inp} value={s.comparableDays||""} onChange={e=>update({comparableDays:e.target.value})}/></div>
-                    <div><label style={lbl}>Above / Below Asking</label><input type="text" placeholder="$10K above" style={inp} value={s.comparableAboveBelow||""} onChange={e=>update({comparableAboveBelow:e.target.value})}/></div>
+                <div style={card}>
+                  <h3 style={{fontSize:"15px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏠 The Property</h3>
+                  <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px"}}>Fill in the property details below. At the bottom you can add a market comparable to strengthen the price argument.</p>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"12px"}}>
+                    <div><label style={lbl}>Address</label><input type="text" placeholder="42 Palm Drive, Miami" style={inp} value={s.propAddress||""} onChange={e=>update({propAddress:e.target.value})}/></div>
+                    <div><label style={lbl}>Asking Price ($)</label><input type="text" placeholder="1,200,000" style={inp} value={s.propPrice||""} onChange={e=>update({propPrice:e.target.value})}/></div>
+                    <div><label style={lbl}>Beds</label><input type="text" placeholder="4" style={inp} value={s.propBeds||""} onChange={e=>update({propBeds:e.target.value})}/></div>
+                    <div><label style={lbl}>Baths</label><input type="text" placeholder="3" style={inp} value={s.propBaths||""} onChange={e=>update({propBaths:e.target.value})}/></div>
+                    <div><label style={lbl}>Sq Ft</label><input type="text" placeholder="2,400" style={inp} value={s.propSqft||""} onChange={e=>update({propSqft:e.target.value})}/></div>
+                    <div><label style={lbl}>Condition</label><input type="text" placeholder="Good, renovated 2022" style={inp} value={s.propCondition||""} onChange={e=>update({propCondition:e.target.value})}/></div>
+                  </div>
+                  <div style={{marginBottom:"16px"}}><label style={lbl}>Key Features That Justify the Price</label><input type="text" placeholder="e.g. Private pool, ocean views, renovated kitchen, 3-car garage" style={inp} value={s.propKeyFeatures||""} onChange={e=>update({propKeyFeatures:e.target.value})}/></div>
+                  <div style={{paddingTop:"14px",borderTop:"1px solid #252530"}}>
+                    <p style={{fontSize:"12px",color:"rgba(42,184,212,0.85)",fontWeight:"700",marginBottom:"4px"}}>📊 Market Comparable (optional but powerful)</p>
+                    <p style={{fontSize:"12px",color:"rgba(255,255,255,0.45)",marginBottom:"12px"}}>Add a recently sold comparable property below to give the AI real market data — it will use this to argue the price is fair and justified.</p>
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"10px"}}>
+                      <div><label style={lbl}>Comparable Address</label><input type="text" placeholder="14 Oak St, Miami" style={inp} value={s.compAddress||""} onChange={e=>update({compAddress:e.target.value})}/></div>
+                      <div><label style={lbl}>Sold Price ($)</label><input type="text" placeholder="1,150,000" style={inp} value={s.compPrice||""} onChange={e=>update({compPrice:e.target.value})}/></div>
+                      <div><label style={lbl}>Beds</label><input type="text" placeholder="4" style={inp} value={s.compBeds||""} onChange={e=>update({compBeds:e.target.value})}/></div>
+                      <div><label style={lbl}>Baths</label><input type="text" placeholder="3" style={inp} value={s.compBaths||""} onChange={e=>update({compBaths:e.target.value})}/></div>
+                      <div><label style={lbl}>Sq Ft</label><input type="text" placeholder="2,200" style={inp} value={s.compSqft||""} onChange={e=>update({compSqft:e.target.value})}/></div>
+                      <div><label style={lbl}>Condition</label><input type="text" placeholder="Good, original kitchen" style={inp} value={s.compCondition||""} onChange={e=>update({compCondition:e.target.value})}/></div>
+                      <div><label style={lbl}>Days on Market</label><input type="text" placeholder="18" style={inp} value={s.compDaysOnMarket||""} onChange={e=>update({compDaysOnMarket:e.target.value})}/></div>
+                      <div><label style={lbl}>Above / Below Asking</label><input type="text" placeholder="$20K above" style={inp} value={s.compAboveBelow||""} onChange={e=>update({compAboveBelow:e.target.value})}/></div>
+                    </div>
+                    <div><label style={lbl}>Key Features of Comparable</label><input type="text" placeholder="e.g. No pool, smaller lot, original fixtures" style={inp} value={s.compKeyFeatures||""} onChange={e=>update({compKeyFeatures:e.target.value})}/></div>
                   </div>
                 </div>
-                <PropCard s={s} update={update} tog={tog} title="🏠 The Property" showFeatures={true}/>
               </>
             )}
 
             {s.objection==="rates_too_high"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px"}}>
-                  <div><label style={lbl}>Rate They Were Quoted</label><input type="text" placeholder="e.g. 7.2%" style={inp} value={s.financingNews||""} onChange={e=>update({financingNews:e.target.value})}/></div>
-                  <div><label style={lbl}>Loan Amount</label><input type="text" placeholder="e.g. $450,000" style={inp} value={s.comparablePrice||""} onChange={e=>update({comparablePrice:e.target.value})}/></div>
+                  <div><label style={lbl}>Rate They Were Quoted</label><input type="text" placeholder="e.g. 7.2%" style={inp} value={s.financingRateQuoted||""} onChange={e=>update({financingRateQuoted:e.target.value})}/></div>
+                  <div><label style={lbl}>Loan Amount</label><input type="text" placeholder="e.g. $450,000" style={inp} value={s.financingLoanAmount||""} onChange={e=>update({financingLoanAmount:e.target.value})}/></div>
                 </div>
               </div>
             )}
@@ -634,12 +725,51 @@ Return ONLY JSON:
             {s.objection==="not_right_property"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <div style={{marginBottom:"12px"}}><label style={lbl}>What Have They Seen So Far?</label><textarea placeholder="e.g. Viewed 6 properties, liked 2 but both lacked a home office and garden..." rows={3} style={{...inp,resize:"vertical"}} value={s.seenProperties||""} onChange={e=>update({seenProperties:e.target.value})}/></div>
-                <Chips label="What's Missing from Everything They've Viewed?" options={["Too small","Wrong location","No outdoor space","No home office","Needs too much work","Too expensive","Wrong property type","No parking","No natural light","Layout doesn't work","Wrong neighbourhood"]} selected={s.missingFromViewed||[]} onToggle={v=>update({missingFromViewed:tog(s.missingFromViewed||[],v)})}/>
+                <Chips label="What\'s Missing from Everything They\'ve Viewed?" options={[
+                  "Too small","Wrong location","No outdoor space","No home office","Needs too much work",
+                  "Too expensive","Wrong property type","No parking","No natural light","Layout doesn\'t work",
+                  "Wrong neighbourhood","No pool","No garden","No sea view","No waterfront",
+                  "Building amenities lacking","Not move-in ready","No garage","No terrace / balcony",
+                  "No guest room","No storage","Wrong floor level","Too noisy","Not enough bedrooms",
+                ]} selected={s.missingFromViewed||[]} onToggle={v=>update({missingFromViewed:tog(s.missingFromViewed||[],v)})}/>
+                <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Missing Features</label><input type="text" placeholder="e.g. They really need a wraparound terrace and a wine cellar..." style={inp} value={s.missingFromViewedOther||""} onChange={e=>update({missingFromViewedOther:e.target.value})}/></div>
+              </div>
+            )}
+
+            {s.objection==="partner_not_convinced"&&(
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+                <label style={lbl}>Why Is the Partner Not Convinced?</label>
+                <textarea placeholder="e.g. Her husband hasn\'t seen the property yet. He thinks the price is too high. She loves it but can\'t convince him to visit..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.partnerNotConvincedReason||""} onChange={e=>update({partnerNotConvincedReason:e.target.value})}/>
+              </div>
+            )}
+
+            {s.objection==="waiting_prices_drop"&&(
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+                <Chips label="Why Are They Waiting?" options={[
+                  "Believe prices will drop","Media says market will crash","Saw prices fall elsewhere",
+                  "Had bad advice from someone","Just cautious by nature","Waiting for interest rates to drop",
+                  "Waiting for more supply","Think they can time the market","Had a bad past experience",
+                ]} selected={s.waitingReasons||[]} onToggle={v=>update({waitingReasons:tog(s.waitingReasons||[],v)})}/>
+                <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason</label><input type="text" placeholder="e.g. Their friend bought in 2022 and lost value..." style={inp} value={s.waitingOther||""} onChange={e=>update({waitingOther:e.target.value})}/></div>
+              </div>
+            )}
+
+            {s.objection==="market_uncertain"&&(
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+                <Chips label="What\'s Making Them Uncertain?" options={[
+                  "General economy","Interest rates","Job security","Political climate",
+                  "Fear of overpaying","Worried prices will drop","Global instability",
+                  "Local market news","Fear of recession","Stock market volatility",
+                  "Rising unemployment","Inflation concerns","Housing bubble fear",
+                  "Environmental risks","Media negativity","Local crime concerns",
+                ]} selected={s.uncertaintyReasons||[]} onToggle={v=>update({uncertaintyReasons:tog(s.uncertaintyReasons||[],v)})}/>
+                <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason</label><input type="text" placeholder="e.g. Their company just announced layoffs..." style={inp} value={s.uncertaintyOther||""} onChange={e=>update({uncertaintyOther:e.target.value})}/></div>
               </div>
             )}
 
             {s.objection==="happy_renting"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+                <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"12px"}}>The AI will calculate how much they\'ve spent renting vs what they could have built in equity — one of the most powerful arguments against happy renting.</p>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px"}}>
                   <div><label style={lbl}>Monthly Rent They Pay</label><input type="text" placeholder="e.g. $2,800/month" style={inp} value={s.rentAmount||""} onChange={e=>update({rentAmount:e.target.value})}/></div>
                   <div><label style={lbl}>How Long Renting</label><input type="text" placeholder="e.g. 4 years" style={inp} value={s.rentingYears||""} onChange={e=>update({rentingYears:e.target.value})}/></div>
@@ -649,28 +779,156 @@ Return ONLY JSON:
 
             {s.objection==="need_to_sell_first"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px"}}>
-                  <div><label style={lbl}>Their Current Property</label><input type="text" placeholder="22 Oak Ave" style={inp} value={s.currentPropAddress||""} onChange={e=>update({currentPropAddress:e.target.value})}/></div>
+                <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.6)",marginBottom:"12px"}}>🏠 Their Current Property</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"10px"}}>
+                  <div><label style={lbl}>Property Address</label><input type="text" placeholder="22 Oak Ave" style={inp} value={s.currentPropAddress||""} onChange={e=>update({currentPropAddress:e.target.value})}/></div>
                   <div><label style={lbl}>Estimated Value ($)</label><input type="text" placeholder="$520,000" style={inp} value={s.currentPropValue||""} onChange={e=>update({currentPropValue:e.target.value})}/></div>
+                  <div><label style={lbl}>Beds</label><input type="text" placeholder="3" style={inp} value={s.currentPropBeds||""} onChange={e=>update({currentPropBeds:e.target.value})}/></div>
+                  <div><label style={lbl}>Baths</label><input type="text" placeholder="2" style={inp} value={s.currentPropBaths||""} onChange={e=>update({currentPropBaths:e.target.value})}/></div>
+                  <div><label style={lbl}>Sq Ft</label><input type="text" placeholder="1,800" style={inp} value={s.currentPropSqft||""} onChange={e=>update({currentPropSqft:e.target.value})}/></div>
+                  <div><label style={lbl}>Condition</label><input type="text" placeholder="Good, updated kitchen" style={inp} value={s.currentPropCondition||""} onChange={e=>update({currentPropCondition:e.target.value})}/></div>
                 </div>
-                <div style={{marginTop:"10px"}}><label style={lbl}>Status of Their Property</label><input type="text" placeholder="e.g. Not yet listed, thinking spring" style={inp} value={s.currentPropStatus||""} onChange={e=>update({currentPropStatus:e.target.value})}/></div>
+                <div style={{marginBottom:"10px"}}><label style={lbl}>Key Features</label><input type="text" placeholder="e.g. Garden, garage, near good schools" style={inp} value={s.currentPropKeyFeatures||""} onChange={e=>update({currentPropKeyFeatures:e.target.value})}/></div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"14px"}}>
+                  <div><label style={lbl}>Mortgage Remaining</label><input type="text" placeholder="e.g. $180,000" style={inp} value={s.currentPropMortgage||""} onChange={e=>update({currentPropMortgage:e.target.value})}/></div>
+                  <div><label style={lbl}>Target Sale Price ($)</label><input type="text" placeholder="e.g. $540,000" style={inp} value={s.currentPropTargetPrice||""} onChange={e=>update({currentPropTargetPrice:e.target.value})}/></div>
+                </div>
+                <Chips label="Is Their Property Currently Listed?" options={[
+                  {value:"listed_active",label:"✅ Yes — Active on Market"},
+                  {value:"not_listed_soon",label:"🔄 Not Yet — Planning Soon"},
+                  {value:"not_decided",label:"🤔 Still Deciding"},
+                  {value:"no_plans",label:"❌ No Plans Yet"},
+                ]} selected={s.currentPropListedStatus?[s.currentPropListedStatus]:[]} onToggle={v=>update({currentPropListedStatus:v})} single/>
+                <Chips label="Who Is Handling the Sale?" options={[
+                  {value:"has_agent",label:"👤 Already Have an Agent"},
+                  {value:"fsbo",label:"🏷️ Thinking of Selling Themselves"},
+                  {value:"looking_agent",label:"🔍 Still Looking for an Agent"},
+                  {value:"open_to_discuss",label:"💬 Open to Discussing It"},
+                ]} selected={s.currentPropAgentStatus?[s.currentPropAgentStatus]:[]} onToggle={v=>update({currentPropAgentStatus:v})} single/>
+                <Chips label="How Motivated Are They to Sell?" options={[
+                  {value:"very_motivated",label:"🔥 Very Motivated — Need to Sell Fast"},
+                  {value:"moderate",label:"⏳ Moderate — Taking Their Time"},
+                  {value:"low",label:"🌱 Low — Only If Price Is Right"},
+                  {value:"nervous",label:"😰 Nervous About Timing Both"},
+                ]} selected={s.currentPropMotivation||[]} onToggle={v=>update({currentPropMotivation:tog(s.currentPropMotivation||[],v)})} single/>
+                <Chips label="Main Concern About Selling First" options={[
+                  {value:"right_price",label:"💰 Getting the Right Price"},
+                  {value:"timing_both",label:"⏰ Timing Both Transactions"},
+                  {value:"left_without_home",label:"😰 Fear of Being Left Without a Home"},
+                  {value:"no_new_home",label:"🏠 Not Finding Right New Home First"},
+                  {value:"too_much_hassle",label:"📋 Too Much Hassle and Stress"},
+                  {value:"financial_bridge",label:"💼 Financial Bridge Between Sales"},
+                ]} selected={s.currentPropConcern||[]} onToggle={v=>update({currentPropConcern:tog(s.currentPropConcern||[],v)})}/>
+                <div style={{marginTop:"8px"}}><label style={lbl}>About This Buyer</label><textarea placeholder="e.g. Active buyer, pre-approved, has been looking 3 months, very motivated, just needs the timing to work..." rows={2} style={{...inp,resize:"vertical"}} value={s.currentPropBuyerContext||""} onChange={e=>update({currentPropBuyerContext:e.target.value})}/></div>
+              </div>
+            )}
+
+            {s.objection==="bad_timing"&&(
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+                <Chips label="Why Is the Timing Bad?" options={[
+                  {value:"financial_not_ready",label:"💰 Financial Situation Not Ready"},
+                  {value:"job_uncertainty",label:"💼 Job Uncertainty"},
+                  {value:"family_changing",label:"👨‍👩‍👧 Family Situation Changing"},
+                  {value:"need_sell_first",label:"🏠 Need to Sell Current Home First"},
+                  {value:"waiting_market",label:"⏰ Waiting for Better Market"},
+                  {value:"too_much_going_on",label:"📋 Too Much Going On Personally"},
+                  {value:"possible_relocation",label:"✈️ Possible Relocation"},
+                  {value:"life_transition",label:"💑 Life Transition — Divorce / Marriage / Baby"},
+                  {value:"kids_school",label:"🎓 Kids Finishing School"},
+                  {value:"waiting_mortgage",label:"🏦 Waiting for Mortgage Approval"},
+                  {value:"general_fear",label:"😰 General Fear and Anxiety"},
+                ]} selected={s.badTimingReasons||[]} onToggle={v=>update({badTimingReasons:tog(s.badTimingReasons||[],v)})}/>
+                <Chips label="How Much Time Are They Thinking?" options={[
+                  {value:"1month",label:"1 Month"},{value:"3months",label:"3 Months"},
+                  {value:"6months",label:"6 Months"},{value:"1year",label:"1 Year+"},
+                  {value:"not_sure",label:"Not Sure Yet"},
+                ]} selected={s.badTimingHowLong?[s.badTimingHowLong]:[]} onToggle={v=>update({badTimingHowLong:v})} single/>
+                <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason</label><input type="text" placeholder="e.g. They just started a new business..." style={inp} value={s.badTimingOther||""} onChange={e=>update({badTimingOther:e.target.value})}/></div>
               </div>
             )}
 
             {s.objection==="not_pre_approved"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-                <div style={{marginBottom:"12px"}}><label style={lbl}>What's Stopping Them?</label><textarea placeholder="e.g. Self-employed, haven't spoken to a lender yet..." rows={2} style={{...inp,resize:"vertical"}} value={s.notApprovedReason||""} onChange={e=>update({notApprovedReason:e.target.value})}/></div>
-                <Chips label="Have They Spoken to a Lender?" options={[{value:"yes",label:"✅ Yes"},{value:"no",label:"❌ Not yet"},{value:"in_progress",label:"🔄 In progress"}]} selected={s.spokeToLender?[s.spokeToLender]:[]} onToggle={v=>update({spokeToLender:v})} single/>
+                <div style={{marginBottom:"12px"}}><label style={lbl}>Reason Why Not Pre-Approved Yet</label><textarea placeholder="e.g. Self-employed, not sure they qualify, haven\'t prioritised it yet, just started new job..." rows={2} style={{...inp,resize:"vertical"}} value={s.notApprovedReason||""} onChange={e=>update({notApprovedReason:e.target.value})}/></div>
+                <Chips label="Have They Spoken to a Lender?" options={[
+                  {value:"yes",label:"✅ Yes"},{value:"no",label:"❌ Not yet"},{value:"in_progress",label:"🔄 In Progress"},
+                ]} selected={s.spokeToLender?[s.spokeToLender]:[]} onToggle={v=>update({spokeToLender:v})} single/>
+                <Chips label="Main Concern About Getting Approved" options={[
+                  {value:"not_enough_income",label:"💰 Not Enough Income"},
+                  {value:"self_employed",label:"💼 Self-Employed Complexity"},
+                  {value:"credit_score",label:"📋 Credit Score Concerns"},
+                  {value:"too_much_debt",label:"💳 Too Much Existing Debt"},
+                  {value:"not_enough_deposit",label:"💵 Not Enough Deposit Saved"},
+                  {value:"visa_status",label:"🌍 Foreign National / Visa Status"},
+                  {value:"no_time",label:"⏰ Haven\'t Had Time to Sort It"},
+                ]} selected={s.approvalConcerns||[]} onToggle={v=>update({approvalConcerns:tog(s.approvalConcerns||[],v)})}/>
               </div>
             )}
 
-            {s.objection==="market_uncertain"&&(
+            {s.objection==="need_more_time"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-                <Chips label="What's Making Them Uncertain?" options={["General economy","Interest rates","Job security","Political climate","Fear of overpaying","Worried prices will drop","Global events","Local market news"]} selected={s.uncertaintyReasons||[]} onToggle={v=>update({uncertaintyReasons:tog(s.uncertaintyReasons||[],v)})}/>
+                <Chips label="Why Do They Need More Time?" options={[
+                  {value:"saving_deposit",label:"💰 Still Saving for Deposit"},
+                  {value:"job_situation",label:"💼 Waiting for Job Situation to Settle"},
+                  {value:"family_flux",label:"👨‍👩‍👧 Family Situation in Flux"},
+                  {value:"need_sell_first",label:"🏠 Need to Sell First"},
+                  {value:"too_much_going_on",label:"📋 Too Much Going On"},
+                  {value:"not_emotionally_ready",label:"😰 Not Emotionally Ready"},
+                  {value:"waiting_market",label:"⏰ Waiting for Better Market"},
+                  {value:"kids_school",label:"🎓 Kids Finishing School First"},
+                ]} selected={s.needMoreTimeReasons||[]} onToggle={v=>update({needMoreTimeReasons:tog(s.needMoreTimeReasons||[],v)})}/>
+                <Chips label="How Much Time Are They Thinking?" options={[
+                  {value:"1month",label:"1 Month"},{value:"3months",label:"3 Months"},
+                  {value:"6months",label:"6 Months"},{value:"1year",label:"1 Year+"},
+                  {value:"not_sure",label:"Not Sure"},
+                ]} selected={s.needMoreTimeHowLong?[s.needMoreTimeHowLong]:[]} onToggle={v=>update({needMoreTimeHowLong:v})} single/>
+                <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason They Need More Time</label><input type="text" placeholder="e.g. Waiting for a bonus payout..." style={inp} value={s.needMoreTimeOther||""} onChange={e=>update({needMoreTimeOther:e.target.value})}/></div>
               </div>
             )}
 
-            <BuyerProfileBox s={s} update={update} tog={tog}/>
+            {s.objection==="scared_commitment"&&(
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+                <Chips label="What Specifically Scares Them?" options={[
+                  {value:"fear_overpaying",label:"💰 Fear of Overpaying"},
+                  {value:"prices_drop",label:"📉 Worried Prices Will Drop After Buying"},
+                  {value:"mortgage_overwhelming",label:"🏦 Long-Term Mortgage Feels Overwhelming"},
+                  {value:"hidden_costs",label:"🔧 Scared of Hidden Costs and Repairs"},
+                  {value:"not_right_property",label:"📍 Not 100% Sure This Is the Right Property"},
+                  {value:"life_uncertain",label:"💑 Life Situation Feels Uncertain"},
+                  {value:"never_bought",label:"😰 Never Bought Before — Fear of the Unknown"},
+                  {value:"locked_in",label:"🔄 Afraid of Being Locked In"},
+                ]} selected={s.scaredReasons||[]} onToggle={v=>update({scaredReasons:tog(s.scaredReasons||[],v)})}/>
+                <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason They Are Scared</label><input type="text" placeholder="e.g. They went through a difficult divorce and are cautious..." style={inp} value={s.scaredOther||""} onChange={e=>update({scaredOther:e.target.value})}/></div>
+              </div>
+            )}
+
+            {s.objection==="location"&&(
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+                <Chips label="What\'s the Concern About the Location?" options={[
+                  {value:"schools",label:"🏫 Schools Not Good Enough"},
+                  {value:"far_work",label:"🚗 Too Far from Work"},
+                  {value:"poor_transport",label:"🚇 Poor Transport Links"},
+                  {value:"no_amenities",label:"🛒 Not Enough Shops / Amenities"},
+                  {value:"neighbourhood_vibe",label:"🌆 Neighbourhood Vibe Not Right"},
+                  {value:"growth_potential",label:"📉 Worried About Area Growth"},
+                  {value:"too_noisy",label:"🔊 Too Noisy or Busy"},
+                  {value:"no_green_space",label:"🌳 Not Enough Green Space"},
+                  {value:"safety",label:"🔒 Safety Concerns"},
+                  {value:"too_much_development",label:"🏗️ Too Much Development Nearby"},
+                  {value:"wrong_demographic",label:"👥 Wrong Demographic Feel"},
+                ]} selected={s.locationConcerns||[]} onToggle={v=>update({locationConcerns:tog(s.locationConcerns||[],v)})}/>
+                <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason About the Location</label><input type="text" placeholder="e.g. They want to be closer to her parents..." style={inp} value={s.locationOther||""} onChange={e=>update({locationOther:e.target.value})}/></div>
+              </div>
+            )}
+
+            {s.objection==="doesnt_like_pressure"&&(
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+                <label style={lbl}>What Happened?</label>
+                <textarea placeholder="e.g. She said she felt rushed on the last call and asked me to give her space. She doesn\'t like being pushed into decisions..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.pressuredWhatHappened||""} onChange={e=>update({pressuredWhatHappened:e.target.value})}/>
+              </div>
+            )}
+
+            {s.objection!=="need_to_sell_first"&&<BuyerProfileBox s={s} update={update} tog={tog}/>}
           </div>
         )}
 
@@ -685,7 +943,7 @@ Return ONLY JSON:
               {value:"market_too_slow",label:"📉 Market Too Slow"},
               {value:"want_fsbo",label:"🏷️ Want to Try FSBO"},
               {value:"not_ready",label:"🛑 Not Ready to Sell"},
-              {value:"thinks_worth_more",label:"💎 Think It's Worth More"},
+              {value:"thinks_worth_more",label:"💎 Think It\'s Worth More"},
               {value:"bad_experience",label:"😤 Bad Past Experience"},
               {value:"no_rush",label:"🌱 No Rush to Sell"},
               {value:"renovating_first",label:"🔨 Renovating First"},
@@ -695,20 +953,21 @@ Return ONLY JSON:
             ]} selected={s.objection} onToggle={v=>update({objection:v})} single/>
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
               <label style={lbl}>Write the Exact Objection in Their Words (optional)</label>
-              <textarea placeholder="e.g. He said: We've lived here 15 years. It's just really hard to imagine leaving it..." rows={3} style={{...inp,resize:"vertical"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
+              <textarea placeholder="e.g. He said: We\'ve lived here 15 years. It\'s just really hard to imagine leaving it..." rows={3} style={{...inp,resize:"vertical"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
             </div>
             {s.objection==="price_too_low"&&(
               <div style={{background:"rgba(42,184,212,0.04)",border:"1px solid rgba(42,184,212,0.2)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#2AB8D4",marginBottom:"10px"}}>📊 Market Comparable</div>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px"}}>
-                  <div><label style={lbl}>Comparable Address</label><input type="text" placeholder="14 Oak St" style={inp} value={s.comparableAddress||""} onChange={e=>update({comparableAddress:e.target.value})}/></div>
-                  <div><label style={lbl}>Sold Price ($)</label><input type="text" placeholder="485,000" style={inp} value={s.comparablePrice||""} onChange={e=>update({comparablePrice:e.target.value})}/></div>
-                  <div><label style={lbl}>Days on Market</label><input type="text" placeholder="12" style={inp} value={s.comparableDays||""} onChange={e=>update({comparableDays:e.target.value})}/></div>
-                  <div><label style={lbl}>Above / Below Asking</label><input type="text" placeholder="$10K above" style={inp} value={s.comparableAboveBelow||""} onChange={e=>update({comparableAboveBelow:e.target.value})}/></div>
+                  <div><label style={lbl}>Comparable Address</label><input type="text" placeholder="14 Oak St" style={inp} value={s.compAddress||""} onChange={e=>update({compAddress:e.target.value})}/></div>
+                  <div><label style={lbl}>Sold Price ($)</label><input type="text" placeholder="485,000" style={inp} value={s.compPrice||""} onChange={e=>update({compPrice:e.target.value})}/></div>
+                  <div><label style={lbl}>Days on Market</label><input type="text" placeholder="12" style={inp} value={s.compDaysOnMarket||""} onChange={e=>update({compDaysOnMarket:e.target.value})}/></div>
+                  <div><label style={lbl}>Above / Below Asking</label><input type="text" placeholder="$10K above" style={inp} value={s.compAboveBelow||""} onChange={e=>update({compAboveBelow:e.target.value})}/></div>
                 </div>
               </div>
             )}
-            <PropCard s={s} update={update} tog={tog} title="🏠 Their Property" showFeatures={true}/>
+            <PropCard s={s} update={update} tog={tog} title="🏠 Their Property" showFeatures={false}/>
+            <div style={{marginBottom:"12px"}}><label style={lbl}>Key Features of Their Property</label><input type="text" placeholder="e.g. Pool, ocean views, renovated kitchen, 3-car garage" style={inp} value={s.propKeyFeatures||""} onChange={e=>update({propKeyFeatures:e.target.value})}/></div>
           </div>
         )}
 
@@ -785,7 +1044,7 @@ Return ONLY JSON:
               <div><label style={lbl}>Original Asking Price ($)</label><input type="text" placeholder="680,000" style={inp} value={s.expOrigPrice||""} onChange={e=>update({expOrigPrice:e.target.value})}/></div>
               <div><label style={lbl}>Days Listed</label><input type="number" placeholder="90" style={inp} value={s.expDays||""} onChange={e=>update({expDays:e.target.value})}/></div>
             </div>
-            <Chips label="Why Didn't It Sell?" options={["Overpriced","Poor online presence","No professional photography","Weak marketing","No video / virtual tour","Bad timing","Wrong target audience","Needs repairs / staging","Limited MLS exposure","No social media","Poor description","No open houses","Agent underperformed","Market shifted"]} selected={s.expiredReasons||[]} onToggle={v=>update({expiredReasons:tog(s.expiredReasons||[],v)})}/>
+            <Chips label="Why Didn\'t It Sell?" options={["Overpriced","Poor online presence","No professional photography","Weak marketing","No video / virtual tour","Bad timing","Wrong target audience","Needs repairs / staging","Limited MLS exposure","No social media","Poor description","No open houses","Agent underperformed","Market shifted","Pricing not competitive"]} selected={s.expiredReasons||[]} onToggle={v=>update({expiredReasons:tog(s.expiredReasons||[],v)})}/>
             <div style={{paddingTop:"14px",borderTop:"1px solid #252530",marginTop:"8px"}}>
               <p style={{fontSize:"12px",fontWeight:"700",color:"#2AB8D4",marginBottom:"10px"}}>🔄 Re-List Strategy</p>
               <Chips label="Your New Approach" options={[
@@ -796,7 +1055,7 @@ Return ONLY JSON:
                 {value:"buyer_network",label:"👥 Buyer Outreach"},{value:"price_compete",label:"📊 Price to Create Competition"},
                 {value:"drone",label:"🚁 Drone Photography"},{value:"off_market_first",label:"🔒 Off-Market Pre-Launch"},
               ]} selected={s.relistStrategy||[]} onToggle={v=>update({relistStrategy:tog(s.relistStrategy||[],v)})}/>
-              <div style={{marginTop:"8px"}}><label style={lbl}>What Will You Do Differently?</label><textarea placeholder="e.g. Relaunch with professional photography, targeted Facebook ads, price to generate multiple offers..." rows={3} style={{...inp,resize:"vertical"}} value={s.relistDifferent||""} onChange={e=>update({relistDifferent:e.target.value})}/></div>
+              <div style={{marginTop:"8px"}}><label style={lbl}>What Will You Do Differently?</label><textarea placeholder="e.g. Relaunch with professional photography, targeted ads, price to generate multiple offers..." rows={3} style={{...inp,resize:"vertical"}} value={s.relistDifferent||""} onChange={e=>update({relistDifferent:e.target.value})}/></div>
             </div>
             <PropCard s={s} update={update} tog={tog} title="🏠 Their Property" showFeatures={true}/>
           </div>
@@ -814,7 +1073,7 @@ Return ONLY JSON:
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📅 Timeline Check-In</h2>
             <div style={{marginBottom:"12px"}}><label style={lbl}>When Did They Originally Want to Sell?</label><input type="text" placeholder="Spring 2025, Q1..." style={inp} value={s.originalTimeline||""} onChange={e=>update({originalTimeline:e.target.value})}/></div>
-            <div style={{marginBottom:"12px"}}><label style={lbl}>What's Their New Timeline?</label><input type="text" placeholder="Thinking end of year..." style={inp} value={s.newTimeline||""} onChange={e=>update({newTimeline:e.target.value})}/></div>
+            <div style={{marginBottom:"12px"}}><label style={lbl}>What\'s Their New Timeline?</label><input type="text" placeholder="Thinking end of year..." style={inp} value={s.newTimeline||""} onChange={e=>update({newTimeline:e.target.value})}/></div>
             <Chips label="What May Have Changed?" options={[{value:"life_circumstances",label:"🌀 Life Circumstances"},{value:"market_shift",label:"📊 Market Shifted"},{value:"found_property",label:"🏠 Found New Property"},{value:"family_situation",label:"👨‍👩‍👧 Family Situation"},{value:"work_relocation",label:"✈️ Work Relocation"},{value:"financial_change",label:"💰 Financial Change"},{value:"partner_disagreement",label:"🤝 Partner Disagreement"},{value:"mortgage_change",label:"🏦 Mortgage Change"},{value:"renovation_delay",label:"🔨 Renovation Delay"},{value:"still_deciding",label:"🤔 Still Deciding"}]} selected={s.timelineChanges||[]} onToggle={v=>update({timelineChanges:tog(s.timelineChanges||[],v)})}/>
             <Chips label="Where Are They Emotionally?" options={[{value:"motivated",label:"🔥 Motivated"},{value:"hesitant",label:"🤔 Hesitant"},{value:"frustrated",label:"😤 Frustrated"},{value:"excited",label:"😊 Excited"},{value:"scared",label:"😰 Nervous"},{value:"patient",label:"🌱 Patient"},{value:"urgent",label:"⚡ More Urgent Now"}]} selected={s.timelineEmotion||[]} onToggle={v=>update({timelineEmotion:tog(s.timelineEmotion||[],v)})}/>
             <div style={{marginTop:"8px"}}><label style={lbl}>Additional Context</label><textarea placeholder="e.g. Originally wanted to sell by April but renovation took longer..." rows={3} style={{...inp,resize:"vertical"}} value={s.timelineContext||""} onChange={e=>update({timelineContext:e.target.value})}/></div>
@@ -825,7 +1084,7 @@ Return ONLY JSON:
           <>
             <div style={{...card,background:"rgba(42,184,212,0.03)",border:"1px solid rgba(42,184,212,0.2)"}}>
               <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🔍 What Are They Looking For?</h2>
-              <div style={{marginBottom:"12px"}}><label style={lbl}>Buyer's Budget</label><input type="text" placeholder="$500K-$650K" style={inp} value={s.buyerBudget||""} onChange={e=>update({buyerBudget:e.target.value})}/></div>
+              <div style={{marginBottom:"12px"}}><label style={lbl}>Buyer\'s Budget</label><input type="text" placeholder="$500K-$650K" style={inp} value={s.buyerBudget||""} onChange={e=>update({buyerBudget:e.target.value})}/></div>
               <Chips label="Interior Features They Want" options={INTERIOR_EN} selected={s.buyerWantsInterior||[]} onToggle={v=>update({buyerWantsInterior:tog(s.buyerWantsInterior||[],v)})}/>
               <Chips label="Outdoor Features They Want" options={OUTDOOR_EN} selected={s.buyerWantsOutdoor||[]} onToggle={v=>update({buyerWantsOutdoor:tog(s.buyerWantsOutdoor||[],v)})}/>
               <Chips label="Building Amenities They Want" options={BUILDING_EN} selected={s.buyerWantsBuilding||[]} onToggle={v=>update({buyerWantsBuilding:tog(s.buyerWantsBuilding||[],v)})}/>
@@ -898,7 +1157,7 @@ Return ONLY JSON:
 
         {showProp&&!isPriceDiscussion&&!isExpiredListing&&!isPreListing&&!isFSBO&&!isOfferStrategy&&!isViewingFollowUp&&!isPriceDrop&&(
           <PropCard s={s} update={update} tog={tog}
-            title={isBuyer()?"🏠 Property You're Offering":isSeller()?"🏠 Their Property":"🏠 Property Details"}
+            title={isBuyer()?"🏠 Property You\'re Offering":isSeller()?"🏠 Their Property":"🏠 Property Details"}
             showFeatures={showFeatures}
           />
         )}
