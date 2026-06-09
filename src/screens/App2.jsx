@@ -136,7 +136,7 @@ const initState = (lang) => ({
   reconnectSituation:[], lookingFor:"",
   // first contact
   introSource:[], introComeAcross:[],
-  leadSource:null, knownAboutProperty:"",
+  leadSource:null, knownAboutProperty:"", firstOutcomeGoal:"",
   // price discussion
   daysOnMarket:"", priceReasons:[], sellerUrgency:[],
   // expired
@@ -295,7 +295,7 @@ export default function App2({ state: appState, setScreen }) {
   const showProp = !isNoProperty&&!isSoldNearby&&!isNeighbourSale&&!isCMA&&!isBuyerMatch&&!isObjection
   const showFeatures = showProp&&!isPriceDiscussion&&!isExpiredListing&&!isPreListing&&!isFSBO&&!isTimelineCheckin
   const hideUrgencyTone = isFirstContact&&isBuyer()
-  const showSellerProfile = isSeller()&&!isFirstContact&&!isObjection&&!isReconnect
+  const showSellerProfile = isSeller()&&!isFirstContact&&!isObjection&&!isReconnect&&!isBuyerMatch
   const CONTACT_REASONS = isSeller()?REASONS_SELLER_EN:s.clientType==="past_client"?REASONS_PAST_EN:s.clientType==="cold_lead"?REASONS_COLD_EN:REASONS_BUYER_EN
 
   const generate = async () => {
@@ -573,21 +573,45 @@ Return ONLY JSON:
               {value:"market_authority",label:"🏆 Market Authority",desc:"Industry leader"},
               {value:"creative_storyteller",label:"🎬 Creative Storyteller",desc:"Content-first approach"},
             ]} selected={s.introComeAcross} onToggle={v=>update({introComeAcross:tog(s.introComeAcross,v)})}/>
+            <div style={{marginTop:"12px"}}>
+              <label style={lbl}>Specific Outcome from This Message</label>
+              <input type="text" placeholder="e.g. Get them to agree to a 15-minute call this week to discuss what they are looking for..." style={inp} value={s.firstOutcomeGoal||""} onChange={e=>update({firstOutcomeGoal:e.target.value})}/>
+            </div>
           </div>
         )}
 
         {isFirstContact&&isSeller()&&(
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📋 Lead Details</h2>
+            <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The AI uses this to craft the perfect opening message and call script.</p>
             <Chips label="How Did You Get This Lead?" options={[
-              {value:"door_knock",label:"Door Knock"},{value:"cold_call",label:"📞 Cold Call"},
-              {value:"friend_referral",label:"Friend Referral"},{value:"past_client_referral",label:"Past Client Referral"},
-              {value:"online",label:"Online Lead"},{value:"direct_mail",label:"📮 Direct Mail"},
-              {value:"farming",label:"Area Farming"},{value:"social_media",label:"Social Media"},
-              {value:"open_house",label:"Open House"},{value:"networking",label:"🎉 Networking"},
+              {value:"door_knock",label:"🚪 Door Knock"},{value:"cold_call",label:"📞 Cold Call"},
+              {value:"friend_referral",label:"👥 Friend Referral"},{value:"past_client_referral",label:"🤝 Past Client Referral"},
+              {value:"online",label:"🌐 Online Lead"},{value:"direct_mail",label:"📮 Direct Mail"},
+              {value:"farming",label:"🏘️ Area Farming"},{value:"social_media",label:"📱 Social Media"},
+              {value:"open_house",label:"🏠 Open House"},{value:"networking",label:"🎉 Networking"},
             ]} selected={s.leadSource?[s.leadSource]:[]} onToggle={v=>update({leadSource:v})} single/>
+            <Chips label="How Do You Want to Come Across?" options={[
+              {value:"confident_direct",label:"🎯 Confident & Direct",desc:"Bold, assertive"},
+              {value:"warm_relatable",label:"😊 Warm & Relatable",desc:"Friendly, human"},
+              {value:"luxury_expert",label:"💎 Luxury Expert",desc:"Premium, exclusive"},
+              {value:"data_driven",label:"📊 Data-Driven",desc:"Numbers, facts, proof"},
+              {value:"local_specialist",label:"📍 Local Specialist",desc:"Deep neighbourhood knowledge"},
+              {value:"trusted_advisor",label:"🤝 Trusted Advisor",desc:"Long-term relationship"},
+              {value:"high_energy",label:"⚡ High Energy & Bold",desc:"Enthusiastic, unstoppable"},
+              {value:"persistent_tenacious",label:"💪 Persistent & Tenacious",desc:"Never give up"},
+              {value:"empathetic_listener",label:"👂 Empathetic Listener",desc:"Understanding, patient"},
+              {value:"strategic_partner",label:"🧠 Strategic Partner",desc:"Problem-solver"},
+              {value:"market_authority",label:"🏆 Market Authority",desc:"Industry leader"},
+            ]} selected={s.introComeAcross} onToggle={v=>update({introComeAcross:tog(s.introComeAcross,v)})}/>
+            <Chips label="Urgency Level" options={URGENCY_EN} selected={s.urgency} onToggle={v=>update({urgency:v})} single/>
+            <Chips label="Communication Tone" options={TONES_EN} selected={s.tone} onToggle={v=>update({tone:v})} single/>
             <div style={{marginTop:"12px"}}><label style={lbl}>What Do You Know About Their Property?</label>
               <textarea placeholder="e.g. 3-bed on Oak Street, vacant a while, garden needs work..." rows={3} style={{...inp,resize:"vertical"}} value={s.knownAboutProperty||""} onChange={e=>update({knownAboutProperty:e.target.value})}/>
+            </div>
+            <div style={{marginTop:"12px"}}>
+              <label style={lbl}>Specific Outcome from This Message</label>
+              <input type="text" placeholder="e.g. Get them to agree to a valuation appointment this week..." style={inp} value={s.firstOutcomeGoal||""} onChange={e=>update({firstOutcomeGoal:e.target.value})}/>
             </div>
           </div>
         )}
@@ -611,6 +635,7 @@ Return ONLY JSON:
             </div>
           </div>
         )}
+        {isReconnect&&isSeller()&&<SellerProfileBox s={s} update={update} tog={tog}/>}
 
         {isMarketUpdate&&(
           <div style={card}>
@@ -635,6 +660,7 @@ Return ONLY JSON:
               {value:"rate_lock",label:"🔒 Rate Lock Opportunity"},{value:"dti_change",label:"📊 DTI Rules Changed"},
             ]} selected={s.financingOptions||[]} onToggle={v=>update({financingOptions:tog(s.financingOptions||[],v)})}/>
             <div style={{marginTop:"8px"}}><label style={lbl}>Specific Details</label><textarea placeholder="e.g. Rates dropped to 6.2%, 10% down available..." rows={3} style={{...inp,resize:"vertical"}} value={s.financingNews||""} onChange={e=>update({financingNews:e.target.value})}/></div>
+            {isBuyer()&&<div style={{marginTop:"12px"}}><label style={lbl}>What Is Their Budget & What Are They Looking For?</label><input type="text" placeholder="e.g. Budget $500K, looking for 3-bed near good schools in Miami Beach..." style={inp} value={s.buyerWhatLookingFor||""} onChange={e=>update({buyerWhatLookingFor:e.target.value})}/></div>}
           </div>
         )}
 
@@ -695,6 +721,23 @@ Return ONLY JSON:
             <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
 
+            <Chips label="Objection They Raised" options={[
+              {value:"too_expensive",label:"💰 Too Expensive"},
+              {value:"rates_too_high",label:"📈 Mortgage Rates Too High"},
+              {value:"not_right_property",label:"🏠 Haven\'t Found Right Property"},
+              {value:"partner_not_convinced",label:"🤝 Partner Not Convinced"},
+              {value:"waiting_prices_drop",label:"📉 Waiting for Prices to Drop"},
+              {value:"market_uncertain",label:"🌊 Market Too Uncertain"},
+              {value:"happy_renting",label:"🏠 Happy Renting"},
+              {value:"need_to_sell_first",label:"🔄 Need to Sell First"},
+              {value:"bad_timing",label:"⏰ Bad Timing"},
+              {value:"not_pre_approved",label:"📋 Not Pre-Approved Yet"},
+              {value:"already_have_agent",label:"👤 Already Have an Agent"},
+              {value:"need_more_time",label:"🕐 Need More Time"},
+              {value:"scared_commitment",label:"😰 Scared of Commitment"},
+              {value:"location",label:"📍 Not Sure About Location"},
+              {value:"doesnt_like_pressure",label:"🙅 Doesn\'t Like to Be Pressured"},
+            ]} selected={s.objection?[s.objection]:[]} onToggle={v=>update({objection:s.objection===v?"":v})} single/>
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
               <label style={lbl}>What Did They Say?</label>
               <textarea placeholder="e.g. He said: 'Look, I hear you, but I just don't like being pushed. I'll call you when I'm ready.' — The more exact the better." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
@@ -709,7 +752,7 @@ Return ONLY JSON:
               <>
                 <div style={card}>
                   <h3 style={{fontSize:"15px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏠 The Property</h3>
-                  <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px"}}>Fill in the property details below. At the bottom you can add a market comparable to strengthen the price argument.</p>
+                  <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px"}}>Fill in the full property details. At the bottom you can add a market comparable to strengthen the price argument.</p>
                   <div style={{marginBottom:"16px"}}>
                     <label style={lbl}>Did They Visit the Property?</label>
                     <div style={{display:"flex",gap:"8px",marginTop:"8px",flexWrap:"wrap"}}>
@@ -720,13 +763,17 @@ Return ONLY JSON:
                   </div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"12px"}}>
                     <div><label style={lbl}>Address</label><input type="text" placeholder="42 Palm Drive, Miami" style={inp} value={s.propAddress||""} onChange={e=>update({propAddress:e.target.value})}/></div>
+                    <div><label style={lbl}>Property Type</label><input type="text" placeholder="Villa, Apartment..." style={inp} value={s.propType||""} onChange={e=>update({propType:e.target.value})}/></div>
                     <div><label style={lbl}>Asking Price ($)</label><input type="text" placeholder="1,200,000" style={inp} value={s.propPrice||""} onChange={e=>update({propPrice:e.target.value})}/></div>
+                    <div><label style={lbl}>Condition</label><input type="text" placeholder="Good, renovated 2022" style={inp} value={s.propCondition||""} onChange={e=>update({propCondition:e.target.value})}/></div>
                     <div><label style={lbl}>Beds</label><input type="text" placeholder="4" style={inp} value={s.propBeds||""} onChange={e=>update({propBeds:e.target.value})}/></div>
                     <div><label style={lbl}>Baths</label><input type="text" placeholder="3" style={inp} value={s.propBaths||""} onChange={e=>update({propBaths:e.target.value})}/></div>
-                    <div><label style={lbl}>Sq Ft</label><input type="text" placeholder="2,400" style={inp} value={s.propSqft||""} onChange={e=>update({propSqft:e.target.value})}/></div>
-                    <div><label style={lbl}>Condition</label><input type="text" placeholder="Good, renovated 2022" style={inp} value={s.propCondition||""} onChange={e=>update({propCondition:e.target.value})}/></div>
                   </div>
-                  <div style={{marginBottom:"16px"}}><label style={lbl}>Key Features That Justify the Price</label><input type="text" placeholder="e.g. Private pool, ocean views, renovated kitchen, 3-car garage" style={inp} value={s.propKeyFeatures||""} onChange={e=>update({propKeyFeatures:e.target.value})}/></div>
+                  <div style={{marginBottom:"12px"}}><label style={lbl}>Size (sq ft)</label><input type="text" placeholder="2,400" style={inp} value={s.propSqft||""} onChange={e=>update({propSqft:e.target.value})}/></div>
+                  <Chips label="Interior Features" options={INTERIOR_EN} selected={s.propInterior} onToggle={v=>update({propInterior:tog(s.propInterior,v)})}/>
+                  <Chips label="Outdoor Features" options={OUTDOOR_EN} selected={s.propOutdoor} onToggle={v=>update({propOutdoor:tog(s.propOutdoor,v)})}/>
+                  <Chips label="Building Amenities" options={BUILDING_EN} selected={s.propBuilding} onToggle={v=>update({propBuilding:tog(s.propBuilding,v)})}/>
+                  <div style={{marginTop:"4px",marginBottom:"16px"}}><label style={lbl}>Key Highlights</label><textarea placeholder="Top 2-3 things that make this property stand out..." rows={2} style={{...inp,resize:"vertical"}} value={s.propHighlights||""} onChange={e=>update({propHighlights:e.target.value})}/></div>
                   <div style={{paddingTop:"14px",borderTop:"1px solid #252530"}}>
                     <p style={{fontSize:"12px",color:"#ffffff",fontWeight:"700",marginBottom:"4px"}}>📊 Market Comparable (optional but powerful)</p>
                     <p style={{fontSize:"12px",color:"rgba(255,255,255,0.45)",marginBottom:"12px"}}>Add a recently sold comparable property below to give the AI real market data — it will use this to argue the price is fair and justified.</p>
@@ -987,6 +1034,22 @@ Return ONLY JSON:
             <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
 
+            <Chips label="Objection They Raised" options={[
+              {value:"price_too_low",label:"💰 Price Too Low"},
+              {value:"not_right_time",label:"⏰ Not the Right Time"},
+              {value:"already_have_agent",label:"👤 Already Have an Agent"},
+              {value:"need_more_time",label:"🕐 Need More Time"},
+              {value:"market_too_slow",label:"📉 Market Too Slow"},
+              {value:"want_fsbo",label:"🏷️ Want to Try FSBO"},
+              {value:"not_ready",label:"🛑 Not Ready to Sell"},
+              {value:"thinks_worth_more",label:"💎 Think It\'s Worth More"},
+              {value:"bad_experience",label:"😤 Bad Past Experience"},
+              {value:"no_rush",label:"🌱 No Rush to Sell"},
+              {value:"renovating_first",label:"🔨 Renovating First"},
+              {value:"waiting_market",label:"📈 Waiting for Better Market"},
+              {value:"family_decision",label:"👨\u200d👩\u200d👧 Family Decision"},
+              {value:"emotional_attachment",label:"💔 Emotional Attachment"},
+            ]} selected={s.objection?[s.objection]:[]} onToggle={v=>update({objection:s.objection===v?"":v})} single/>
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
               <label style={lbl}>What Did They Say?</label>
               <textarea placeholder="e.g. He said: 'We've lived here 15 years. It's just really hard to imagine leaving it. I don't think now is the right time.' — The more exact the better." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
@@ -1220,12 +1283,8 @@ Return ONLY JSON:
           />
         )}
 
-        {isBuyer()&&!isObjection&&!["financing_update","market_update","reconnect","first_contact","re_engagement","offer_strategy","just_sold"].includes(s.contactReason)&&(
-          <div style={card}>
-            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"8px",color:"#fff"}}>🔍 Buyer Criteria</h2>
-            <label style={lbl}>What Are They Looking For & Why?</label>
-            <textarea placeholder="e.g. 3-bed house with garden near good schools, wants to upsize because they are starting a family, needs a home office, prefers a quiet area close to transport, budget around $600K..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.buyerWhatLookingFor||""} onChange={e=>update({buyerWhatLookingFor:e.target.value})}/>
-          </div>
+        {isBuyer()&&!isObjection&&!["first_contact","offer_strategy","open_house"].includes(s.contactReason)&&(
+          <BuyerProfileBox s={s} update={update} tog={tog}/>
         )}
 
         {showSellerProfile&&<SellerProfileBox s={s} update={update} tog={tog}/>}
@@ -1283,3 +1342,4 @@ Return ONLY JSON:
     </div>
   )
 }
+            <SellerProfileBox s={s} update={update} tog={tog}/>
