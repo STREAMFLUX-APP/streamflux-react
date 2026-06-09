@@ -116,6 +116,7 @@ const initState = (lang) => ({
   locationConcerns:[], locationOther:"",
   pressuredWhatHappened:"",
   waitingReasons:[], waitingOther:"",
+  agentSatisfaction:null, agentSwitchReason:"",
   // financing
   financingRateQuoted:"", financingLoanAmount:"",
   financingOptions:[], financingNews:"",
@@ -674,17 +675,17 @@ Return ONLY JSON:
 
             {s.objection==="too_expensive"&&(
               <>
-                <div style={{marginBottom:"16px"}}>
-                  <label style={lbl}>Did They Visit the Property?</label>
-                  <div style={{display:"flex",gap:"8px",marginTop:"8px",flexWrap:"wrap"}}>
-                    {[["yes","✅ Yes — visited in person"],["no","📱 No — only seen online"],["viewing_booked","📅 Viewing booked"]].map(([v,l])=>(
-                      <button key={v} onClick={()=>update({visitedProperty:v})} style={{background:s.visitedProperty===v?"rgba(42,184,212,0.15)":"#060608",border:`1px solid ${s.visitedProperty===v?"#2AB8D4":"#252530"}`,borderRadius:"8px",padding:"8px 14px",fontSize:"12px",color:s.visitedProperty===v?"#2AB8D4":"rgba(255,255,255,0.65)",cursor:"pointer",fontFamily:"inherit",fontWeight:s.visitedProperty===v?"700":"400"}}>{l}</button>
-                    ))}
-                  </div>
-                </div>
                 <div style={card}>
                   <h3 style={{fontSize:"15px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏠 The Property</h3>
                   <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px"}}>Fill in the property details below. At the bottom you can add a market comparable to strengthen the price argument.</p>
+                  <div style={{marginBottom:"16px"}}>
+                    <label style={lbl}>Did They Visit the Property?</label>
+                    <div style={{display:"flex",gap:"8px",marginTop:"8px",flexWrap:"wrap"}}>
+                      {[["yes","✅ Yes — visited in person"],["no","📱 No — only seen online"],["viewing_booked","📅 Viewing booked"]].map(([v,l])=>(
+                        <button key={v} onClick={()=>update({visitedProperty:v})} style={{background:s.visitedProperty===v?"rgba(42,184,212,0.15)":"#060608",border:`1px solid ${s.visitedProperty===v?"#2AB8D4":"#252530"}`,borderRadius:"8px",padding:"8px 14px",fontSize:"12px",color:s.visitedProperty===v?"#2AB8D4":"rgba(255,255,255,0.65)",cursor:"pointer",fontFamily:"inherit",fontWeight:s.visitedProperty===v?"700":"400"}}>{l}</button>
+                      ))}
+                    </div>
+                  </div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"12px"}}>
                     <div><label style={lbl}>Address</label><input type="text" placeholder="42 Palm Drive, Miami" style={inp} value={s.propAddress||""} onChange={e=>update({propAddress:e.target.value})}/></div>
                     <div><label style={lbl}>Asking Price ($)</label><input type="text" placeholder="1,200,000" style={inp} value={s.propPrice||""} onChange={e=>update({propPrice:e.target.value})}/></div>
@@ -695,7 +696,7 @@ Return ONLY JSON:
                   </div>
                   <div style={{marginBottom:"16px"}}><label style={lbl}>Key Features That Justify the Price</label><input type="text" placeholder="e.g. Private pool, ocean views, renovated kitchen, 3-car garage" style={inp} value={s.propKeyFeatures||""} onChange={e=>update({propKeyFeatures:e.target.value})}/></div>
                   <div style={{paddingTop:"14px",borderTop:"1px solid #252530"}}>
-                    <p style={{fontSize:"12px",color:"rgba(42,184,212,0.85)",fontWeight:"700",marginBottom:"4px"}}>📊 Market Comparable (optional but powerful)</p>
+                    <p style={{fontSize:"12px",color:"#ffffff",fontWeight:"700",marginBottom:"4px"}}>📊 Market Comparable (optional but powerful)</p>
                     <p style={{fontSize:"12px",color:"rgba(255,255,255,0.45)",marginBottom:"12px"}}>Add a recently sold comparable property below to give the AI real market data — it will use this to argue the price is fair and justified.</p>
                     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"10px"}}>
                       <div><label style={lbl}>Comparable Address</label><input type="text" placeholder="14 Oak St, Miami" style={inp} value={s.compAddress||""} onChange={e=>update({compAddress:e.target.value})}/></div>
@@ -725,7 +726,7 @@ Return ONLY JSON:
             {s.objection==="not_right_property"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <div style={{marginBottom:"12px"}}><label style={lbl}>What Have They Seen So Far?</label><textarea placeholder="e.g. Viewed 6 properties, liked 2 but both lacked a home office and garden..." rows={3} style={{...inp,resize:"vertical"}} value={s.seenProperties||""} onChange={e=>update({seenProperties:e.target.value})}/></div>
-                <Chips label="What\'s Missing from Everything They\'ve Viewed?" options={[
+                <Chips label="What Is Missing from Everything They Have Viewed?" options={[
                   "Too small","Wrong location","No outdoor space","No home office","Needs too much work",
                   "Too expensive","Wrong property type","No parking","No natural light","Layout doesn\'t work",
                   "Wrong neighbourhood","No pool","No garden","No sea view","No waterfront",
@@ -756,7 +757,7 @@ Return ONLY JSON:
 
             {s.objection==="market_uncertain"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-                <Chips label="What\'s Making Them Uncertain?" options={[
+                <Chips label="Why Is the Market Uncertain?" options={[
                   "General economy","Interest rates","Job security","Political climate",
                   "Fear of overpaying","Worried prices will drop","Global instability",
                   "Local market news","Fear of recession","Stock market volatility",
@@ -904,7 +905,7 @@ Return ONLY JSON:
 
             {s.objection==="location"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-                <Chips label="What\'s the Concern About the Location?" options={[
+                <Chips label="What Is the Concern About the Location?" options={[
                   {value:"schools",label:"🏫 Schools Not Good Enough"},
                   {value:"far_work",label:"🚗 Too Far from Work"},
                   {value:"poor_transport",label:"🚇 Poor Transport Links"},
@@ -923,8 +924,24 @@ Return ONLY JSON:
 
             {s.objection==="doesnt_like_pressure"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-                <label style={lbl}>What Happened?</label>
+                <label style={lbl}>What Happened Exactly?</label>
                 <textarea placeholder="e.g. She said she felt rushed on the last call and asked me to give her space. She doesn\'t like being pushed into decisions..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.pressuredWhatHappened||""} onChange={e=>update({pressuredWhatHappened:e.target.value})}/>
+              </div>
+            )}
+
+            {s.objection==="already_have_agent"&&(
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+                <Chips label="Are They Happy with Their Current Agent?" options={[
+                  {value:"very_happy",label:"😊 Very Happy"},
+                  {value:"somewhat_happy",label:"🤔 Somewhat Happy"},
+                  {value:"not_really",label:"😐 Not Really"},
+                  {value:"not_happy",label:"😤 Not Happy at All"},
+                  {value:"not_sure",label:"🤷 Not Sure Yet"},
+                ]} selected={s.agentSatisfaction?[s.agentSatisfaction]:[]} onToggle={v=>update({agentSatisfaction:v})} single/>
+                <div style={{marginTop:"8px"}}>
+                  <label style={lbl}>Any Reason They Might Consider Switching?</label>
+                  <textarea placeholder="e.g. They mentioned the agent hasn't been responsive, no offers after 60 days, they feel they're not getting the right advice..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.agentSwitchReason||""} onChange={e=>update({agentSwitchReason:e.target.value})}/>
+                </div>
               </div>
             )}
 
