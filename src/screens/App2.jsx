@@ -122,7 +122,7 @@ const initState = (lang) => ({
   financingRateQuoted:"", financingLoanAmount:"",
   financingOptions:[], financingNews:"",
   // seller
-  sellerSituation:[],
+  sellerSituation:[], sellerPropStatus:[], sellerTimeline:[], sellerPersonalContext:"",
   // sold nearby
   soldAddress:"", soldPrice:"", soldBeds:"", soldBaths:"", soldType:"",
   soldDaysOnMarket:"", soldAboveBelow:"", soldDate:"", soldCondition:"",
@@ -193,13 +193,47 @@ function BuyerProfileBox({ s, update, tog }) {
       </div>
 
       <div style={{marginBottom:"12px"}}>
-        <label style={lbl}>Budget Range</label>
-        <input type="text" placeholder="e.g. $400K-$600K" style={inp} value={s.buyerBudget||""} onChange={e=>update({buyerBudget:e.target.value})}/>
+        <label style={lbl}>Budget Value</label>
+        <input type="text" placeholder="e.g. $800,000" style={inp} value={s.buyerBudget||""} onChange={e=>update({buyerBudget:e.target.value})}/>
       </div>
 
       <div>
         <label style={lbl}>Personal Context</label>
         <textarea placeholder="e.g. Sarah has been looking 3 months. Two kids, tight timeline, husband needs convincing. Responds well to WhatsApp." rows={3} style={{...inp,resize:"vertical"}} value={s.customSituation||""} onChange={e=>update({customSituation:e.target.value})}/>
+      </div>
+    </div>
+  )
+}
+
+
+function SellerProfileBox({ s, update, tog }) {
+  return (
+    <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:"12px",padding:"22px",marginBottom:"16px"}}>
+      <h2 style={{fontSize:"16px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏡 Seller Profile, Criteria & Context</h2>
+      <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The more detail here, the more personalised and powerful the AI message.</p>
+      <Chips label="🎯 Seller Motivation" options={[
+        {value:"quick_sale",label:"⚡ Wants Quick Sale"},{value:"top_dollar",label:"💰 Needs Top Dollar"},
+        {value:"flexible",label:"📅 Flexible on Timeline"},{value:"downsizing",label:"📦 Downsizing"},
+        {value:"upsizing",label:"📈 Upsizing"},{value:"relocating",label:"✈️ Relocating"},
+        {value:"divorce",label:"⚖️ Divorce Settlement"},{value:"inherited",label:"🏠 Inherited Property"},
+        {value:"investment",label:"💼 Investment Property Sale"},{value:"found_new",label:"🔑 Already Found New Home"},
+        {value:"testing",label:"🧪 Testing the Market"},{value:"financial_pressure",label:"💸 Financial Pressure"},
+        {value:"retirement",label:"🌅 Retirement"},{value:"empty_nester",label:"🐦 Empty Nester"},
+      ]} selected={s.sellerSituation} onToggle={v=>update({sellerSituation:tog(s.sellerSituation,v)})}/>
+      <Chips label="🏠 Property Status" options={[
+        {value:"not_listed",label:"📋 Not Yet Listed"},{value:"listed_active",label:"✅ Currently Listed"},
+        {value:"expired_listing",label:"⏰ Expired Listing"},{value:"needs_work",label:"🔨 Needs Work Before Listing"},
+        {value:"renovating",label:"🏗️ Currently Renovating"},{value:"tenant_occupied",label:"🔑 Tenant Occupied"},
+        {value:"vacant",label:"🏚️ Vacant"},{value:"owner_occupied",label:"🏡 Owner Occupied"},
+      ]} selected={s.sellerPropStatus||[]} onToggle={v=>update({sellerPropStatus:tog(s.sellerPropStatus||[],v)})}/>
+      <Chips label="⏳ Selling Timeline" options={[
+        {value:"asap",label:"🔥 As Soon As Possible"},{value:"1_3months",label:"📅 1-3 Months"},
+        {value:"3_6months",label:"🗓️ 3-6 Months"},{value:"6plus",label:"🌱 6+ Months"},
+        {value:"not_decided",label:"🤔 Not Decided Yet"},
+      ]} selected={s.sellerTimeline||[]} onToggle={v=>update({sellerTimeline:tog(s.sellerTimeline||[],v)})} single/>
+      <div style={{marginTop:"8px"}}>
+        <label style={lbl}>Personal Context</label>
+        <textarea placeholder="e.g. They\'ve been thinking about selling for 6 months. Wife is motivated but husband is hesitant on price. They need to move by summer due to work relocation..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.sellerPersonalContext||""} onChange={e=>update({sellerPersonalContext:e.target.value})}/>
       </div>
     </div>
   )
@@ -261,6 +295,7 @@ export default function App2({ state: appState, setScreen }) {
   const showProp = !isNoProperty&&!isSoldNearby&&!isNeighbourSale&&!isCMA&&!isBuyerMatch&&!isObjection
   const showFeatures = showProp&&!isPriceDiscussion&&!isExpiredListing&&!isPreListing&&!isFSBO&&!isTimelineCheckin
   const hideUrgencyTone = isFirstContact&&isBuyer()
+  const showSellerProfile = isSeller()&&!isFirstContact&&!isObjection&&!isReconnect
   const CONTACT_REASONS = isSeller()?REASONS_SELLER_EN:s.clientType==="past_client"?REASONS_PAST_EN:s.clientType==="cold_lead"?REASONS_COLD_EN:REASONS_BUYER_EN
 
   const generate = async () => {
@@ -1079,7 +1114,7 @@ Return ONLY JSON:
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📅 Timeline Check-In</h2>
             <div style={{marginBottom:"12px"}}><label style={lbl}>When Did They Originally Want to Sell?</label><input type="text" placeholder="Spring 2025, Q1..." style={inp} value={s.originalTimeline||""} onChange={e=>update({originalTimeline:e.target.value})}/></div>
-            <div style={{marginBottom:"12px"}}><label style={lbl}>What\'s Their New Timeline?</label><input type="text" placeholder="Thinking end of year..." style={inp} value={s.newTimeline||""} onChange={e=>update({newTimeline:e.target.value})}/></div>
+            <div style={{marginBottom:"12px"}}><label style={lbl}>What Is Their New Timeline?</label><input type="text" placeholder="Thinking end of year..." style={inp} value={s.newTimeline||""} onChange={e=>update({newTimeline:e.target.value})}/></div>
             <Chips label="What May Have Changed?" options={[{value:"life_circumstances",label:"Life Circumstances"},{value:"market_shift",label:"Market Shifted"},{value:"found_property",label:"Found New Property"},{value:"family_situation",label:"Family Situation"},{value:"work_relocation",label:"Work Relocation"},{value:"financial_change",label:"Financial Change"},{value:"partner_disagreement",label:"Partner Disagreement"},{value:"mortgage_change",label:"Mortgage Change"},{value:"renovation_delay",label:"Renovation Delay"},{value:"still_deciding",label:"Still Deciding"}]} selected={s.timelineChanges||[]} onToggle={v=>update({timelineChanges:tog(s.timelineChanges||[],v)})}/>
             <Chips label="Where Are They Emotionally?" options={[{value:"motivated",label:"🔥 Motivated"},{value:"hesitant",label:"🤔 Hesitant"},{value:"frustrated",label:"😤 Frustrated"},{value:"excited",label:"😊 Excited"},{value:"scared",label:"😰 Nervous"},{value:"patient",label:"🌱 Patient"},{value:"urgent",label:"⚡ More Urgent Now"}]} selected={s.timelineEmotion||[]} onToggle={v=>update({timelineEmotion:tog(s.timelineEmotion||[],v)})}/>
             <div style={{marginTop:"8px"}}><label style={lbl}>Additional Context</label><textarea placeholder="e.g. Originally wanted to sell by April but renovation took longer..." rows={3} style={{...inp,resize:"vertical"}} value={s.timelineContext||""} onChange={e=>update({timelineContext:e.target.value})}/></div>
@@ -1193,12 +1228,7 @@ Return ONLY JSON:
           </div>
         )}
 
-        {isSeller()&&!isFirstContact&&!isObjection&&!isReconnect&&!isCMA&&!isMarketUpdate&&(
-          <div style={{...card,background:"rgba(42,184,212,0.03)",border:"1px solid rgba(42,184,212,0.15)"}}>
-            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏷️ Seller Situation</h2>
-            <Chips options={SELLER_SITUATION_EN} selected={s.sellerSituation} onToggle={v=>update({sellerSituation:tog(s.sellerSituation,v)})}/>
-          </div>
-        )}
+        {showSellerProfile&&<SellerProfileBox s={s} update={update} tog={tog}/>}
 
         {isSeller()&&(isReconnect||isCMA||isMarketUpdate)&&(
           <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:"12px",padding:"22px",marginBottom:"16px"}}>
