@@ -652,24 +652,7 @@ Return ONLY JSON:
 
         {isObjection&&isBuyer()&&(
           <div style={card}>
-            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Objection Details</h2>
-            <Chips label="Objection They Raised" options={[
-              {value:"too_expensive",label:"💰 Too Expensive"},
-              {value:"rates_too_high",label:"📈 Mortgage Rates Too High"},
-              {value:"not_right_property",label:"🏠 Haven\'t Found Right Property"},
-              {value:"partner_not_convinced",label:"🤝 Partner Not Convinced"},
-              {value:"waiting_prices_drop",label:"📉 Waiting for Prices to Drop"},
-              {value:"market_uncertain",label:"🌊 Market Too Uncertain"},
-              {value:"happy_renting",label:"🏠 Happy Renting"},
-              {value:"need_to_sell_first",label:"🔄 Need to Sell First"},
-              {value:"bad_timing",label:"⏰ Bad Timing"},
-              {value:"not_pre_approved",label:"📋 Not Pre-Approved Yet"},
-              {value:"already_have_agent",label:"👤 Already Have an Agent"},
-              {value:"need_more_time",label:"🕐 Need More Time"},
-              {value:"scared_commitment",label:"😰 Scared of Commitment"},
-              {value:"location",label:"📍 Not Sure About Location"},
-              {value:"doesnt_like_pressure",label:"🙅 Doesn\'t Like to Be Pressured"},
-            ]} selected={s.objection} onToggle={v=>update({objection:v})} single/>
+            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
 
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
               <label style={lbl}>What Did They Say — Word for Word?</label>
@@ -959,23 +942,8 @@ Return ONLY JSON:
 
         {isObjection&&isSeller()&&(
           <div style={card}>
-            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Objection Details</h2>
-            <Chips label="Objection They Raised" options={[
-              {value:"price_too_low",label:"💰 Price Too Low"},
-              {value:"not_right_time",label:"⏰ Not the Right Time"},
-              {value:"already_have_agent",label:"👤 Already Have an Agent"},
-              {value:"need_more_time",label:"🕐 Need More Time"},
-              {value:"market_too_slow",label:"📉 Market Too Slow"},
-              {value:"want_fsbo",label:"🏷️ Want to Try FSBO"},
-              {value:"not_ready",label:"🛑 Not Ready to Sell"},
-              {value:"thinks_worth_more",label:"💎 Think It\'s Worth More"},
-              {value:"bad_experience",label:"😤 Bad Past Experience"},
-              {value:"no_rush",label:"🌱 No Rush to Sell"},
-              {value:"renovating_first",label:"🔨 Renovating First"},
-              {value:"waiting_market",label:"📈 Waiting for Better Market"},
-              {value:"family_decision",label:"👨‍👩‍👧 Family Decision"},
-              {value:"emotional_attachment",label:"💔 Emotional Attachment"},
-            ]} selected={s.objection} onToggle={v=>update({objection:v})} single/>
+            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
+
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
               <label style={lbl}>What Did They Say — Word for Word?</label>
               <textarea placeholder="e.g. He said: 'We've lived here 15 years. It's just really hard to imagine leaving it. I don't think now is the right time.' — The more exact the better." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
