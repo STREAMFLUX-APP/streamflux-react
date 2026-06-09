@@ -98,6 +98,7 @@ const initState = (lang) => ({
   compCondition:"", compKeyFeatures:"", compDaysOnMarket:"", compAboveBelow:"",
   // buyer profile box
   buyerBudget:"", buyerCriteria:[], buyerNeeds:"", buyerProfile:[], buyerWhatLookingFor:"", buyerMotivations:[],
+  buyerMatchBeds:"", buyerMatchBaths:"", buyerMatchSqft:"", buyerMatchType:"", buyerMatchCondition:"",
   buyerSpecificReqs:"", customSituation:"",
   // objection specific
   partnerNotConvincedReason:"",
@@ -195,10 +196,7 @@ function BuyerProfileBox({ s, update, tog }) {
         <label style={lbl}>Budget Range</label>
         <input type="text" placeholder="e.g. $400K-$600K" style={inp} value={s.buyerBudget||""} onChange={e=>update({buyerBudget:e.target.value})}/>
       </div>
-      <div style={{marginBottom:"12px"}}>
-        <label style={lbl}>Specific Requirements</label>
-        <input type="text" placeholder="e.g. Must be near good schools, needs home office, dog-friendly..." style={inp} value={s.buyerSpecificReqs||""} onChange={e=>update({buyerSpecificReqs:e.target.value})}/>
-      </div>
+
       <div>
         <label style={lbl}>Personal Context</label>
         <textarea placeholder="e.g. Sarah has been looking 3 months. Two kids, tight timeline, husband needs convincing. Responds well to WhatsApp." rows={3} style={{...inp,resize:"vertical"}} value={s.customSituation||""} onChange={e=>update({customSituation:e.target.value})}/>
@@ -301,26 +299,32 @@ You are an elite real estate sales coach trained in Grant Cardone and Ryan Serha
 Generate 3 completely different approaches to handle this exact objection for this exact person.
 
 CRITICAL RULES FOR ALL 3 APPROACHES:
-- Use ${s.clientName}'s name naturally — make it feel like a real conversation, not a template
-- Reference the EXACT situation described above — be specific, not generic
-- Never sound robotic, salesy or scripted — sound like a trusted advisor
-- Every approach MUST end with one simple open question that agrees with their position and naturally invites a reply — NOT a call to action, NOT a statement, a genuine human question like "Would a quick no-agenda call this week feel okay?" or "What would feel like the right next step for you?" — the question must match the tone of the approach
+- Use ${s.clientName}'s name naturally — make it feel like a real conversation, not a script
+- Reference the EXACT details from the situation above — be specific, personal, real
+- Never sound robotic, salesy, or scripted — sound like a trusted advisor who genuinely cares
+- Every approach MUST end with one simple natural open question that agrees with their position and invites a reply — not "let's talk" or "call me" — a genuine question like "What would feel like the right next step for you?" or "What's actually making you hesitate on this one?" — match the tone of each approach
+- NEVER use "another source of stress" — say "a source of stress" if needed
+- NEVER reference other buyers as a threat or guilt tool — never say "watch someone else take it" or "other buyers are moving"
+- NEVER invent market data, statistics, or listings that were not provided in the situation above
 
-APPROACH 1 — DATA & MARKET PROOF (for the analytical buyer who needs facts):
-Follow Cardone's framework: Listen → Acknowledge → Isolate → Validate with data → Probe → Tie down → Justify → Close with open question
-Use any market data, comparables, or specific details provided above. If comparable data was provided, reference it directly and specifically.
+APPROACH 1 — DATA & MARKET PROOF:
+Framework: Opening (use name) → Acknowledge their position fully → State specific facts from the situation provided → Reframe around their advantage → Open question close
+The voice script follows this exact structure labelled clearly. Use only data and facts that were actually provided. If no data was provided, focus on their specific situation and position instead.
 
-APPROACH 2 — EMPATHY & RELATIONSHIP (for the emotional buyer who needs to feel understood):
-Follow Serhant's alignment principle: Get completely on their side first. Validate their feeling 100%. Never argue or push. Work at their pace. Make them feel you are their trusted friend, not a salesperson trying to close them.
+APPROACH 2 — EMPATHY & RELATIONSHIP:
+Framework: Get completely on their side first. Validate 100%. Never argue. Work at their pace. Sound like a trusted friend not a salesperson.
+CRITICAL for email: Never say "another source of stress" — say "a source of stress". Reference specific details from their situation to show you were listening. End with a warm open question that feels like a friend checking in, not an agent chasing a deal.
 
-APPROACH 3 — URGENCY & BOLD REFRAME (for the competitive buyer who responds to confidence):
-Follow Cardone's bold approach: Agree with them briefly, then reframe their specific situation as an opportunity they may be missing. Reference their specific advantage in this specific situation. Make the consequence of waiting feel real using the details provided — not generic market fear.
+APPROACH 3 — URGENCY & BOLD REFRAME:
+Framework: Brief agreement → Acknowledge their position honestly → Reframe their specific power and advantage in this situation (cash buyer, no chain, fast close, ability to negotiate better price) → The only urgency is about THEIR time and THEIR opportunity — never about other buyers as a threat → End with a direct open question
+CRITICAL: Never say "the problem is" or make them feel wrong. Never reference other buyers to create guilt. Bold means confident and honest — like a trusted advisor who respects them enough to be straight with them. The consequence of waiting is about THEM losing something THEY want — not about someone else taking it.
+The voice script for this approach follows: Opening → Acknowledge briefly → Their specific power in this situation → What that power actually means for them (better price, faster close, seller prefers cash) → Honest reframe → Open question close
 
 Return ONLY JSON:
-{"v1_label":"Data & Market Proof","v1_whatsapp":"60-80 words. Analytical, specific, data-backed. Personal and real. Ends with open question.","v1_sms":"Max 160 chars. Data-driven. Ends with question.","v1_voice":"Call script DATA approach: OPENING (use name), ACKNOWLEDGE, SPECIFIC DATA PROOF, REFRAME, OPEN QUESTION CLOSE. Labelled sections.","v1_email_subject":"Subject under 9 words. Not generic.","v1_email":"120-140 word email. Specific data approach. Ends with open question. Signed by ${ag}.","v2_label":"Empathy & Relationship","v2_whatsapp":"60-80 words. Warm, human, completely on their side. Ends with gentle open question.","v2_sms":"Max 160 chars. Empathetic. Ends with question.","v2_voice":"Call script EMPATHY approach: OPENING (use name), DEEP ALIGNMENT, VALIDATE FULLY, GENTLE PIVOT, OPEN QUESTION CLOSE. Labelled.","v2_email_subject":"Subject under 9 words. Warm and human.","v2_email":"120-140 word email. Empathy approach. Ends with open question. Signed by ${ag}.","v3_label":"Urgency & Bold Reframe","v3_whatsapp":"60-80 words. Confident, specific to their situation, bold but not pushy. Ends with open question.","v3_sms":"Max 160 chars. Bold and specific. Ends with question.","v3_voice":"Call script BOLD approach: OPENING (use name), BRIEF AGREEMENT, SPECIFIC REFRAME OF THEIR SITUATION, REAL CONSEQUENCE, OPEN QUESTION CLOSE. Labelled.","v3_email_subject":"Subject under 9 words. Bold and direct.","v3_email":"120-140 word email. Bold reframe specific to their situation. Ends with open question. Signed by ${ag}."}`
+{"v1_label":"Data & Market Proof","v1_whatsapp":"60-80 words. Specific, data-backed, personal. Ends with open question.","v1_sms":"Max 160 chars. Data-driven. Ends with question.","v1_voice":"Call script: OPENING (name), ACKNOWLEDGE, SPECIFIC FACTS FROM SITUATION, REFRAME, OPEN QUESTION. Labelled.","v1_email_subject":"Subject under 9 words.","v1_email":"120-140 word email. Specific and personal. Ends with open question. Signed by ${ag}.","v2_label":"Empathy & Relationship","v2_whatsapp":"60-80 words. Warm, human, completely on their side. Ends with gentle open question.","v2_sms":"Max 160 chars. Empathetic. Ends with question.","v2_voice":"Call script: OPENING (name), DEEP ALIGNMENT, VALIDATE FULLY, SPECIFIC DETAIL SHOWING YOU LISTENED, GENTLE PIVOT, OPEN QUESTION. Labelled.","v2_email_subject":"Subject under 9 words. Warm.","v2_email":"120-140 word email. Empathy approach. Reference specific situation details. Never say 'another source of stress'. Ends with open question. Signed by ${ag}.","v3_label":"Urgency & Bold Reframe","v3_whatsapp":"60-80 words. Confident, honest, bold but never guilty. Reference their specific power. Ends with open question.","v3_sms":"Max 160 chars. Bold and direct. Ends with question.","v3_voice":"Call script: OPENING (name), BRIEF AGREEMENT, THEIR SPECIFIC POWER IN THIS SITUATION, WHAT THAT POWER MEANS FOR THEM, HONEST REFRAME, OPEN QUESTION. Labelled.","v3_email_subject":"Subject under 9 words. Bold.","v3_email":"120-140 word email. Confident and honest. Never guilt or other buyers as threat. Reference their specific advantage. Ends with open question. Signed by ${ag}."}`
         const objResult = await safe(objPrompt, SYSTEM, 2500)
         update({loadingMsg:"✦ Building follow-up plan..."})
-        const fuResult = await safe(`CLIENT:${s.clientName}|OBJECTION:${objDetail}|AGENT:${ag}${langI}\n\nReturn ONLY JSON:\n{"followup_1":"Day 3. 50-60 words. New angle, no pressure.","followup_2":"Week 1. 50-60 words. Add value.","followup_3":"Week 2. 40-50 words. Casual.","followup_4":"Month 1. 40-50 words. Warm touch.","followup_5":"Month 2. 30-40 words. Final. Keep door open."}`,SYSTEM,800)
+        const fuResult = await safe(`CLIENT:${s.clientName}|OBJECTION:${objDetail}|SITUATION:${objSituation}|AGENT:${ag}${langI}\n\nCRITICAL: Never invent market data, new listings, price changes, or any facts not provided. Write warm human follow-ups only. Each message ends with a gentle open question.\n\nReturn ONLY JSON:\n{"followup_1":"Day 3. 50-60 words. Warm check-in referencing their specific situation. No invented data. Ends with gentle open question.","followup_2":"Week 1. 50-60 words. Different angle — thinking about them specifically. No invented data. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual, human, no pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch, genuine care. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open. No pressure."}`,SYSTEM,900)
         const schedResult = await safe(`CLIENT:${s.clientName}|REASON:objection_handle\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"🛡️","tasks":["Send your chosen approach (pick 1 of 3)","If no reply 4 hours, send SMS","Note client status"]},{"day":"Day 3","icon":"💬","tasks":["Send Follow-Up #1 — new angle","Don\'t repeat the same approach"]},{"day":"Day 7","icon":"📞","tasks":["Send Follow-Up #2 — add value","Make a call — listen more than pitch"]},{"day":"Day 14","icon":"🔄","tasks":["Send Follow-Up #3 — casual","Share market update if relevant"]},{"day":"Day 30","icon":"🌱","tasks":["Send Follow-Up #4 — warm touch"]},{"day":"Day 60","icon":"🌟","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,600)
         const result = {...objResult,...fuResult,...schedResult}
         update({result,activeTab:"messages"})
@@ -335,7 +339,7 @@ Return ONLY JSON:
       if(isCMA)p1=`${ctx}\nSUBJECT:${s.cmaSubject.address}|$${s.cmaSubject.price}|${s.cmaSubject.beds}bed/${s.cmaSubject.baths}bath\nCOMPS:${s.cmaComps.map((c,i)=>`${i+1}. ${c.address} sold $${c.salePrice} ${c.saleDate}`).join("|")}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word WhatsApp. Warm, valuation complete, booking question.","sms":"SMS max 160 chars.","voice_script":"Call: OPENING, CMA COMPLETE, INSIGHT, BOOK MEETING. Labelled.","email_subject":"Subject under 10 words.","email_body":"140-160 word email. Valuation, insight, invite meeting. Signed by ${ag}."}`;
       const part1=await safe(p1,SYSTEM,1300)
       update({loadingMsg:"✦ Writing letter & follow-ups..."})
-      const part2=await safe(`${ctx}${langI}\n\nReturn ONLY JSON:\n{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words.","followup_2":"Week 1. 50-60 words.","followup_3":"Week 2. 40-50 words.","followup_4":"Month 1. 40-50 words.","followup_5":"Month 2. 30-40 words. Final touch."}`,SYSTEM,1300)
+      const part2=await safe(`${ctx}${langI}\n\nReturn ONLY JSON:\n{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words. Warm, personal, specific to their situation. Never invent data. Ends with open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented facts. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual check-in. No pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch, genuine care. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open."}`,SYSTEM,1300)
       update({loadingMsg:"✦ Building schedule..."})
       const part3=await safe(`CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"🚀","tasks":["Send WhatsApp","If no reply 2 hours, send SMS","Save in CRM"]},{"day":"Day 3","icon":"💬","tasks":["Send Follow-Up #1","Check if email opened"]},{"day":"Day 7","icon":"📞","tasks":["Send Follow-Up #2","Make phone call — listen first"]},{"day":"Day 14","icon":"🔄","tasks":["Send Follow-Up #3","Share market update"]},{"day":"Day 30","icon":"🌱","tasks":["Send Follow-Up #4"]},{"day":"Day 60","icon":"🌟","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,500)
       const result={...part1,...part2,...part3}
@@ -512,13 +516,13 @@ Return ONLY JSON:
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>👋 First Contact Details</h2>
             <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The AI uses this to craft the perfect opening message and call script.</p>
             <Chips label="How Did You Get This Contact?" options={[
-              {value:"cold",label:"❄️ Cold — Never Met"},{value:"friend_referral",label:"👥 Friend Referral"},
-              {value:"past_client_referral",label:"🤝 Past Client Referral"},{value:"mutual_connection",label:"🔗 Mutual Connection"},
-              {value:"met_briefly",label:"🙂 Met Briefly"},{value:"social_media",label:"📱 Social Media"},
-              {value:"open_house",label:"🏠 Open House"},{value:"event_networking",label:"🎉 Event / Networking"},
-              {value:"linkedin",label:"💼 LinkedIn"},{value:"online_lead",label:"🌐 Online Lead"},
-              {value:"door_knock",label:"🚪 Door Knock"},{value:"area_farming",label:"🏘️ Area Farming"},
-              {value:"cold_dm",label:"💬 Cold DM"},{value:"phone_inquiry",label:"📞 Phone Inquiry"},
+              {value:"cold",label:"Cold — Never Met"},{value:"friend_referral",label:"Friend Referral"},
+              {value:"past_client_referral",label:"Past Client Referral"},{value:"mutual_connection",label:"Mutual Connection"},
+              {value:"met_briefly",label:"Met Briefly"},{value:"social_media",label:"Social Media"},
+              {value:"open_house",label:"Open House"},{value:"event_networking",label:"Event / Networking"},
+              {value:"linkedin",label:"LinkedIn"},{value:"online_lead",label:"Online Lead"},
+              {value:"door_knock",label:"Door Knock"},{value:"area_farming",label:"Area Farming"},
+              {value:"cold_dm",label:"Cold DM"},{value:"phone_inquiry",label:"Phone Inquiry"},
             ]} selected={s.introSource} onToggle={v=>update({introSource:tog(s.introSource,v)})}/>
             <Chips label="How Do You Want to Come Across?" options={[
               {value:"confident_direct",label:"🎯 Confident & Direct",desc:"Bold, assertive"},
@@ -541,11 +545,11 @@ Return ONLY JSON:
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📋 Lead Details</h2>
             <Chips label="How Did You Get This Lead?" options={[
-              {value:"door_knock",label:"🚪 Door Knock"},{value:"cold_call",label:"📞 Cold Call"},
-              {value:"friend_referral",label:"👥 Friend Referral"},{value:"past_client_referral",label:"🤝 Past Client Referral"},
-              {value:"online",label:"🌐 Online Lead"},{value:"direct_mail",label:"📮 Direct Mail"},
-              {value:"farming",label:"🏘️ Area Farming"},{value:"social_media",label:"📱 Social Media"},
-              {value:"open_house",label:"🏠 Open House"},{value:"networking",label:"🎉 Networking"},
+              {value:"door_knock",label:"Door Knock"},{value:"cold_call",label:"📞 Cold Call"},
+              {value:"friend_referral",label:"Friend Referral"},{value:"past_client_referral",label:"Past Client Referral"},
+              {value:"online",label:"Online Lead"},{value:"direct_mail",label:"📮 Direct Mail"},
+              {value:"farming",label:"Area Farming"},{value:"social_media",label:"Social Media"},
+              {value:"open_house",label:"Open House"},{value:"networking",label:"🎉 Networking"},
             ]} selected={s.leadSource?[s.leadSource]:[]} onToggle={v=>update({leadSource:v})} single/>
             <div style={{marginTop:"12px"}}><label style={lbl}>What Do You Know About Their Property?</label>
               <textarea placeholder="e.g. 3-bed on Oak Street, vacant a while, garden needs work..." rows={3} style={{...inp,resize:"vertical"}} value={s.knownAboutProperty||""} onChange={e=>update({knownAboutProperty:e.target.value})}/>
@@ -622,15 +626,15 @@ Return ONLY JSON:
             </div>
             <div style={{marginBottom:"12px"}}><label style={lbl}>Days on Market</label><input type="text" placeholder="e.g. 45 days" style={inp} value={s.offerDaysOnMarket||""} onChange={e=>update({offerDaysOnMarket:e.target.value})}/></div>
             <Chips label="Offer Position" options={[
-              {value:"first_offer",label:"1️⃣ First Offer"},
-              {value:"counter",label:"🔄 Counter Offer"},
-              {value:"competing",label:"⚔️ Competing with Others"},
-              {value:"final_best",label:"🏁 Final Best Offer"},
+              {value:"first_offer",label:"First Offer"},
+              {value:"counter",label:"Counter Offer"},
+              {value:"competing",label:"Competing with Others"},
+              {value:"final_best",label:"Final Best Offer"},
             ]} selected={s.offerPosition?[s.offerPosition]:[]} onToggle={v=>update({offerPosition:s.offerPosition===v?null:v})} single/>
             <Chips label="Market Situation" options={[
-              {value:"multiple_offers",label:"⚔️ Multiple Offers"},{value:"motivated_seller",label:"🔥 Motivated Seller"},
-              {value:"long_on_market",label:"📅 Long on Market"},{value:"fresh_listing",label:"🆕 Fresh Listing"},
-              {value:"price_reduced",label:"📉 Already Reduced"},
+              {value:"multiple_offers",label:"Multiple Offers"},{value:"motivated_seller",label:"Motivated Seller"},
+              {value:"long_on_market",label:"Long on Market"},{value:"fresh_listing",label:"Fresh Listing"},
+              {value:"price_reduced",label:"Already Reduced"},
             ]} selected={s.offerMarket} onToggle={v=>update({offerMarket:tog(s.offerMarket,v)})}/>
             <Chips label="Negotiation Levers" options={[
               {value:"clean_offer",label:"✅ Clean Offer"},{value:"quick_close",label:"⚡ Quick Closing"},
@@ -652,15 +656,17 @@ Return ONLY JSON:
 
         {isObjection&&isBuyer()&&(
           <div style={card}>
+            <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
+            <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
 
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
-              <label style={lbl}>What Did They Say — Word for Word?</label>
+              <label style={lbl}>What Did They Say?</label>
               <textarea placeholder="e.g. He said: 'Look, I hear you, but I just don't like being pushed. I'll call you when I'm ready.' — The more exact the better." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
             </div>
             <div style={{marginBottom:"16px"}}>
               <label style={lbl}>What Was the Full Situation?</label>
-              <p style={{fontSize:"11px",color:"rgba(255,255,255,0.4)",margin:"4px 0 6px",lineHeight:"1.5"}}>The more specific you are here, the more personal and powerful the AI response. Include what led to the objection, what happened during the viewing or conversation, anything relevant.</p>
+              <p style={{fontSize:"11px",color:"rgba(255,255,255,0.4)",margin:"4px 0 6px",lineHeight:"1.5"}}>Include what led to this objection, what happened during the viewing or conversation, anything relevant.</p>
               <textarea placeholder="e.g. We had a viewing last Tuesday, he loved the property. There are 3 other interested buyers. I tried to get him to make an offer before the weekend but he pulled back and said he felt rushed. He's a cash buyer at $800K." rows={4} style={{...inp,resize:"vertical"}} value={s.objectionSituation||""} onChange={e=>update({objectionSituation:e.target.value})}/>
             </div>
 
@@ -942,10 +948,12 @@ Return ONLY JSON:
 
         {isObjection&&isSeller()&&(
           <div style={card}>
+            <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
+            <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
 
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
-              <label style={lbl}>What Did They Say — Word for Word?</label>
+              <label style={lbl}>What Did They Say?</label>
               <textarea placeholder="e.g. He said: 'We've lived here 15 years. It's just really hard to imagine leaving it. I don't think now is the right time.' — The more exact the better." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
             </div>
             <div style={{marginBottom:"16px"}}>
@@ -988,7 +996,7 @@ Return ONLY JSON:
               {[["soldAboveBelow","Above/Below Asking","$15K above"],["soldPricePerSqft","Price/Sq Ft","$285"],["soldNumOffers","# of Offers","3"],["soldCondition","Condition","Good"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
             </div>
             <div style={{paddingTop:"14px",borderTop:"1px solid #252530"}}>
-              <p style={{fontSize:"12px",fontWeight:"700",color:"#2AB8D4",marginBottom:"10px"}}>🏠 Their Property — For Comparison</p>
+              <p style={{fontSize:"12px",fontWeight:"700",color:"#ffffff",marginBottom:"10px"}}>🏠 Their Property — For Comparison</p>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"10px"}}>
                 {[["clientPropAddress","Their Address","22 Oak Ave"],["clientPropPrice","Est. Value ($)","520,000"],["clientPropBeds","Beds","3"],["clientPropBaths","Baths","2"],["clientPropSqft","Sq Ft","1,850"],["clientPropYearsOwned","Years Owned","7"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
               </div>
@@ -1010,7 +1018,7 @@ Return ONLY JSON:
               {[["soldAboveBelow","Above/Below Asking","$15K above"],["soldPricePerSqft","Price/Sq Ft","$285"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
             </div>
             <div style={{paddingTop:"14px",borderTop:"1px solid #252530"}}>
-              <p style={{fontSize:"12px",fontWeight:"700",color:"#2AB8D4",marginBottom:"10px"}}>🏠 Their Property — For Comparison</p>
+              <p style={{fontSize:"12px",fontWeight:"700",color:"#ffffff",marginBottom:"10px"}}>🏠 Their Property — For Comparison</p>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"10px"}}>
                 {[["clientPropAddress","Their Address","22 Oak Ave"],["clientPropPrice","Est. Value ($)","520,000"],["clientPropBeds","Beds","3"],["clientPropBaths","Baths","2"],["clientPropSqft","Sq Ft","1,850"],["clientPropYearsOwned","Years Owned","7"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
               </div>
@@ -1048,7 +1056,7 @@ Return ONLY JSON:
               <Chips label="Your New Approach" options={[
                 {value:"new_price",label:"💰 New Pricing"},{value:"pro_photos",label:"📸 Professional Photos"},
                 {value:"video",label:"🎬 Video"},{value:"virtual_tour",label:"🏠 Virtual Tour"},
-                {value:"staging",label:"🎨 Staging"},{value:"social_media",label:"📱 Social Media"},
+                {value:"staging",label:"🎨 Staging"},{value:"social_media",label:"Social Media"},
                 {value:"digital_ads",label:"🎯 Digital Ads"},{value:"open_house",label:"🚪 Open Houses"},
                 {value:"buyer_network",label:"👥 Buyer Outreach"},{value:"price_compete",label:"📊 Price to Create Competition"},
                 {value:"drone",label:"🚁 Drone Photography"},{value:"off_market_first",label:"🔒 Off-Market Pre-Launch"},
@@ -1072,7 +1080,7 @@ Return ONLY JSON:
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📅 Timeline Check-In</h2>
             <div style={{marginBottom:"12px"}}><label style={lbl}>When Did They Originally Want to Sell?</label><input type="text" placeholder="Spring 2025, Q1..." style={inp} value={s.originalTimeline||""} onChange={e=>update({originalTimeline:e.target.value})}/></div>
             <div style={{marginBottom:"12px"}}><label style={lbl}>What\'s Their New Timeline?</label><input type="text" placeholder="Thinking end of year..." style={inp} value={s.newTimeline||""} onChange={e=>update({newTimeline:e.target.value})}/></div>
-            <Chips label="What May Have Changed?" options={[{value:"life_circumstances",label:"🌀 Life Circumstances"},{value:"market_shift",label:"📊 Market Shifted"},{value:"found_property",label:"🏠 Found New Property"},{value:"family_situation",label:"👨‍👩‍👧 Family Situation"},{value:"work_relocation",label:"✈️ Work Relocation"},{value:"financial_change",label:"💰 Financial Change"},{value:"partner_disagreement",label:"🤝 Partner Disagreement"},{value:"mortgage_change",label:"🏦 Mortgage Change"},{value:"renovation_delay",label:"🔨 Renovation Delay"},{value:"still_deciding",label:"🤔 Still Deciding"}]} selected={s.timelineChanges||[]} onToggle={v=>update({timelineChanges:tog(s.timelineChanges||[],v)})}/>
+            <Chips label="What May Have Changed?" options={[{value:"life_circumstances",label:"Life Circumstances"},{value:"market_shift",label:"Market Shifted"},{value:"found_property",label:"Found New Property"},{value:"family_situation",label:"Family Situation"},{value:"work_relocation",label:"Work Relocation"},{value:"financial_change",label:"Financial Change"},{value:"partner_disagreement",label:"Partner Disagreement"},{value:"mortgage_change",label:"Mortgage Change"},{value:"renovation_delay",label:"Renovation Delay"},{value:"still_deciding",label:"Still Deciding"}]} selected={s.timelineChanges||[]} onToggle={v=>update({timelineChanges:tog(s.timelineChanges||[],v)})}/>
             <Chips label="Where Are They Emotionally?" options={[{value:"motivated",label:"🔥 Motivated"},{value:"hesitant",label:"🤔 Hesitant"},{value:"frustrated",label:"😤 Frustrated"},{value:"excited",label:"😊 Excited"},{value:"scared",label:"😰 Nervous"},{value:"patient",label:"🌱 Patient"},{value:"urgent",label:"⚡ More Urgent Now"}]} selected={s.timelineEmotion||[]} onToggle={v=>update({timelineEmotion:tog(s.timelineEmotion||[],v)})}/>
             <div style={{marginTop:"8px"}}><label style={lbl}>Additional Context</label><textarea placeholder="e.g. Originally wanted to sell by April but renovation took longer..." rows={3} style={{...inp,resize:"vertical"}} value={s.timelineContext||""} onChange={e=>update({timelineContext:e.target.value})}/></div>
           </div>
@@ -1083,10 +1091,27 @@ Return ONLY JSON:
             <div style={{...card,background:"rgba(42,184,212,0.03)",border:"1px solid rgba(42,184,212,0.2)"}}>
               <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🔍 What Are They Looking For?</h2>
               <div style={{marginBottom:"12px"}}><label style={lbl}>Buyer\'s Budget</label><input type="text" placeholder="$500K-$650K" style={inp} value={s.buyerBudget||""} onChange={e=>update({buyerBudget:e.target.value})}/></div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"10px",marginBottom:"12px"}}>
+                <div><label style={lbl}>Beds</label><input type="text" placeholder="3+" style={inp} value={s.buyerMatchBeds||""} onChange={e=>update({buyerMatchBeds:e.target.value})}/></div>
+                <div><label style={lbl}>Baths</label><input type="text" placeholder="2+" style={inp} value={s.buyerMatchBaths||""} onChange={e=>update({buyerMatchBaths:e.target.value})}/></div>
+                <div><label style={lbl}>Min Sq Ft</label><input type="text" placeholder="1,500" style={inp} value={s.buyerMatchSqft||""} onChange={e=>update({buyerMatchSqft:e.target.value})}/></div>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"12px"}}>
+                <div><label style={lbl}>Property Type</label><input type="text" placeholder="House, Condo, Villa..." style={inp} value={s.buyerMatchType||""} onChange={e=>update({buyerMatchType:e.target.value})}/></div>
+                <div><label style={lbl}>Condition</label><input type="text" placeholder="Move-in ready, renovated..." style={inp} value={s.buyerMatchCondition||""} onChange={e=>update({buyerMatchCondition:e.target.value})}/></div>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"10px",marginBottom:"12px"}}>
+                <div><label style={lbl}>Beds</label><input type="text" placeholder="3+" style={inp} value={s.buyerMatchBeds||""} onChange={e=>update({buyerMatchBeds:e.target.value})}/></div>
+                <div><label style={lbl}>Baths</label><input type="text" placeholder="2+" style={inp} value={s.buyerMatchBaths||""} onChange={e=>update({buyerMatchBaths:e.target.value})}/></div>
+                <div><label style={lbl}>Min Sq Ft</label><input type="text" placeholder="1,500" style={inp} value={s.buyerMatchSqft||""} onChange={e=>update({buyerMatchSqft:e.target.value})}/></div>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"12px"}}>
+                <div><label style={lbl}>Property Type</label><input type="text" placeholder="House, Condo, Villa..." style={inp} value={s.buyerMatchType||""} onChange={e=>update({buyerMatchType:e.target.value})}/></div>
+                <div><label style={lbl}>Condition</label><input type="text" placeholder="Move-in ready, renovated..." style={inp} value={s.buyerMatchCondition||""} onChange={e=>update({buyerMatchCondition:e.target.value})}/></div>
+              </div>
               <Chips label="Interior Features They Want" options={INTERIOR_EN} selected={s.buyerWantsInterior||[]} onToggle={v=>update({buyerWantsInterior:tog(s.buyerWantsInterior||[],v)})}/>
               <Chips label="Outdoor Features They Want" options={OUTDOOR_EN} selected={s.buyerWantsOutdoor||[]} onToggle={v=>update({buyerWantsOutdoor:tog(s.buyerWantsOutdoor||[],v)})}/>
               <Chips label="Building Amenities They Want" options={BUILDING_EN} selected={s.buyerWantsBuilding||[]} onToggle={v=>update({buyerWantsBuilding:tog(s.buyerWantsBuilding||[],v)})}/>
-              <div style={{marginTop:"8px"}}><label style={lbl}>Specific Requirements</label><textarea placeholder="Must be near good schools, needs home office..." rows={2} style={{...inp,resize:"vertical"}} value={s.buyerNeeds||""} onChange={e=>update({buyerNeeds:e.target.value})}/></div>
             </div>
             <div style={card}>
               <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>👤 Buyer Profile</h2>
@@ -1168,16 +1193,36 @@ Return ONLY JSON:
           </div>
         )}
 
-        {isSeller()&&!isFirstContact&&!isObjection&&(
+        {isSeller()&&!isFirstContact&&!isObjection&&!isReconnect&&!isCMA&&!isMarketUpdate&&(
           <div style={{...card,background:"rgba(42,184,212,0.03)",border:"1px solid rgba(42,184,212,0.15)"}}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏷️ Seller Situation</h2>
             <Chips options={SELLER_SITUATION_EN} selected={s.sellerSituation} onToggle={v=>update({sellerSituation:tog(s.sellerSituation,v)})}/>
           </div>
         )}
 
+        {isSeller()&&(isReconnect||isCMA||isMarketUpdate)&&(
+          <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:"12px",padding:"22px",marginBottom:"16px"}}>
+            <h2 style={{fontSize:"16px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>👤 Seller Profile & Context</h2>
+            <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The more you tell us, the more personalised the message.</p>
+            <Chips label="Seller Situation" options={[
+              {value:"quick_sale",label:"Wants Quick Sale"},{value:"flexible",label:"Flexible on Timeline"},
+              {value:"top_dollar",label:"Needs Top Dollar"},{value:"downsizing",label:"Downsizing"},
+              {value:"upsizing",label:"Upsizing"},{value:"relocating",label:"Relocating"},
+              {value:"divorce",label:"Divorce Settlement"},{value:"inherited",label:"Inherited Property"},
+              {value:"investment",label:"Investment Property Sale"},{value:"found_new",label:"Already Found New Home"},
+              {value:"testing",label:"Testing the Market"},
+            ]} selected={s.sellerSituation} onToggle={v=>update({sellerSituation:tog(s.sellerSituation,v)})}/>
+            <div style={{marginTop:"8px"}}>
+              <label style={lbl}>Personal Context</label>
+              <textarea placeholder="e.g. They've been thinking about selling for 6 months. The wife is motivated but the husband is hesitant on price. They need to move by summer due to work relocation..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.customSituation||""} onChange={e=>update({customSituation:e.target.value})}/>
+            </div>
+          </div>
+        )}
+
+
         {!isReconnect&&!isObjection&&(
           <div style={ctxStyle}>
-            <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"6px"}}>✨ Personal Context</div>
+            <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"6px"}}> Personal Context</div>
             <p style={{fontSize:"12px",color:"rgba(255,255,255,0.45)",marginBottom:"10px",lineHeight:"1.6"}}>Prior contact history, personal notes — anything about this client you want woven into every message.</p>
             <textarea placeholder="e.g. Sarah has been a lead for 2 months — very interested but hesitant. Two kids, tight timeline, husband needs convincing." rows={4} value={s.customSituation||""} onChange={e=>update({customSituation:e.target.value})} style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.12)",background:"#0d0d0d"}}/>
           </div>
