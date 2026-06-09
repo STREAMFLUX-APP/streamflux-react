@@ -718,7 +718,6 @@ Return ONLY JSON:
         {isObjection&&isBuyer()&&(
           <div style={card}>
             <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
-            <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
 
             <Chips label="Objection They Raised" options={[
@@ -1031,7 +1030,6 @@ Return ONLY JSON:
         {isObjection&&isSeller()&&(
           <div style={card}>
             <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
-            <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
 
             <Chips label="Objection They Raised" options={[
@@ -1342,4 +1340,3 @@ Return ONLY JSON:
     </div>
   )
 }
-            <SellerProfileBox s={s} update={update} tog={tog}/>
