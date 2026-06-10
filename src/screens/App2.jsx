@@ -30,7 +30,6 @@ const REASONS_SELLER_EN = [
   {value:"expired_listing",label:"Expired Listing",desc:"Their property didn\'t sell"},
   {value:"buyer_match",label:"Buyer Match Found",desc:"I have an interested buyer"},
   {value:"timeline_checkin",label:"Timeline Check-In",desc:"Has their timeline changed?"},
-  {value:"neighbour_sale",label:"Neighbourhood Sale Alert",desc:"Property sold near them"},
   {value:"prelisting_prep",label:"Pre-Listing Preparation",desc:"Help them prepare to list"},
   {value:"fsbo_outreach",label:"FSBO Outreach",desc:"Selling without an agent"},
   {value:"objection_handle",label:"Handle Objection",desc:"They said no"},
@@ -77,11 +76,11 @@ const URGENCY_EN = [
 ]
 const SELLER_SITUATION_EN = ["Wants Quick Sale","Flexible on Timeline","Needs Top Dollar","Downsizing","Upsizing","Relocating","Divorce Settlement","Inherited Property","Investment Property Sale","Already Found New Home","Testing the Market"]
 const TABS_EN = [
-  {id:"messages",label:"💬 Messages"},
-  {id:"email",label:"📧 Email"},
-  {id:"voice",label:"🎙️ Voice"},
-  {id:"followups",label:"🔄 Follow-Up Engine"},
-  {id:"schedule",label:"📅 Schedule"},
+  {id:"messages",label:"Messages"},
+  {id:"email",label:"Email"},
+  {id:"voice",label:"Voice"},
+  {id:"followups",label:"Follow-Up Engine"},
+  {id:"schedule",label:"Schedule"},
 ]
 const SYSTEM = "You are an elite real estate sales coach. Respond with ONLY a raw valid JSON object. Start with { end with }. No markdown. No backticks. No explanation."
 
@@ -122,11 +121,11 @@ const initState = (lang) => ({
   financingRateQuoted:"", financingLoanAmount:"",
   financingOptions:[], financingNews:"",
   // seller
-  sellerSituation:[], sellerPropStatus:[], sellerTimeline:[], sellerPersonalContext:"",
+  sellerSituation:[], sellerPropStatus:[], sellerTimeline:[], sellerPersonalContext:"", sellerWhatGoals:"", sellerExpectedPrice:"",
   // sold nearby
   soldAddress:"", soldPrice:"", soldBeds:"", soldBaths:"", soldType:"",
   soldDaysOnMarket:"", soldAboveBelow:"", soldDate:"", soldCondition:"",
-  soldNumOffers:"", soldPricePerSqft:"",
+  soldPricePerSqft:"", soldKeyFeatures:"",
   clientPropAddress:"", clientPropPrice:"", clientPropBeds:"", clientPropBaths:"",
   clientPropSqft:"", clientPropYearsOwned:"", clientPropCondition:"",
   clientPropMortgage:"", clientPropDecisionMakers:"",
@@ -179,12 +178,12 @@ function BuyerProfileBox({ s, update, tog }) {
       <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The more detail here, the more precisely the AI handles this objection.</p>
 
       <Chips label="Buyer Profile — Who Are They?" options={[
-        {value:"cash_buyer",label:"💵 Cash Buyer"},{value:"pre_approved",label:"✅ Pre-Approved"},
-        {value:"first_time",label:"🏠 First-Time Buyer"},{value:"chain_free",label:"⚡ Chain-Free"},
-        {value:"self_employed",label:"💼 Self-Employed"},{value:"high_net_worth",label:"💎 High Net Worth"},
-        {value:"foreign_national",label:"🌍 Foreign National"},{value:"buy_to_let",label:"🏢 Buy-to-Let"},
-        {value:"quick_decision",label:"⚡ Quick Decision Maker"},{value:"very_motivated",label:"🔥 Very Motivated"},
-        {value:"seen_many",label:"🏠 Viewed Many Properties"},{value:"flexible_close",label:"📅 Flexible Closing"},
+        {value:"cash_buyer",label:"Cash Buyer"},{value:"pre_approved",label:"Pre-Approved"},
+        {value:"first_time",label:"First-Time Buyer"},{value:"chain_free",label:"Chain-Free"},
+        {value:"self_employed",label:"Self-Employed"},{value:"high_net_worth",label:"High Net Worth"},
+        {value:"foreign_national",label:"Foreign National"},{value:"buy_to_let",label:"Buy-to-Let"},
+        {value:"quick_decision",label:"Quick Decision Maker"},{value:"very_motivated",label:"Very Motivated"},
+        {value:"seen_many",label:"Viewed Many Properties"},{value:"flexible_close",label:"Flexible Closing"},
       ]} selected={s.buyerProfile||[]} onToggle={v=>update({buyerProfile:tog(s.buyerProfile||[],v)})}/>
 
       <div style={{marginBottom:"14px"}}>
@@ -209,31 +208,28 @@ function BuyerProfileBox({ s, update, tog }) {
 function SellerProfileBox({ s, update, tog }) {
   return (
     <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:"12px",padding:"22px",marginBottom:"16px"}}>
-      <h2 style={{fontSize:"16px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏡 Seller Profile, Criteria & Context</h2>
+      <h2 style={{fontSize:"16px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>Seller Profile, Criteria & Context</h2>
       <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The more detail here, the more personalised and powerful the AI message.</p>
-      <Chips label="🎯 Seller Motivation" options={[
-        {value:"quick_sale",label:"⚡ Wants Quick Sale"},{value:"top_dollar",label:"💰 Needs Top Dollar"},
-        {value:"flexible",label:"📅 Flexible on Timeline"},{value:"downsizing",label:"📦 Downsizing"},
-        {value:"upsizing",label:"📈 Upsizing"},{value:"relocating",label:"✈️ Relocating"},
-        {value:"divorce",label:"⚖️ Divorce Settlement"},{value:"inherited",label:"🏠 Inherited Property"},
-        {value:"investment",label:"💼 Investment Property Sale"},{value:"found_new",label:"🔑 Already Found New Home"},
-        {value:"testing",label:"🧪 Testing the Market"},{value:"financial_pressure",label:"💸 Financial Pressure"},
-        {value:"retirement",label:"🌅 Retirement"},{value:"empty_nester",label:"🐦 Empty Nester"},
+      <Chips label="Seller Profile — Who Are They?" options={[
+        {value:"quick_sale",label:"Wants Quick Sale"},{value:"top_dollar",label:"Needs Top Dollar"},
+        {value:"flexible",label:"Flexible on Timeline"},{value:"downsizing",label:"Downsizing"},
+        {value:"upsizing",label:"Upsizing"},{value:"relocating",label:"Relocating"},
+        {value:"divorce",label:"Divorce Settlement"},{value:"inherited",label:"Inherited Property"},
+        {value:"investment",label:"Investment Property Sale"},{value:"found_new",label:"Already Found New Home"},
+        {value:"testing",label:"Testing the Market"},{value:"financial_pressure",label:"Financial Pressure"},
+        {value:"retirement",label:"Retirement"},{value:"empty_nester",label:"Empty Nester"},
       ]} selected={s.sellerSituation} onToggle={v=>update({sellerSituation:tog(s.sellerSituation,v)})}/>
-      <Chips label="🏠 Property Status" options={[
-        {value:"not_listed",label:"📋 Not Yet Listed"},{value:"listed_active",label:"✅ Currently Listed"},
-        {value:"expired_listing",label:"⏰ Expired Listing"},{value:"needs_work",label:"🔨 Needs Work Before Listing"},
-        {value:"renovating",label:"🏗️ Currently Renovating"},{value:"tenant_occupied",label:"🔑 Tenant Occupied"},
-        {value:"vacant",label:"🏚️ Vacant"},{value:"owner_occupied",label:"🏡 Owner Occupied"},
-      ]} selected={s.sellerPropStatus||[]} onToggle={v=>update({sellerPropStatus:tog(s.sellerPropStatus||[],v)})}/>
-      <Chips label="⏳ Selling Timeline" options={[
-        {value:"asap",label:"🔥 As Soon As Possible"},{value:"1_3months",label:"📅 1-3 Months"},
-        {value:"3_6months",label:"🗓️ 3-6 Months"},{value:"6plus",label:"🌱 6+ Months"},
-        {value:"not_decided",label:"🤔 Not Decided Yet"},
-      ]} selected={s.sellerTimeline||[]} onToggle={v=>update({sellerTimeline:tog(s.sellerTimeline||[],v)})} single/>
-      <div style={{marginTop:"8px"}}>
+      <div style={{marginBottom:"14px"}}>
+        <label style={lbl}>What Are Their Goals & Why Are They Selling?</label>
+        <textarea placeholder="e.g. Wants to downsize after kids left home, needs to sell within 3 months due to work relocation, prioritising speed over maximum price..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.sellerWhatGoals||""} onChange={e=>update({sellerWhatGoals:e.target.value})}/>
+      </div>
+      <div style={{marginBottom:"12px"}}>
+        <label style={lbl}>Expected Sale Price</label>
+        <input type="text" placeholder="e.g. $650,000" style={inp} value={s.sellerExpectedPrice||""} onChange={e=>update({sellerExpectedPrice:e.target.value})}/>
+      </div>
+      <div>
         <label style={lbl}>Personal Context</label>
-        <textarea placeholder="e.g. They\'ve been thinking about selling for 6 months. Wife is motivated but husband is hesitant on price. They need to move by summer due to work relocation..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.sellerPersonalContext||""} onChange={e=>update({sellerPersonalContext:e.target.value})}/>
+        <textarea placeholder="e.g. Been thinking about selling for 6 months. Wife is motivated but husband is hesitant. Two kids in local school. Need to move by summer." rows={3} style={{...inp,resize:"vertical"}} value={s.sellerPersonalContext||""} onChange={e=>update({sellerPersonalContext:e.target.value})}/>
       </div>
     </div>
   )
@@ -242,7 +238,7 @@ function SellerProfileBox({ s, update, tog }) {
 function PropCard({ s, update, tog, title, showFeatures }) {
   return (
     <div style={card}>
-      <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>{title||"🏠 Property Details"}</h2>
+      <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>{title||" Property Details"}</h2>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"12px"}}>
         <div><label style={lbl}>Address</label><input type="text" placeholder="42 Palm Drive, Miami FL" style={inp} value={s.propAddress||""} onChange={e=>update({propAddress:e.target.value})}/></div>
         <div><label style={lbl}>Property Type</label><input type="text" placeholder="Villa, Apartment..." style={inp} value={s.propType||""} onChange={e=>update({propType:e.target.value})}/></div>
@@ -276,7 +272,6 @@ export default function App2({ state: appState, setScreen }) {
 
   const isCMA = s.contactReason==="free_valuation"
   const isSoldNearby = s.contactReason==="just_sold"
-  const isNeighbourSale = s.contactReason==="neighbour_sale"
   const isMarketUpdate = s.contactReason==="market_update"
   const isFinancingUpdate = s.contactReason==="financing_update"
   const isPriceDiscussion = s.contactReason==="price_discussion"
@@ -313,7 +308,7 @@ ${!isObjection&&s.customSituation?"AGENT CONTEXT: "+s.customSituation:""}
 AGENT:${ag}${s.agentPhone?"|"+s.agentPhone:""}${s.agencyName?"|"+s.agencyName:""}`
 
     try {
-      update({loadingMsg:"✦ Writing messages..."})
+      update({loadingMsg:" Writing messages..."})
 
       if(isObjection) {
         const objDetail = s.objectionText||s.objection||"general objection"
@@ -324,7 +319,7 @@ AGENT:${ag}${s.agentPhone?"|"+s.agentPhone:""}${s.agencyName?"|"+s.agencyName:""
 OBJECTION:"${objDetail}"
 ${visitCtx}
 ${compCtx}`
-        update({loadingMsg:"✦ Crafting 3 powerful approaches..."})
+        update({loadingMsg:" Crafting 3 powerful approaches..."})
         const objPrompt = `${objCtx}${langI}
 
 EXACT OBJECTION: "${objDetail}"
@@ -358,9 +353,9 @@ The voice script for this approach follows: Opening → Acknowledge briefly → 
 Return ONLY JSON:
 {"v1_label":"Data & Market Proof","v1_whatsapp":"60-80 words. Specific, data-backed, personal. Ends with open question.","v1_sms":"Max 160 chars. Data-driven. Ends with question.","v1_voice":"Call script: OPENING (name), ACKNOWLEDGE, SPECIFIC FACTS FROM SITUATION, REFRAME, OPEN QUESTION. Labelled.","v1_email_subject":"Subject under 9 words.","v1_email":"120-140 word email. Specific and personal. Ends with open question. Signed by ${ag}.","v2_label":"Empathy & Relationship","v2_whatsapp":"60-80 words. Warm, human, completely on their side. Ends with gentle open question.","v2_sms":"Max 160 chars. Empathetic. Ends with question.","v2_voice":"Call script: OPENING (name), DEEP ALIGNMENT, VALIDATE FULLY, SPECIFIC DETAIL SHOWING YOU LISTENED, GENTLE PIVOT, OPEN QUESTION. Labelled.","v2_email_subject":"Subject under 9 words. Warm.","v2_email":"120-140 word email. Empathy approach. Reference specific situation details. Never say 'another source of stress'. Ends with open question. Signed by ${ag}.","v3_label":"Urgency & Bold Reframe","v3_whatsapp":"60-80 words. Confident, honest, bold but never guilty. Reference their specific power. Ends with open question.","v3_sms":"Max 160 chars. Bold and direct. Ends with question.","v3_voice":"Call script: OPENING (name), BRIEF AGREEMENT, THEIR SPECIFIC POWER IN THIS SITUATION, WHAT THAT POWER MEANS FOR THEM, HONEST REFRAME, OPEN QUESTION. Labelled.","v3_email_subject":"Subject under 9 words. Bold.","v3_email":"120-140 word email. Confident and honest. Never guilt or other buyers as threat. Reference their specific advantage. Ends with open question. Signed by ${ag}."}`
         const objResult = await safe(objPrompt, SYSTEM, 2500)
-        update({loadingMsg:"✦ Building follow-up plan..."})
+        update({loadingMsg:" Building follow-up plan..."})
         const fuResult = await safe(`CLIENT:${s.clientName}|OBJECTION:${objDetail}|SITUATION:${objSituation}|AGENT:${ag}${langI}\n\nCRITICAL: Never invent market data, new listings, price changes, or any facts not provided. Write warm human follow-ups only. Each message ends with a gentle open question.\n\nReturn ONLY JSON:\n{"followup_1":"Day 3. 50-60 words. Warm check-in referencing their specific situation. No invented data. Ends with gentle open question.","followup_2":"Week 1. 50-60 words. Different angle — thinking about them specifically. No invented data. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual, human, no pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch, genuine care. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open. No pressure."}`,SYSTEM,900)
-        const schedResult = await safe(`CLIENT:${s.clientName}|REASON:objection_handle\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"🛡️","tasks":["Send your chosen approach (pick 1 of 3)","If no reply 4 hours, send SMS","Note client status"]},{"day":"Day 3","icon":"💬","tasks":["Send Follow-Up #1 — new angle","Don\'t repeat the same approach"]},{"day":"Day 7","icon":"📞","tasks":["Send Follow-Up #2 — add value","Make a call — listen more than pitch"]},{"day":"Day 14","icon":"🔄","tasks":["Send Follow-Up #3 — casual","Share market update if relevant"]},{"day":"Day 30","icon":"🌱","tasks":["Send Follow-Up #4 — warm touch"]},{"day":"Day 60","icon":"🌟","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,600)
+        const schedResult = await safe(`CLIENT:${s.clientName}|REASON:objection_handle\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"","tasks":["Send your chosen approach (pick 1 of 3)","If no reply 4 hours, send SMS","Note client status"]},{"day":"Day 3","icon":"","tasks":["Send Follow-Up #1 — new angle","Don\'t repeat the same approach"]},{"day":"Day 7","icon":"","tasks":["Send Follow-Up #2 — add value","Make a call — listen more than pitch"]},{"day":"Day 14","icon":"","tasks":["Send Follow-Up #3 — casual","Share market update if relevant"]},{"day":"Day 30","icon":"","tasks":["Send Follow-Up #4 — warm touch"]},{"day":"Day 60","icon":"","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,600)
         const result = {...objResult,...fuResult,...schedResult}
         update({result,activeTab:"messages"})
         SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
@@ -373,10 +368,10 @@ Return ONLY JSON:
       if(s.contactReason==="anniversary")p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word anniversary WhatsApp. Warm, celebratory.","sms":"Anniversary SMS max 160 chars.","voice_script":"Anniversary call: OPENING, CELEBRATE, MARKET UPDATE, SOFT CTA. Labelled.","email_subject":"Subject under 9 words.","email_body":"120-140 word anniversary email. Signed by ${ag}."}`;
       if(isCMA)p1=`${ctx}\nSUBJECT:${s.cmaSubject.address}|$${s.cmaSubject.price}|${s.cmaSubject.beds}bed/${s.cmaSubject.baths}bath\nCOMPS:${s.cmaComps.map((c,i)=>`${i+1}. ${c.address} sold $${c.salePrice} ${c.saleDate}`).join("|")}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word WhatsApp. Warm, valuation complete, booking question.","sms":"SMS max 160 chars.","voice_script":"Call: OPENING, CMA COMPLETE, INSIGHT, BOOK MEETING. Labelled.","email_subject":"Subject under 10 words.","email_body":"140-160 word email. Valuation, insight, invite meeting. Signed by ${ag}."}`;
       const part1=await safe(p1,SYSTEM,1300)
-      update({loadingMsg:"✦ Writing letter & follow-ups..."})
+      update({loadingMsg:" Writing letter & follow-ups..."})
       const part2=await safe(`${ctx}${langI}\n\nReturn ONLY JSON:\n{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words. Warm, personal, specific to their situation. Never invent data. Ends with open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented facts. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual check-in. No pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch, genuine care. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open."}`,SYSTEM,1300)
-      update({loadingMsg:"✦ Building schedule..."})
-      const part3=await safe(`CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"🚀","tasks":["Send WhatsApp","If no reply 2 hours, send SMS","Save in CRM"]},{"day":"Day 3","icon":"💬","tasks":["Send Follow-Up #1","Check if email opened"]},{"day":"Day 7","icon":"📞","tasks":["Send Follow-Up #2","Make phone call — listen first"]},{"day":"Day 14","icon":"🔄","tasks":["Send Follow-Up #3","Share market update"]},{"day":"Day 30","icon":"🌱","tasks":["Send Follow-Up #4"]},{"day":"Day 60","icon":"🌟","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,500)
+      update({loadingMsg:" Building schedule..."})
+      const part3=await safe(`CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"","tasks":["Send WhatsApp","If no reply 2 hours, send SMS","Save in CRM"]},{"day":"Day 3","icon":"","tasks":["Send Follow-Up #1","Check if email opened"]},{"day":"Day 7","icon":"","tasks":["Send Follow-Up #2","Make phone call — listen first"]},{"day":"Day 14","icon":"","tasks":["Send Follow-Up #3","Share market update"]},{"day":"Day 30","icon":"","tasks":["Send Follow-Up #4"]},{"day":"Day 60","icon":"","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,500)
       const result={...part1,...part2,...part3}
       update({result,activeTab:"messages"})
       SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
@@ -414,13 +409,13 @@ Return ONLY JSON:
               {["v1","v2","v3"].map(v=>(
                 r[v+"_whatsapp"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
                   <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
-                  <CopyCard title="WhatsApp" content={r[v+"_whatsapp"]||""} icon="💬" lang={s.language}/>
-                  <CopyCard title="SMS" content={r[v+"_sms"]||""} icon="📱" lang={s.language}/>
+                  <CopyCard title="WhatsApp" content={r[v+"_whatsapp"]||""} icon="" lang={s.language}/>
+                  <CopyCard title="SMS" content={r[v+"_sms"]||""} icon="" lang={s.language}/>
                 </div>
               ))}
             </>
           ):(
-            <><CopyCard title="WhatsApp" content={r.whatsapp||""} icon="💬" lang={s.language}/><CopyCard title="SMS" content={r.sms||""} icon="📱" lang={s.language}/></>
+            <><CopyCard title="WhatsApp" content={r.whatsapp||""} icon="" lang={s.language}/><CopyCard title="SMS" content={r.sms||""} icon="" lang={s.language}/></>
           ))}
 
           {s.activeTab==="email"&&(isObj?(
@@ -428,13 +423,13 @@ Return ONLY JSON:
               {["v1","v2","v3"].map(v=>(
                 r[v+"_email"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
                   <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
-                  <CopyCard title="Email Subject" content={r[v+"_email_subject"]||""} icon="📧" lang={s.language}/>
-                  <CopyCard title="Email Body" content={r[v+"_email"]||""} icon="📨" lang={s.language}/>
+                  <CopyCard title="Email Subject" content={r[v+"_email_subject"]||""} icon="" lang={s.language}/>
+                  <CopyCard title="Email Body" content={r[v+"_email"]||""} icon="" lang={s.language}/>
                 </div>
               ))}
             </>
           ):(
-            <><CopyCard title="Email Subject" content={r.email_subject||""} icon="📧" lang={s.language}/><CopyCard title="Email Body" content={r.email_body||""} icon="📨" lang={s.language}/></>
+            <><CopyCard title="Email Subject" content={r.email_subject||""} icon="" lang={s.language}/><CopyCard title="Email Body" content={r.email_body||""} icon="" lang={s.language}/></>
           ))}
 
           {s.activeTab==="voice"&&(isObj?(
@@ -443,13 +438,13 @@ Return ONLY JSON:
               {["v1","v2","v3"].map(v=>(
                 r[v+"_voice"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
                   <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
-                  <CopyCard title="Phone Call Script" content={r[v+"_voice"]||""} icon="🎙️" lang={s.language}/>
+                  <CopyCard title="Phone Call Script" content={r[v+"_voice"]||""} icon="" lang={s.language}/>
                 </div>
               ))}
             </>
           ):(
             <><p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 12px"}}>Read naturally — don't sound like you're reading a script.</p>
-            <CopyCard title="Phone Call Script" content={r.voice_script||"No call script generated — please regenerate."} icon="🎙️" lang={s.language}/></>
+            <CopyCard title="Phone Call Script" content={r.voice_script||"No call script generated — please regenerate."} icon="" lang={s.language}/></>
           ))}
 
           {s.activeTab==="followups"&&(
@@ -462,11 +457,11 @@ Return ONLY JSON:
               {s.fuSubTab==="noreply"&&(
                 <>
                   <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 16px",lineHeight:"1.6"}}>Use these if your client goes quiet. Send in order. 80% of deals close between touch 5–12 — don't stop.</p>
-                  <CopyCard title="Follow-Up #1 — Day 3" content={r.followup_1||""} icon="💬" lang={s.language}/>
-                  <CopyCard title="Follow-Up #2 — Week 1" content={r.followup_2||""} icon="💬" lang={s.language}/>
-                  <CopyCard title="Follow-Up #3 — Week 2" content={r.followup_3||""} icon="💬" lang={s.language}/>
-                  <CopyCard title="Follow-Up #4 — Month 1" content={r.followup_4||""} icon="💬" lang={s.language}/>
-                  <CopyCard title="Follow-Up #5 — Month 2" content={r.followup_5||""} icon="💬" lang={s.language}/>
+                  <CopyCard title="Follow-Up #1 — Day 3" content={r.followup_1||""} icon="" lang={s.language}/>
+                  <CopyCard title="Follow-Up #2 — Week 1" content={r.followup_2||""} icon="" lang={s.language}/>
+                  <CopyCard title="Follow-Up #3 — Week 2" content={r.followup_3||""} icon="" lang={s.language}/>
+                  <CopyCard title="Follow-Up #4 — Month 1" content={r.followup_4||""} icon="" lang={s.language}/>
+                  <CopyCard title="Follow-Up #5 — Month 2" content={r.followup_5||""} icon="" lang={s.language}/>
                 </>
               )}
 
@@ -486,7 +481,7 @@ Return ONLY JSON:
                     }catch(e){update({error:"Failed: "+e.message})}
                     update({regenLoading:false})
                   }} style={{background:s.regenLoading?"#1a1a1a":"#2AB8D4",color:s.regenLoading?"rgba(255,255,255,0.5)":"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
-                    {s.regenLoading?"Generating...":"✦ Get New Follow-Ups Based on Response"}
+                    {s.regenLoading?"Generating...":" Get New Follow-Ups Based on Response"}
                   </button>
                 </div>
               )}
@@ -499,7 +494,7 @@ Return ONLY JSON:
               {r.schedule.map((day,i)=>(
                 <div key={i} style={{background:"#0c0c10",border:"1px solid #252530",borderRadius:"10px",padding:"14px 16px",marginBottom:"8px"}}>
                   <div style={{display:"flex",alignItems:"center",gap:"10px",marginBottom:"10px"}}>
-                    <span style={{fontSize:"20px"}}>{day.icon||"📅"}</span>
+                    <span style={{fontSize:"20px"}}>{day.icon||""}</span>
                     <span style={{fontSize:"14px",fontWeight:"700",color:"#2AB8D4"}}>{day.day||""}</span>
                   </div>
                   {(day.tasks||[]).map((t,j)=>(
@@ -559,20 +554,6 @@ Return ONLY JSON:
               {value:"door_knock",label:"Door Knock"},{value:"area_farming",label:"Area Farming"},
               {value:"cold_dm",label:"Cold DM"},{value:"phone_inquiry",label:"Phone Inquiry"},
             ]} selected={s.introSource} onToggle={v=>update({introSource:tog(s.introSource,v)})}/>
-            <Chips label="How Do You Want to Come Across?" options={[
-              {value:"confident_direct",label:"🎯 Confident & Direct",desc:"Bold, assertive"},
-              {value:"warm_relatable",label:"😊 Warm & Relatable",desc:"Friendly, human"},
-              {value:"luxury_expert",label:"💎 Luxury Expert",desc:"Premium, exclusive"},
-              {value:"data_driven",label:"📊 Data-Driven",desc:"Numbers, facts, proof"},
-              {value:"local_specialist",label:"📍 Local Specialist",desc:"Deep neighbourhood knowledge"},
-              {value:"trusted_advisor",label:"🤝 Trusted Advisor",desc:"Long-term relationship"},
-              {value:"high_energy",label:"⚡ High Energy & Bold",desc:"Enthusiastic, unstoppable"},
-              {value:"persistent_tenacious",label:"💪 Persistent & Tenacious",desc:"Never give up"},
-              {value:"empathetic_listener",label:"👂 Empathetic Listener",desc:"Understanding, patient"},
-              {value:"strategic_partner",label:"🧠 Strategic Partner",desc:"Problem-solver"},
-              {value:"market_authority",label:"🏆 Market Authority",desc:"Industry leader"},
-              {value:"creative_storyteller",label:"🎬 Creative Storyteller",desc:"Content-first approach"},
-            ]} selected={s.introComeAcross} onToggle={v=>update({introComeAcross:tog(s.introComeAcross,v)})}/>
             <div style={{marginTop:"12px"}}>
               <label style={lbl}>Specific Outcome from This Message</label>
               <input type="text" placeholder="e.g. Get them to agree to a 15-minute call this week to discuss what they are looking for..." style={inp} value={s.firstOutcomeGoal||""} onChange={e=>update({firstOutcomeGoal:e.target.value})}/>
@@ -585,27 +566,12 @@ Return ONLY JSON:
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📋 Lead Details</h2>
             <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The AI uses this to craft the perfect opening message and call script.</p>
             <Chips label="How Did You Get This Lead?" options={[
-              {value:"door_knock",label:"🚪 Door Knock"},{value:"cold_call",label:"📞 Cold Call"},
-              {value:"friend_referral",label:"👥 Friend Referral"},{value:"past_client_referral",label:"🤝 Past Client Referral"},
-              {value:"online",label:"🌐 Online Lead"},{value:"direct_mail",label:"📮 Direct Mail"},
-              {value:"farming",label:"🏘️ Area Farming"},{value:"social_media",label:"📱 Social Media"},
-              {value:"open_house",label:"🏠 Open House"},{value:"networking",label:"🎉 Networking"},
+              {value:"door_knock",label:"Door Knock"},{value:"cold_call",label:"Cold Call"},
+              {value:"friend_referral",label:"Friend Referral"},{value:"past_client_referral",label:"Past Client Referral"},
+              {value:"online",label:"Online Lead"},{value:"direct_mail",label:"Direct Mail"},
+              {value:"farming",label:"Area Farming"},{value:"social_media",label:"Social Media"},
+              {value:"open_house",label:"Open House"},{value:"networking",label:"Networking"},
             ]} selected={s.leadSource?[s.leadSource]:[]} onToggle={v=>update({leadSource:v})} single/>
-            <Chips label="How Do You Want to Come Across?" options={[
-              {value:"confident_direct",label:"🎯 Confident & Direct",desc:"Bold, assertive"},
-              {value:"warm_relatable",label:"😊 Warm & Relatable",desc:"Friendly, human"},
-              {value:"luxury_expert",label:"💎 Luxury Expert",desc:"Premium, exclusive"},
-              {value:"data_driven",label:"📊 Data-Driven",desc:"Numbers, facts, proof"},
-              {value:"local_specialist",label:"📍 Local Specialist",desc:"Deep neighbourhood knowledge"},
-              {value:"trusted_advisor",label:"🤝 Trusted Advisor",desc:"Long-term relationship"},
-              {value:"high_energy",label:"⚡ High Energy & Bold",desc:"Enthusiastic, unstoppable"},
-              {value:"persistent_tenacious",label:"💪 Persistent & Tenacious",desc:"Never give up"},
-              {value:"empathetic_listener",label:"👂 Empathetic Listener",desc:"Understanding, patient"},
-              {value:"strategic_partner",label:"🧠 Strategic Partner",desc:"Problem-solver"},
-              {value:"market_authority",label:"🏆 Market Authority",desc:"Industry leader"},
-            ]} selected={s.introComeAcross} onToggle={v=>update({introComeAcross:tog(s.introComeAcross,v)})}/>
-            <Chips label="Urgency Level" options={URGENCY_EN} selected={s.urgency} onToggle={v=>update({urgency:v})} single/>
-            <Chips label="Communication Tone" options={TONES_EN} selected={s.tone} onToggle={v=>update({tone:v})} single/>
             <div style={{marginTop:"12px"}}><label style={lbl}>What Do You Know About Their Property?</label>
               <textarea placeholder="e.g. 3-bed on Oak Street, vacant a while, garden needs work..." rows={3} style={{...inp,resize:"vertical"}} value={s.knownAboutProperty||""} onChange={e=>update({knownAboutProperty:e.target.value})}/>
             </div>
@@ -620,15 +586,15 @@ Return ONLY JSON:
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🔄 Reconnecting Details</h2>
             <Chips label="Why Did They Go Quiet?" options={[
-              {value:"life_happened",label:"🌀 Life Happened"},{value:"changed_budget",label:"💰 Budget Changed"},
-              {value:"market_fear",label:"📉 Scared of Market"},{value:"partner_disagreed",label:"🤝 Partner Disagreed"},
-              {value:"found_something",label:"🏠 Found Something Themselves"},{value:"timing",label:"⏰ Bad Timing"},
-              {value:"overwhelmed",label:"😓 Overwhelmed"},{value:"lost_touch",label:"📵 Just Lost Touch"},
-              {value:"not_ready",label:"🛑 Wasn\'t Ready"},{value:"changed_jobs",label:"💼 Changed Jobs"},
-              {value:"got_divorced",label:"⚖️ Got Divorced"},{value:"had_baby",label:"👶 Had a Baby"},
-              {value:"inheritance",label:"💰 Inheritance Received"},{value:"partner_now_ready",label:"✅ Partner Now On Board"},
-              {value:"lease_ending",label:"📅 Rental Lease Ending"},{value:"sold_other",label:"🏡 Sold Another Property"},
-              ...(isSeller()?[{value:"renovation_complete",label:"🔨 Renovation Complete"},{value:"value_increased",label:"📈 Value Increased"},{value:"market_improved",label:"📊 Market Improved"}]:[]),
+              {value:"life_happened",label:"Life Happened"},{value:"changed_budget",label:"Budget Changed"},
+              {value:"market_fear",label:"Scared of Market"},{value:"partner_disagreed",label:"Partner Disagreed"},
+              {value:"found_something",label:"Found Something Themselves"},{value:"timing",label:"⏰ Bad Timing"},
+              {value:"overwhelmed",label:"Overwhelmed"},{value:"lost_touch",label:"Just Lost Touch"},
+              {value:"not_ready",label:"Wasn\'t Ready"},{value:"changed_jobs",label:"Changed Jobs"},
+              {value:"got_divorced",label:"Got Divorced"},{value:"had_baby",label:"Had a Baby"},
+              {value:"inheritance",label:"Inheritance Received"},{value:"partner_now_ready",label:"Partner Now On Board"},
+              {value:"lease_ending",label:"Rental Lease Ending"},{value:"sold_other",label:"Sold Another Property"},
+              ...(isSeller()?[{value:"renovation_complete",label:"Renovation Complete"},{value:"value_increased",label:"Value Increased"},{value:"market_improved",label:"Market Improved"}]:[]),
             ]} selected={s.reconnectSituation} onToggle={v=>update({reconnectSituation:tog(s.reconnectSituation,v)})}/>
             <div style={{marginTop:"8px"}}><label style={lbl}>What Was the Situation?</label>
               <textarea placeholder="e.g. Searching for 4-bed, budget $650K. We spoke 3 months ago, went quiet after viewing 2 properties..." rows={4} style={{...inp,resize:"vertical"}} value={s.lookingFor||""} onChange={e=>update({lookingFor:e.target.value})}/>
@@ -641,7 +607,7 @@ Return ONLY JSON:
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📊 Market Update Details</h2>
             <div style={{marginBottom:"12px"}}><label style={lbl}>City / Market Area</label><input type="text" placeholder="e.g. Miami Beach" style={inp} value={s.marketLocation||""} onChange={e=>update({marketLocation:e.target.value})}/></div>
-            <Chips label="Market Direction" options={["📈 Rising Prices","📊 Stable Market","📉 Cooling Down","🔥 High Demand","📦 Low Inventory","⏱️ Good Time to Buy","🏆 Seller\'s Market","🤝 Buyer\'s Market","🏗️ Infrastructure Development","📊 Record Sales Volume","🌍 International Buyer Interest","💼 Job Market Growing","🏫 New Schools Opening","🚇 New Transport Links","🏢 New Commercial Development","📉 Motivated Sellers","📐 Price Per Sq Ft Rising","🏚️ Foreclosure Activity","💎 Luxury Market Booming","🏦 Interest Rate Changing","⚡ Off-Market Activity Increasing"]} selected={s.marketDirection||[]} onToggle={v=>update({marketDirection:tog(s.marketDirection||[],v)})}/>
+            <Chips label="Market Direction" options={[" Rising Prices"," Stable Market"," Cooling Down"," High Demand"," Low Inventory","⏱ Good Time to Buy"," Seller\'s Market"," Buyer\'s Market"," Infrastructure Development"," Record Sales Volume"," International Buyer Interest"," Job Market Growing"," New Schools Opening"," New Transport Links"," New Commercial Development"," Motivated Sellers"," Price Per Sq Ft Rising"," Foreclosure Activity"," Luxury Market Booming"," Interest Rate Changing"," Off-Market Activity Increasing"]} selected={s.marketDirection||[]} onToggle={v=>update({marketDirection:tog(s.marketDirection||[],v)})}/>
             <div style={{marginBottom:"12px"}}><label style={lbl}>Your Market Insight</label><textarea placeholder="e.g. Prices up 3%, inventory tightening..." rows={3} style={{...inp,resize:"vertical"}} value={s.marketInsight||""} onChange={e=>update({marketInsight:e.target.value})}/></div>
             <div><label style={lbl}>Specific Stats (optional)</label><input type="text" placeholder="e.g. Median $850K, 12% more sales YOY" style={inp} value={s.marketStats||""} onChange={e=>update({marketStats:e.target.value})}/></div>
           </div>
@@ -651,20 +617,20 @@ Return ONLY JSON:
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>💰 Financing Update</h2>
             <Chips label="What Changed?" options={[
-              {value:"rates_dropped",label:"📉 Rates Dropped"},{value:"fed_cut",label:"🏦 Fed Rate Cut"},
-              {value:"easier_qualify",label:"✅ Easier to Qualify"},{value:"new_products",label:"💡 New Loan Products"},
-              {value:"low_down",label:"💰 Low Down Payment"},{value:"rates_rising",label:"📈 Rates Rising — Act Now"},
-              {value:"investor_loans",label:"🏢 Investor Loans"},{value:"first_buyer",label:"🏠 First-Time Buyer Incentives"},
-              {value:"bank_loosened",label:"🏦 Bank Policy Loosened"},{value:"foreign_buyer",label:"🌍 Foreign Buyer Financing"},
-              {value:"govt_scheme",label:"📋 New Government Scheme"},{value:"bridge_loan",label:"⚡ Bridge Loan Options"},
-              {value:"rate_lock",label:"🔒 Rate Lock Opportunity"},{value:"dti_change",label:"📊 DTI Rules Changed"},
+              {value:"rates_dropped",label:"Rates Dropped"},{value:"fed_cut",label:"Fed Rate Cut"},
+              {value:"easier_qualify",label:"Easier to Qualify"},{value:"new_products",label:"New Loan Products"},
+              {value:"low_down",label:"Low Down Payment"},{value:"rates_rising",label:"Rates Rising — Act Now"},
+              {value:"investor_loans",label:"Investor Loans"},{value:"first_buyer",label:"First-Time Buyer Incentives"},
+              {value:"bank_loosened",label:"Bank Policy Loosened"},{value:"foreign_buyer",label:"Foreign Buyer Financing"},
+              {value:"govt_scheme",label:"New Government Scheme"},{value:"bridge_loan",label:"Bridge Loan Options"},
+              {value:"rate_lock",label:"Rate Lock Opportunity"},{value:"dti_change",label:"DTI Rules Changed"},
             ]} selected={s.financingOptions||[]} onToggle={v=>update({financingOptions:tog(s.financingOptions||[],v)})}/>
             <div style={{marginTop:"8px"}}><label style={lbl}>Specific Details</label><textarea placeholder="e.g. Rates dropped to 6.2%, 10% down available..." rows={3} style={{...inp,resize:"vertical"}} value={s.financingNews||""} onChange={e=>update({financingNews:e.target.value})}/></div>
             {isBuyer()&&<div style={{marginTop:"12px"}}><label style={lbl}>What Is Their Budget & What Are They Looking For?</label><input type="text" placeholder="e.g. Budget $500K, looking for 3-bed near good schools in Miami Beach..." style={inp} value={s.buyerWhatLookingFor||""} onChange={e=>update({buyerWhatLookingFor:e.target.value})}/></div>}
           </div>
         )}
 
-        {isViewingFollowUp&&<PropCard s={s} update={update} tog={tog} title="🏠 Property Viewed" showFeatures={true}/>}
+        {isViewingFollowUp&&<PropCard s={s} update={update} tog={tog} title=" Property Viewed" showFeatures={true}/>}
 
         {isPriceDrop&&isBuyer()&&(
           <div style={card}>
@@ -673,7 +639,7 @@ Return ONLY JSON:
               <div><label style={lbl}>New Price ($)</label><input type="text" placeholder="895,000" style={inp} value={s.propNewPrice||""} onChange={e=>update({propNewPrice:e.target.value})}/></div>
               <div><label style={lbl}>Was ($)</label><input type="text" placeholder="995,000" style={inp} value={s.propOldPrice||""} onChange={e=>update({propOldPrice:e.target.value})}/></div>
             </div>
-            <PropCard s={s} update={update} tog={tog} title="🏠 The Property" showFeatures={true}/>
+            <PropCard s={s} update={update} tog={tog} title=" The Property" showFeatures={true}/>
           </div>
         )}
 
@@ -698,14 +664,14 @@ Return ONLY JSON:
               {value:"price_reduced",label:"Already Reduced"},
             ]} selected={s.offerMarket} onToggle={v=>update({offerMarket:tog(s.offerMarket,v)})}/>
             <Chips label="Negotiation Levers" options={[
-              {value:"clean_offer",label:"✅ Clean Offer"},{value:"quick_close",label:"⚡ Quick Closing"},
-              {value:"escalation",label:"📈 Escalation Clause"},{value:"personal_letter",label:"💌 Personal Letter"},
-              {value:"larger_deposit",label:"💰 Larger Deposit"},{value:"inspection_waived",label:"🔍 Inspection Waived"},
-              {value:"pre_inspection",label:"🔧 Pre-Inspection Done"},{value:"flexible_date",label:"📅 Flexible Move-In"},
-              {value:"cash",label:"💵 All Cash"},{value:"pre_approved",label:"🏦 Pre-Approved"},
-              {value:"appraisal_gap",label:"📊 Appraisal Gap"},{value:"as_is",label:"🔨 As-Is Purchase"},
-              {value:"leaseback",label:"🔑 Seller Leaseback"},{value:"sight_unseen",label:"👁️ Sight-Unseen"},
-              {value:"attorney_review",label:"⚖️ Attorney Review"},{value:"closing_costs",label:"💰 Seller Closing Costs"},
+              {value:"clean_offer",label:"Clean Offer"},{value:"quick_close",label:"Quick Closing"},
+              {value:"escalation",label:"Escalation Clause"},{value:"personal_letter",label:"Personal Letter"},
+              {value:"larger_deposit",label:"Larger Deposit"},{value:"inspection_waived",label:"Inspection Waived"},
+              {value:"pre_inspection",label:"Pre-Inspection Done"},{value:"flexible_date",label:"Flexible Move-In"},
+              {value:"cash",label:"All Cash"},{value:"pre_approved",label:"Pre-Approved"},
+              {value:"appraisal_gap",label:"Appraisal Gap"},{value:"as_is",label:"As-Is Purchase"},
+              {value:"leaseback",label:"Seller Leaseback"},{value:"sight_unseen",label:"Sight-Unseen"},
+              {value:"attorney_review",label:"Attorney Review"},{value:"closing_costs",label:"Seller Closing Costs"},
             ]} selected={s.offerLevers} onToggle={v=>update({offerLevers:tog(s.offerLevers,v)})}/>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginTop:"4px",marginBottom:"12px"}}>
               <div><label style={lbl}>Deposit Amount</label><input type="text" placeholder="e.g. $25,000" style={inp} value={s.offerDeposit||""} onChange={e=>update({offerDeposit:e.target.value})}/></div>
@@ -717,28 +683,28 @@ Return ONLY JSON:
 
         {isObjection&&isBuyer()&&(
           <div style={card}>
-            <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
 
             <Chips label="Objection They Raised" options={[
-              {value:"too_expensive",label:"💰 Too Expensive"},
-              {value:"rates_too_high",label:"📈 Mortgage Rates Too High"},
-              {value:"not_right_property",label:"🏠 Haven\'t Found Right Property"},
-              {value:"partner_not_convinced",label:"🤝 Partner Not Convinced"},
-              {value:"waiting_prices_drop",label:"📉 Waiting for Prices to Drop"},
-              {value:"market_uncertain",label:"🌊 Market Too Uncertain"},
-              {value:"happy_renting",label:"🏠 Happy Renting"},
-              {value:"need_to_sell_first",label:"🔄 Need to Sell First"},
+              {value:"too_expensive",label:"Too Expensive"},
+              {value:"rates_too_high",label:"Mortgage Rates Too High"},
+              {value:"not_right_property",label:"Haven\'t Found Right Property"},
+              {value:"partner_not_convinced",label:"Partner Not Convinced"},
+              {value:"waiting_prices_drop",label:"Waiting for Prices to Drop"},
+              {value:"market_uncertain",label:"Market Too Uncertain"},
+              {value:"happy_renting",label:"Happy Renting"},
+              {value:"need_to_sell_first",label:"Need to Sell First"},
               {value:"bad_timing",label:"⏰ Bad Timing"},
-              {value:"not_pre_approved",label:"📋 Not Pre-Approved Yet"},
-              {value:"already_have_agent",label:"👤 Already Have an Agent"},
-              {value:"need_more_time",label:"🕐 Need More Time"},
-              {value:"scared_commitment",label:"😰 Scared of Commitment"},
-              {value:"location",label:"📍 Not Sure About Location"},
-              {value:"doesnt_like_pressure",label:"🙅 Doesn\'t Like to Be Pressured"},
+              {value:"not_pre_approved",label:"Not Pre-Approved Yet"},
+              {value:"already_have_agent",label:"Already Have an Agent"},
+              {value:"need_more_time",label:"Need More Time"},
+              {value:"scared_commitment",label:"Scared of Commitment"},
+              {value:"location",label:"Not Sure About Location"},
+              {value:"doesnt_like_pressure",label:"Doesn\'t Like to Be Pressured"},
             ]} selected={s.objection?[s.objection]:[]} onToggle={v=>update({objection:s.objection===v?"":v})} single/>
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
               <label style={lbl}>What Did They Say?</label>
+              <p style={{fontSize:"11px",color:"rgba(255,255,255,0.45)",margin:"4px 0 6px",lineHeight:"1.5"}}>The more specific you are here, the more personal and powerful the AI response.</p>
               <textarea placeholder="e.g. He said: 'Look, I hear you, but I just don't like being pushed. I'll call you when I'm ready.' — The more exact the better." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
             </div>
             <div style={{marginBottom:"16px"}}>
@@ -755,7 +721,7 @@ Return ONLY JSON:
                   <div style={{marginBottom:"16px"}}>
                     <label style={lbl}>Did They Visit the Property?</label>
                     <div style={{display:"flex",gap:"8px",marginTop:"8px",flexWrap:"wrap"}}>
-                      {[["yes","✅ Yes — visited in person"],["no","📱 No — only seen online"],["viewing_booked","📅 Viewing booked"]].map(([v,l])=>(
+                      {[["yes"," Yes — visited in person"],["no"," No — only seen online"],["viewing_booked"," Viewing booked"]].map(([v,l])=>(
                         <button key={v} onClick={()=>update({visitedProperty:v})} style={{background:s.visitedProperty===v?"rgba(42,184,212,0.15)":"#060608",border:`1px solid ${s.visitedProperty===v?"#2AB8D4":"#252530"}`,borderRadius:"8px",padding:"8px 14px",fontSize:"12px",color:s.visitedProperty===v?"#2AB8D4":"rgba(255,255,255,0.65)",cursor:"pointer",fontFamily:"inherit",fontWeight:s.visitedProperty===v?"700":"400"}}>{l}</button>
                       ))}
                     </div>
@@ -873,30 +839,30 @@ Return ONLY JSON:
                   <div><label style={lbl}>Target Sale Price ($)</label><input type="text" placeholder="e.g. $540,000" style={inp} value={s.currentPropTargetPrice||""} onChange={e=>update({currentPropTargetPrice:e.target.value})}/></div>
                 </div>
                 <Chips label="Is Their Property Currently Listed?" options={[
-                  {value:"listed_active",label:"✅ Yes — Active on Market"},
-                  {value:"not_listed_soon",label:"🔄 Not Yet — Planning Soon"},
-                  {value:"not_decided",label:"🤔 Still Deciding"},
-                  {value:"no_plans",label:"❌ No Plans Yet"},
+                  {value:"listed_active",label:"Yes — Active on Market"},
+                  {value:"not_listed_soon",label:"Not Yet — Planning Soon"},
+                  {value:"not_decided",label:"Still Deciding"},
+                  {value:"no_plans",label:"No Plans Yet"},
                 ]} selected={s.currentPropListedStatus?[s.currentPropListedStatus]:[]} onToggle={v=>update({currentPropListedStatus:v})} single/>
                 <Chips label="Who Is Handling the Sale?" options={[
-                  {value:"has_agent",label:"👤 Already Have an Agent"},
-                  {value:"fsbo",label:"🏷️ Thinking of Selling Themselves"},
-                  {value:"looking_agent",label:"🔍 Still Looking for an Agent"},
-                  {value:"open_to_discuss",label:"💬 Open to Discussing It"},
+                  {value:"has_agent",label:"Already Have an Agent"},
+                  {value:"fsbo",label:"Thinking of Selling Themselves"},
+                  {value:"looking_agent",label:"Still Looking for an Agent"},
+                  {value:"open_to_discuss",label:"Open to Discussing It"},
                 ]} selected={s.currentPropAgentStatus?[s.currentPropAgentStatus]:[]} onToggle={v=>update({currentPropAgentStatus:v})} single/>
                 <Chips label="How Motivated Are They to Sell?" options={[
-                  {value:"very_motivated",label:"🔥 Very Motivated — Need to Sell Fast"},
+                  {value:"very_motivated",label:"Very Motivated — Need to Sell Fast"},
                   {value:"moderate",label:"⏳ Moderate — Taking Their Time"},
-                  {value:"low",label:"🌱 Low — Only If Price Is Right"},
-                  {value:"nervous",label:"😰 Nervous About Timing Both"},
+                  {value:"low",label:"Low — Only If Price Is Right"},
+                  {value:"nervous",label:"Nervous About Timing Both"},
                 ]} selected={s.currentPropMotivation||[]} onToggle={v=>update({currentPropMotivation:tog(s.currentPropMotivation||[],v)})} single/>
                 <Chips label="Main Concern About Selling First" options={[
-                  {value:"right_price",label:"💰 Getting the Right Price"},
+                  {value:"right_price",label:"Getting the Right Price"},
                   {value:"timing_both",label:"⏰ Timing Both Transactions"},
-                  {value:"left_without_home",label:"😰 Fear of Being Left Without a Home"},
-                  {value:"no_new_home",label:"🏠 Not Finding Right New Home First"},
-                  {value:"too_much_hassle",label:"📋 Too Much Hassle and Stress"},
-                  {value:"financial_bridge",label:"💼 Financial Bridge Between Sales"},
+                  {value:"left_without_home",label:"Fear of Being Left Without a Home"},
+                  {value:"no_new_home",label:"Not Finding Right New Home First"},
+                  {value:"too_much_hassle",label:"Too Much Hassle and Stress"},
+                  {value:"financial_bridge",label:"Financial Bridge Between Sales"},
                 ]} selected={s.currentPropConcern||[]} onToggle={v=>update({currentPropConcern:tog(s.currentPropConcern||[],v)})}/>
                 <div style={{marginTop:"8px"}}><label style={lbl}>About This Buyer</label><textarea placeholder="e.g. Active buyer, pre-approved, has been looking 3 months, very motivated, just needs the timing to work..." rows={2} style={{...inp,resize:"vertical"}} value={s.currentPropBuyerContext||""} onChange={e=>update({currentPropBuyerContext:e.target.value})}/></div>
               </div>
@@ -905,17 +871,17 @@ Return ONLY JSON:
             {s.objection==="bad_timing"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <Chips label="Why Is the Timing Bad?" options={[
-                  {value:"financial_not_ready",label:"💰 Financial Situation Not Ready"},
-                  {value:"job_uncertainty",label:"💼 Job Uncertainty"},
-                  {value:"family_changing",label:"👨‍👩‍👧 Family Situation Changing"},
-                  {value:"need_sell_first",label:"🏠 Need to Sell Current Home First"},
+                  {value:"financial_not_ready",label:"Financial Situation Not Ready"},
+                  {value:"job_uncertainty",label:"Job Uncertainty"},
+                  {value:"family_changing",label:"‍‍ Family Situation Changing"},
+                  {value:"need_sell_first",label:"Need to Sell Current Home First"},
                   {value:"waiting_market",label:"⏰ Waiting for Better Market"},
-                  {value:"too_much_going_on",label:"📋 Too Much Going On Personally"},
-                  {value:"possible_relocation",label:"✈️ Possible Relocation"},
-                  {value:"life_transition",label:"💑 Life Transition — Divorce / Marriage / Baby"},
-                  {value:"kids_school",label:"🎓 Kids Finishing School"},
-                  {value:"waiting_mortgage",label:"🏦 Waiting for Mortgage Approval"},
-                  {value:"general_fear",label:"😰 General Fear and Anxiety"},
+                  {value:"too_much_going_on",label:"Too Much Going On Personally"},
+                  {value:"possible_relocation",label:"Possible Relocation"},
+                  {value:"life_transition",label:"Life Transition — Divorce / Marriage / Baby"},
+                  {value:"kids_school",label:"Kids Finishing School"},
+                  {value:"waiting_mortgage",label:"Waiting for Mortgage Approval"},
+                  {value:"general_fear",label:"General Fear and Anxiety"},
                 ]} selected={s.badTimingReasons||[]} onToggle={v=>update({badTimingReasons:tog(s.badTimingReasons||[],v)})}/>
                 <Chips label="How Much Time Are They Thinking?" options={[
                   {value:"1month",label:"1 Month"},{value:"3months",label:"3 Months"},
@@ -930,15 +896,15 @@ Return ONLY JSON:
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <div style={{marginBottom:"12px"}}><label style={lbl}>Reason Why Not Pre-Approved Yet</label><textarea placeholder="e.g. Self-employed, not sure they qualify, haven\'t prioritised it yet, just started new job..." rows={2} style={{...inp,resize:"vertical"}} value={s.notApprovedReason||""} onChange={e=>update({notApprovedReason:e.target.value})}/></div>
                 <Chips label="Have They Spoken to a Lender?" options={[
-                  {value:"yes",label:"✅ Yes"},{value:"no",label:"❌ Not yet"},{value:"in_progress",label:"🔄 In Progress"},
+                  {value:"yes",label:"Yes"},{value:"no",label:"Not yet"},{value:"in_progress",label:"In Progress"},
                 ]} selected={s.spokeToLender?[s.spokeToLender]:[]} onToggle={v=>update({spokeToLender:v})} single/>
                 <Chips label="Main Concern About Getting Approved" options={[
-                  {value:"not_enough_income",label:"💰 Not Enough Income"},
-                  {value:"self_employed",label:"💼 Self-Employed Complexity"},
-                  {value:"credit_score",label:"📋 Credit Score Concerns"},
-                  {value:"too_much_debt",label:"💳 Too Much Existing Debt"},
-                  {value:"not_enough_deposit",label:"💵 Not Enough Deposit Saved"},
-                  {value:"visa_status",label:"🌍 Foreign National / Visa Status"},
+                  {value:"not_enough_income",label:"Not Enough Income"},
+                  {value:"self_employed",label:"Self-Employed Complexity"},
+                  {value:"credit_score",label:"Credit Score Concerns"},
+                  {value:"too_much_debt",label:"Too Much Existing Debt"},
+                  {value:"not_enough_deposit",label:"Not Enough Deposit Saved"},
+                  {value:"visa_status",label:"Foreign National / Visa Status"},
                   {value:"no_time",label:"⏰ Haven\'t Had Time to Sort It"},
                 ]} selected={s.approvalConcerns||[]} onToggle={v=>update({approvalConcerns:tog(s.approvalConcerns||[],v)})}/>
               </div>
@@ -947,14 +913,14 @@ Return ONLY JSON:
             {s.objection==="need_more_time"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <Chips label="Why Do They Need More Time?" options={[
-                  {value:"saving_deposit",label:"💰 Still Saving for Deposit"},
-                  {value:"job_situation",label:"💼 Waiting for Job Situation to Settle"},
-                  {value:"family_flux",label:"👨‍👩‍👧 Family Situation in Flux"},
-                  {value:"need_sell_first",label:"🏠 Need to Sell First"},
-                  {value:"too_much_going_on",label:"📋 Too Much Going On"},
-                  {value:"not_emotionally_ready",label:"😰 Not Emotionally Ready"},
+                  {value:"saving_deposit",label:"Still Saving for Deposit"},
+                  {value:"job_situation",label:"Waiting for Job Situation to Settle"},
+                  {value:"family_flux",label:"‍‍ Family Situation in Flux"},
+                  {value:"need_sell_first",label:"Need to Sell First"},
+                  {value:"too_much_going_on",label:"Too Much Going On"},
+                  {value:"not_emotionally_ready",label:"Not Emotionally Ready"},
                   {value:"waiting_market",label:"⏰ Waiting for Better Market"},
-                  {value:"kids_school",label:"🎓 Kids Finishing School First"},
+                  {value:"kids_school",label:"Kids Finishing School First"},
                 ]} selected={s.needMoreTimeReasons||[]} onToggle={v=>update({needMoreTimeReasons:tog(s.needMoreTimeReasons||[],v)})}/>
                 <Chips label="How Much Time Are They Thinking?" options={[
                   {value:"1month",label:"1 Month"},{value:"3months",label:"3 Months"},
@@ -968,14 +934,14 @@ Return ONLY JSON:
             {s.objection==="scared_commitment"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <Chips label="What Specifically Scares Them?" options={[
-                  {value:"fear_overpaying",label:"💰 Fear of Overpaying"},
-                  {value:"prices_drop",label:"📉 Worried Prices Will Drop After Buying"},
-                  {value:"mortgage_overwhelming",label:"🏦 Long-Term Mortgage Feels Overwhelming"},
-                  {value:"hidden_costs",label:"🔧 Scared of Hidden Costs and Repairs"},
-                  {value:"not_right_property",label:"📍 Not 100% Sure This Is the Right Property"},
-                  {value:"life_uncertain",label:"💑 Life Situation Feels Uncertain"},
-                  {value:"never_bought",label:"😰 Never Bought Before — Fear of the Unknown"},
-                  {value:"locked_in",label:"🔄 Afraid of Being Locked In"},
+                  {value:"fear_overpaying",label:"Fear of Overpaying"},
+                  {value:"prices_drop",label:"Worried Prices Will Drop After Buying"},
+                  {value:"mortgage_overwhelming",label:"Long-Term Mortgage Feels Overwhelming"},
+                  {value:"hidden_costs",label:"Scared of Hidden Costs and Repairs"},
+                  {value:"not_right_property",label:"Not 100% Sure This Is the Right Property"},
+                  {value:"life_uncertain",label:"Life Situation Feels Uncertain"},
+                  {value:"never_bought",label:"Never Bought Before — Fear of the Unknown"},
+                  {value:"locked_in",label:"Afraid of Being Locked In"},
                 ]} selected={s.scaredReasons||[]} onToggle={v=>update({scaredReasons:tog(s.scaredReasons||[],v)})}/>
                 <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason They Are Scared</label><input type="text" placeholder="e.g. They went through a difficult divorce and are cautious..." style={inp} value={s.scaredOther||""} onChange={e=>update({scaredOther:e.target.value})}/></div>
               </div>
@@ -984,17 +950,17 @@ Return ONLY JSON:
             {s.objection==="location"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <Chips label="What Is the Concern About the Location?" options={[
-                  {value:"schools",label:"🏫 Schools Not Good Enough"},
-                  {value:"far_work",label:"🚗 Too Far from Work"},
-                  {value:"poor_transport",label:"🚇 Poor Transport Links"},
-                  {value:"no_amenities",label:"🛒 Not Enough Shops / Amenities"},
-                  {value:"neighbourhood_vibe",label:"🌆 Neighbourhood Vibe Not Right"},
-                  {value:"growth_potential",label:"📉 Worried About Area Growth"},
-                  {value:"too_noisy",label:"🔊 Too Noisy or Busy"},
-                  {value:"no_green_space",label:"🌳 Not Enough Green Space"},
-                  {value:"safety",label:"🔒 Safety Concerns"},
-                  {value:"too_much_development",label:"🏗️ Too Much Development Nearby"},
-                  {value:"wrong_demographic",label:"👥 Wrong Demographic Feel"},
+                  {value:"schools",label:"Schools Not Good Enough"},
+                  {value:"far_work",label:"Too Far from Work"},
+                  {value:"poor_transport",label:"Poor Transport Links"},
+                  {value:"no_amenities",label:"Not Enough Shops / Amenities"},
+                  {value:"neighbourhood_vibe",label:"Neighbourhood Vibe Not Right"},
+                  {value:"growth_potential",label:"Worried About Area Growth"},
+                  {value:"too_noisy",label:"Too Noisy or Busy"},
+                  {value:"no_green_space",label:"Not Enough Green Space"},
+                  {value:"safety",label:"Safety Concerns"},
+                  {value:"too_much_development",label:"Too Much Development Nearby"},
+                  {value:"wrong_demographic",label:"Wrong Demographic Feel"},
                 ]} selected={s.locationConcerns||[]} onToggle={v=>update({locationConcerns:tog(s.locationConcerns||[],v)})}/>
                 <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason About the Location</label><input type="text" placeholder="e.g. They want to be closer to her parents..." style={inp} value={s.locationOther||""} onChange={e=>update({locationOther:e.target.value})}/></div>
               </div>
@@ -1010,11 +976,11 @@ Return ONLY JSON:
             {s.objection==="already_have_agent"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <Chips label="Are They Happy with Their Current Agent?" options={[
-                  {value:"very_happy",label:"😊 Very Happy"},
-                  {value:"somewhat_happy",label:"🤔 Somewhat Happy"},
-                  {value:"not_really",label:"😐 Not Really"},
-                  {value:"not_happy",label:"😤 Not Happy at All"},
-                  {value:"not_sure",label:"🤷 Not Sure Yet"},
+                  {value:"very_happy",label:"Very Happy"},
+                  {value:"somewhat_happy",label:"Somewhat Happy"},
+                  {value:"not_really",label:"Not Really"},
+                  {value:"not_happy",label:"Not Happy at All"},
+                  {value:"not_sure",label:"Not Sure Yet"},
                 ]} selected={s.agentSatisfaction?[s.agentSatisfaction]:[]} onToggle={v=>update({agentSatisfaction:v})} single/>
                 <div style={{marginTop:"8px"}}>
                   <label style={lbl}>Any Reason They Might Consider Switching?</label>
@@ -1029,27 +995,27 @@ Return ONLY JSON:
 
         {isObjection&&isSeller()&&(
           <div style={card}>
-            <p style={{fontSize:"13px",fontWeight:"700",color:"#ffffff",marginBottom:"16px",lineHeight:"1.6",padding:"12px 14px",background:"rgba(255,255,255,0.06)",borderRadius:"8px",border:"1px solid rgba(255,255,255,0.15)"}}>✦ The more specific you are here, the more personal and powerful the AI response.</p>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle This Objection</h2>
 
             <Chips label="Objection They Raised" options={[
-              {value:"price_too_low",label:"💰 Price Too Low"},
+              {value:"price_too_low",label:"Price Too Low"},
               {value:"not_right_time",label:"⏰ Not the Right Time"},
-              {value:"already_have_agent",label:"👤 Already Have an Agent"},
-              {value:"need_more_time",label:"🕐 Need More Time"},
-              {value:"market_too_slow",label:"📉 Market Too Slow"},
-              {value:"want_fsbo",label:"🏷️ Want to Try FSBO"},
-              {value:"not_ready",label:"🛑 Not Ready to Sell"},
-              {value:"thinks_worth_more",label:"💎 Think It\'s Worth More"},
-              {value:"bad_experience",label:"😤 Bad Past Experience"},
-              {value:"no_rush",label:"🌱 No Rush to Sell"},
-              {value:"renovating_first",label:"🔨 Renovating First"},
-              {value:"waiting_market",label:"📈 Waiting for Better Market"},
-              {value:"family_decision",label:"👨\u200d👩\u200d👧 Family Decision"},
-              {value:"emotional_attachment",label:"💔 Emotional Attachment"},
+              {value:"already_have_agent",label:"Already Have an Agent"},
+              {value:"need_more_time",label:"Need More Time"},
+              {value:"market_too_slow",label:"Market Too Slow"},
+              {value:"want_fsbo",label:"Want to Try FSBO"},
+              {value:"not_ready",label:"Not Ready to Sell"},
+              {value:"thinks_worth_more",label:"Think It\'s Worth More"},
+              {value:"bad_experience",label:"Bad Past Experience"},
+              {value:"no_rush",label:"No Rush to Sell"},
+              {value:"renovating_first",label:"Renovating First"},
+              {value:"waiting_market",label:"Waiting for Better Market"},
+              {value:"family_decision",label:"\u200d\u200d Family Decision"},
+              {value:"emotional_attachment",label:"Emotional Attachment"},
             ]} selected={s.objection?[s.objection]:[]} onToggle={v=>update({objection:s.objection===v?"":v})} single/>
             <div style={{marginTop:"12px",marginBottom:"16px"}}>
               <label style={lbl}>What Did They Say?</label>
+              <p style={{fontSize:"11px",color:"rgba(255,255,255,0.45)",margin:"4px 0 6px",lineHeight:"1.5"}}>The more specific you are here, the more personal and powerful the AI response.</p>
               <textarea placeholder="e.g. He said: 'We've lived here 15 years. It's just really hard to imagine leaving it. I don't think now is the right time.' — The more exact the better." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.objectionText||""} onChange={e=>update({objectionText:e.target.value})}/>
             </div>
             <div style={{marginBottom:"16px"}}>
@@ -1068,7 +1034,7 @@ Return ONLY JSON:
                 </div>
               </div>
             )}
-            <PropCard s={s} update={update} tog={tog} title="🏠 Their Property" showFeatures={false}/>
+            <PropCard s={s} update={update} tog={tog} title=" Their Property" showFeatures={false}/>
             <div style={{marginBottom:"12px"}}><label style={lbl}>Key Features of Their Property</label><input type="text" placeholder="e.g. Pool, ocean views, renovated kitchen, 3-car garage" style={inp} value={s.propKeyFeatures||""} onChange={e=>update({propKeyFeatures:e.target.value})}/></div>
           </div>
         )}
@@ -1089,40 +1055,13 @@ Return ONLY JSON:
               {[["soldPrice","Sold Price ($)","485,000"],["soldBeds","Beds","3"],["soldBaths","Baths","2"],["soldType","Type","Condo"],["soldDaysOnMarket","Days on Market","12"],["soldDate","Sale Date","March 2025"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"16px"}}>
-              {[["soldAboveBelow","Above/Below Asking","$15K above"],["soldPricePerSqft","Price/Sq Ft","$285"],["soldNumOffers","# of Offers","3"],["soldCondition","Condition","Good"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
+              {[["soldAboveBelow","Above/Below Asking","$15K above"],["soldPricePerSqft","Price/Sq Ft","$285"],["soldCondition","Condition","Good"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
             </div>
-            <div style={{paddingTop:"14px",borderTop:"1px solid #252530"}}>
-              <p style={{fontSize:"12px",fontWeight:"700",color:"#ffffff",marginBottom:"10px"}}>🏠 Their Property — For Comparison</p>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"10px"}}>
-                {[["clientPropAddress","Their Address","22 Oak Ave"],["clientPropPrice","Est. Value ($)","520,000"],["clientPropBeds","Beds","3"],["clientPropBaths","Baths","2"],["clientPropSqft","Sq Ft","1,850"],["clientPropYearsOwned","Years Owned","7"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
-              </div>
-              <div style={{marginBottom:"10px"}}><label style={lbl}>Condition</label><input type="text" placeholder="Good, updated kitchen" style={inp} value={s.clientPropCondition||""} onChange={e=>update({clientPropCondition:e.target.value})}/></div>
-              <div style={{marginBottom:"10px"}}><label style={lbl}>Mortgage Remaining</label><input type="text" placeholder="$180,000" style={inp} value={s.clientPropMortgage||""} onChange={e=>update({clientPropMortgage:e.target.value})}/></div>
-              <div><label style={lbl}>Who Else Is Involved in Decision?</label><input type="text" placeholder="Spouse, adult children" style={inp} value={s.clientPropDecisionMakers||""} onChange={e=>update({clientPropDecisionMakers:e.target.value})}/></div>
-            </div>
+            <div style={{marginBottom:"12px"}}><label style={lbl}>Key Features</label><input type="text" placeholder="e.g. Private pool, ocean views, renovated kitchen..." style={inp} value={s.soldKeyFeatures||""} onChange={e=>update({soldKeyFeatures:e.target.value})}/></div>
+
           </div>
         )}
 
-        {isNeighbourSale&&(
-          <div style={{...card,background:"rgba(42,184,212,0.03)",border:"1px solid rgba(42,184,212,0.2)"}}>
-            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏘️ Property Sold in the Neighbourhood</h2>
-            <div style={{marginBottom:"12px"}}><label style={lbl}>Address of Sold Property</label><input type="text" placeholder="14 Maple Street" style={inp} value={s.soldAddress||""} onChange={e=>update({soldAddress:e.target.value})}/></div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"10px",marginBottom:"10px"}}>
-              {[["soldPrice","Sold Price ($)","485,000"],["soldBeds","Beds","3"],["soldBaths","Baths","2"],["soldType","Type","Condo"],["soldDaysOnMarket","Days on Market","12"],["soldDate","Sale Date","March 2025"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"16px"}}>
-              {[["soldAboveBelow","Above/Below Asking","$15K above"],["soldPricePerSqft","Price/Sq Ft","$285"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
-            </div>
-            <div style={{paddingTop:"14px",borderTop:"1px solid #252530"}}>
-              <p style={{fontSize:"12px",fontWeight:"700",color:"#ffffff",marginBottom:"10px"}}>🏠 Their Property — For Comparison</p>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"10px"}}>
-                {[["clientPropAddress","Their Address","22 Oak Ave"],["clientPropPrice","Est. Value ($)","520,000"],["clientPropBeds","Beds","3"],["clientPropBaths","Baths","2"],["clientPropSqft","Sq Ft","1,850"],["clientPropYearsOwned","Years Owned","7"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
-              </div>
-              <div style={{marginBottom:"10px"}}><label style={lbl}>Condition</label><input type="text" placeholder="Good" style={inp} value={s.clientPropCondition||""} onChange={e=>update({clientPropCondition:e.target.value})}/></div>
-              <div><label style={lbl}>Mortgage Remaining</label><input type="text" placeholder="$180,000" style={inp} value={s.clientPropMortgage||""} onChange={e=>update({clientPropMortgage:e.target.value})}/></div>
-            </div>
-          </div>
-        )}
 
         {isPriceDiscussion&&(
           <div style={card}>
@@ -1130,12 +1069,12 @@ Return ONLY JSON:
             <div style={{marginBottom:"12px"}}><label style={lbl}>Days on Market</label><input type="number" placeholder="45" style={inp} value={s.daysOnMarket||""} onChange={e=>update({daysOnMarket:e.target.value})}/></div>
             <Chips label="Why Consider a Reduction?" options={["No offers received","Similar homes sold lower","Market has shifted","Showings but no offers","Overpriced vs market","Too much competition","Buyer feedback on price","Motivated to sell faster"]} selected={s.priceReasons||[]} onToggle={v=>update({priceReasons:tog(s.priceReasons||[],v)})}/>
             <Chips label="Seller Urgency" options={[
-              {value:"30days",label:"🔥 Within 30 Days"},{value:"60days",label:"⚡ Within 60 Days"},
-              {value:"90days",label:"📅 Within 90 Days"},{value:"flexible",label:"🌱 Flexible"},
-              {value:"bought_new",label:"🏠 Already Bought New Home"},{value:"relocating",label:"✈️ Relocating"},
-              {value:"divorce",label:"⚖️ Divorce"},{value:"financial",label:"💰 Financial Pressure"},
+              {value:"30days",label:"Within 30 Days"},{value:"60days",label:"Within 60 Days"},
+              {value:"90days",label:"Within 90 Days"},{value:"flexible",label:"Flexible"},
+              {value:"bought_new",label:"Already Bought New Home"},{value:"relocating",label:"Relocating"},
+              {value:"divorce",label:"Divorce"},{value:"financial",label:"Financial Pressure"},
             ]} selected={s.sellerUrgency||[]} onToggle={v=>update({sellerUrgency:tog(s.sellerUrgency||[],v)})}/>
-            <PropCard s={s} update={update} tog={tog} title="🏠 Their Property" showFeatures={true}/>
+            <PropCard s={s} update={update} tog={tog} title=" Their Property" showFeatures={true}/>
           </div>
         )}
 
@@ -1146,28 +1085,28 @@ Return ONLY JSON:
               <div><label style={lbl}>Original Asking Price ($)</label><input type="text" placeholder="680,000" style={inp} value={s.expOrigPrice||""} onChange={e=>update({expOrigPrice:e.target.value})}/></div>
               <div><label style={lbl}>Days Listed</label><input type="number" placeholder="90" style={inp} value={s.expDays||""} onChange={e=>update({expDays:e.target.value})}/></div>
             </div>
-            <Chips label="Why Didn\'t It Sell?" options={["Overpriced","Poor online presence","No professional photography","Weak marketing","No video / virtual tour","Bad timing","Wrong target audience","Needs repairs / staging","Limited MLS exposure","No social media","Poor description","No open houses","Agent underperformed","Market shifted","Pricing not competitive"]} selected={s.expiredReasons||[]} onToggle={v=>update({expiredReasons:tog(s.expiredReasons||[],v)})}/>
+            <Chips label="Why Did It Not Sell?" options={["Overpriced","Poor online presence","No professional photography","Weak marketing","No video / virtual tour","Bad timing","Wrong target audience","Needs repairs / staging","Limited MLS exposure","No social media","Poor description","No open houses","Agent underperformed","Market shifted","Pricing not competitive"]} selected={s.expiredReasons||[]} onToggle={v=>update({expiredReasons:tog(s.expiredReasons||[],v)})}/>
             <div style={{paddingTop:"14px",borderTop:"1px solid #252530",marginTop:"8px"}}>
               <p style={{fontSize:"12px",fontWeight:"700",color:"#2AB8D4",marginBottom:"10px"}}>🔄 Re-List Strategy</p>
               <Chips label="Your New Approach" options={[
-                {value:"new_price",label:"💰 New Pricing"},{value:"pro_photos",label:"📸 Professional Photos"},
-                {value:"video",label:"🎬 Video"},{value:"virtual_tour",label:"🏠 Virtual Tour"},
-                {value:"staging",label:"🎨 Staging"},{value:"social_media",label:"Social Media"},
-                {value:"digital_ads",label:"🎯 Digital Ads"},{value:"open_house",label:"🚪 Open Houses"},
-                {value:"buyer_network",label:"👥 Buyer Outreach"},{value:"price_compete",label:"📊 Price to Create Competition"},
-                {value:"drone",label:"🚁 Drone Photography"},{value:"off_market_first",label:"🔒 Off-Market Pre-Launch"},
+                {value:"new_price",label:"New Pricing"},{value:"pro_photos",label:"Professional Photos"},
+                {value:"video",label:"Video"},{value:"virtual_tour",label:"Virtual Tour"},
+                {value:"staging",label:"Staging"},{value:"social_media",label:"Social Media"},
+                {value:"digital_ads",label:"Digital Ads"},{value:"open_house",label:"Open Houses"},
+                {value:"buyer_network",label:"Buyer Outreach"},{value:"price_compete",label:"Price to Create Competition"},
+                {value:"drone",label:"Drone Photography"},{value:"off_market_first",label:"Off-Market Pre-Launch"},
               ]} selected={s.relistStrategy||[]} onToggle={v=>update({relistStrategy:tog(s.relistStrategy||[],v)})}/>
               <div style={{marginTop:"8px"}}><label style={lbl}>What Will You Do Differently?</label><textarea placeholder="e.g. Relaunch with professional photography, targeted ads, price to generate multiple offers..." rows={3} style={{...inp,resize:"vertical"}} value={s.relistDifferent||""} onChange={e=>update({relistDifferent:e.target.value})}/></div>
             </div>
-            <PropCard s={s} update={update} tog={tog} title="🏠 Their Property" showFeatures={true}/>
+            <PropCard s={s} update={update} tog={tog} title=" Their Property" showFeatures={true}/>
           </div>
         )}
 
         {isPreListing&&(
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>✅ Pre-Listing Preparation</h2>
-            <Chips label="Recommended Preparations" options={["📸 Professional Photography","🎬 Video Tour","🎨 Home Staging","🔧 Minor Repairs","🧹 Deep Clean","📦 Declutter & Depersonalise","💡 New Lighting","🎨 Interior Paint — Neutral","🌿 Curb Appeal","🏡 Kitchen Update","🚿 Bathroom Update","💎 Value-Add Improvements","📐 Floor Plan","🏠 Virtual Tour","📊 Pre-Sale Inspection","🔑 Smart Lock Upgrade","⚡ Electrical Check","🪟 Window Cleaning","🚗 Driveway Pressure Wash","🌳 Landscaping","🧹 Carpet & Upholstery Cleaning","🏠 Roof Inspection","🔧 Plumbing Check","📦 Storage Solutions","🚪 New Front Door","📮 Mailbox Update","🐛 Pest Inspection","💧 Mould Check","⚡ Energy Efficiency Report","🏚️ Garage Clearance","🔩 Fix Exterior Cracks"]} selected={s.preListingItems||[]} onToggle={v=>update({preListingItems:tog(s.preListingItems||[],v)})}/>
-            <PropCard s={s} update={update} tog={tog} title="🏠 Their Property" showFeatures={true}/>
+            <Chips label="Recommended Preparations" options={[" Professional Photography"," Video Tour"," Home Staging"," Minor Repairs"," Deep Clean"," Declutter & Depersonalise"," New Lighting"," Interior Paint — Neutral"," Curb Appeal"," Kitchen Update"," Bathroom Update"," Value-Add Improvements"," Floor Plan"," Virtual Tour"," Pre-Sale Inspection"," Smart Lock Upgrade"," Electrical Check"," Window Cleaning"," Driveway Pressure Wash"," Landscaping"," Carpet & Upholstery Cleaning"," Roof Inspection"," Plumbing Check"," Storage Solutions"," New Front Door"," Mailbox Update"," Pest Inspection"," Mould Check"," Energy Efficiency Report"," Garage Clearance"," Fix Exterior Cracks"]} selected={s.preListingItems||[]} onToggle={v=>update({preListingItems:tog(s.preListingItems||[],v)})}/>
+            <PropCard s={s} update={update} tog={tog} title=" Their Property" showFeatures={true}/>
           </div>
         )}
 
@@ -1177,7 +1116,7 @@ Return ONLY JSON:
             <div style={{marginBottom:"12px"}}><label style={lbl}>When Did They Originally Want to Sell?</label><input type="text" placeholder="Spring 2025, Q1..." style={inp} value={s.originalTimeline||""} onChange={e=>update({originalTimeline:e.target.value})}/></div>
             <div style={{marginBottom:"12px"}}><label style={lbl}>What Is Their New Timeline?</label><input type="text" placeholder="Thinking end of year..." style={inp} value={s.newTimeline||""} onChange={e=>update({newTimeline:e.target.value})}/></div>
             <Chips label="What May Have Changed?" options={[{value:"life_circumstances",label:"Life Circumstances"},{value:"market_shift",label:"Market Shifted"},{value:"found_property",label:"Found New Property"},{value:"family_situation",label:"Family Situation"},{value:"work_relocation",label:"Work Relocation"},{value:"financial_change",label:"Financial Change"},{value:"partner_disagreement",label:"Partner Disagreement"},{value:"mortgage_change",label:"Mortgage Change"},{value:"renovation_delay",label:"Renovation Delay"},{value:"still_deciding",label:"Still Deciding"}]} selected={s.timelineChanges||[]} onToggle={v=>update({timelineChanges:tog(s.timelineChanges||[],v)})}/>
-            <Chips label="Where Are They Emotionally?" options={[{value:"motivated",label:"🔥 Motivated"},{value:"hesitant",label:"🤔 Hesitant"},{value:"frustrated",label:"😤 Frustrated"},{value:"excited",label:"😊 Excited"},{value:"scared",label:"😰 Nervous"},{value:"patient",label:"🌱 Patient"},{value:"urgent",label:"⚡ More Urgent Now"}]} selected={s.timelineEmotion||[]} onToggle={v=>update({timelineEmotion:tog(s.timelineEmotion||[],v)})}/>
+            <Chips label="Where Are They Emotionally?" options={[{value:"motivated",label:"Motivated"},{value:"hesitant",label:"Hesitant"},{value:"frustrated",label:"Frustrated"},{value:"excited",label:"Excited"},{value:"scared",label:"Nervous"},{value:"patient",label:"Patient"},{value:"urgent",label:"More Urgent Now"}]} selected={s.timelineEmotion||[]} onToggle={v=>update({timelineEmotion:tog(s.timelineEmotion||[],v)})}/>
             <div style={{marginTop:"8px"}}><label style={lbl}>Additional Context</label><textarea placeholder="e.g. Originally wanted to sell by April but renovation took longer..." rows={3} style={{...inp,resize:"vertical"}} value={s.timelineContext||""} onChange={e=>update({timelineContext:e.target.value})}/></div>
           </div>
         )}
@@ -1213,17 +1152,17 @@ Return ONLY JSON:
               <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>👤 Buyer Profile</h2>
               <div style={{marginBottom:"12px"}}><label style={lbl}>Buyer Description</label><input type="text" placeholder="Young professional couple, relocating from NYC" style={inp} value={s.buyerType||""} onChange={e=>update({buyerType:e.target.value})}/></div>
               <Chips label="Buyer Profile" options={[
-                {value:"cash_buyer",label:"💵 Cash Buyer"},{value:"pre_approved",label:"✅ Pre-Approved"},
-                {value:"mortgage_in_principle",label:"📋 Mortgage in Principle"},{value:"first_time",label:"🏠 First-Time Buyer"},
-                {value:"chain_free",label:"⚡ Chain-Free"},{value:"relocating",label:"✈️ Relocating"},
-                {value:"investor",label:"💰 Investor"},{value:"foreign_national",label:"🌍 Foreign National"},
-                {value:"self_employed",label:"💼 Self-Employed"},{value:"high_net_worth",label:"💎 High Net Worth"},
-                {value:"quick_decision",label:"⚡ Quick Decision Maker"},{value:"flexible_close",label:"📅 Flexible Closing"},
-                {value:"seen_many",label:"🏠 Viewed Many Properties"},{value:"very_motivated",label:"🔥 Very Motivated"},
-                {value:"end_user",label:"🏡 End-User"},{value:"buy_to_let",label:"🏢 Buy-to-Let"},
-                {value:"downsizer",label:"📦 Downsizer"},{value:"upsizer",label:"📈 Upsizer"},
-                {value:"empty_nester",label:"🐦 Empty Nester"},{value:"recently_divorced",label:"⚖️ Recently Divorced"},
-                {value:"inheritance",label:"💰 Using Inheritance"},{value:"corporate_relocation",label:"🏢 Corporate Relocation"},
+                {value:"cash_buyer",label:"Cash Buyer"},{value:"pre_approved",label:"Pre-Approved"},
+                {value:"mortgage_in_principle",label:"Mortgage in Principle"},{value:"first_time",label:"First-Time Buyer"},
+                {value:"chain_free",label:"Chain-Free"},{value:"relocating",label:"Relocating"},
+                {value:"investor",label:"Investor"},{value:"foreign_national",label:"Foreign National"},
+                {value:"self_employed",label:"Self-Employed"},{value:"high_net_worth",label:"High Net Worth"},
+                {value:"quick_decision",label:"Quick Decision Maker"},{value:"flexible_close",label:"Flexible Closing"},
+                {value:"seen_many",label:"Viewed Many Properties"},{value:"very_motivated",label:"Very Motivated"},
+                {value:"end_user",label:"End-User"},{value:"buy_to_let",label:"Buy-to-Let"},
+                {value:"downsizer",label:"Downsizer"},{value:"upsizer",label:"Upsizer"},
+                {value:"empty_nester",label:"Empty Nester"},{value:"recently_divorced",label:"Recently Divorced"},
+                {value:"inheritance",label:"Using Inheritance"},{value:"corporate_relocation",label:"Corporate Relocation"},
               ]} selected={s.buyerProfile||[]} onToggle={v=>update({buyerProfile:tog(s.buyerProfile||[],v)})}/>
             </div>
           </>
@@ -1233,8 +1172,8 @@ Return ONLY JSON:
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏷️ FSBO Outreach</h2>
             <div style={{marginBottom:"14px"}}><label style={lbl}>Why Should They Work With You?</label><textarea placeholder="e.g. I sold 3 homes on their street this year, average 8% above asking..." rows={3} style={{...inp,resize:"vertical"}} value={s.fsboReasons||""} onChange={e=>update({fsboReasons:e.target.value})}/></div>
-            <Chips label="Key Advantages" options={["📊 Access to More Buyers","💰 Higher Sale Price (avg 6-18% more)","🤝 Professional Negotiation","⚖️ Legal & Contract Protection","🌐 MLS & Portal Exposure","📸 Professional Photography","⏰ Time Saved","👥 Pre-Qualified Buyers","📍 Market Expertise","⚡ Faster Sale","📋 Contract Management","🎯 Zero Upfront Cost","📱 Social Media Marketing","🎬 Video & Virtual Tour","💡 Pricing Strategy","🏆 Track Record in This Area","🔒 Privacy During Showings","🌍 International Buyer Access"]} selected={s.fsboAdvantages||[]} onToggle={v=>update({fsboAdvantages:tog(s.fsboAdvantages||[],v)})}/>
-            <PropCard s={s} update={update} tog={tog} title="🏠 Their Property" showFeatures={true}/>
+            <Chips label="Key Advantages" options={[" Access to More Buyers"," Higher Sale Price (avg 6-18% more)"," Professional Negotiation"," Legal & Contract Protection"," MLS & Portal Exposure"," Professional Photography","⏰ Time Saved"," Pre-Qualified Buyers"," Market Expertise"," Faster Sale"," Contract Management"," Zero Upfront Cost"," Social Media Marketing"," Video & Virtual Tour"," Pricing Strategy"," Track Record in This Area"," Privacy During Showings"," International Buyer Access"]} selected={s.fsboAdvantages||[]} onToggle={v=>update({fsboAdvantages:tog(s.fsboAdvantages||[],v)})}/>
+            <PropCard s={s} update={update} tog={tog} title=" Their Property" showFeatures={true}/>
           </div>
         )}
 
@@ -1276,7 +1215,7 @@ Return ONLY JSON:
 
         {showProp&&!isPriceDiscussion&&!isExpiredListing&&!isPreListing&&!isFSBO&&!isOfferStrategy&&!isViewingFollowUp&&!isPriceDrop&&(
           <PropCard s={s} update={update} tog={tog}
-            title={isBuyer()?"🏠 Property You\'re Offering":isSeller()?"🏠 Their Property":"🏠 Property Details"}
+            title={isBuyer()?" Property You\'re Offering":isSeller()?" Their Property":" Property Details"}
             showFeatures={showFeatures}
           />
         )}
@@ -1290,13 +1229,7 @@ Return ONLY JSON:
 
 
 
-        {!isReconnect&&!isObjection&&(
-          <div style={ctxStyle}>
-            <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"6px"}}> Personal Context</div>
-            <p style={{fontSize:"12px",color:"rgba(255,255,255,0.45)",marginBottom:"10px",lineHeight:"1.6"}}>Prior contact history, personal notes — anything about this client you want woven into every message.</p>
-            <textarea placeholder="e.g. Sarah has been a lead for 2 months — very interested but hesitant. Two kids, tight timeline, husband needs convincing." rows={4} value={s.customSituation||""} onChange={e=>update({customSituation:e.target.value})} style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.12)",background:"#0d0d0d"}}/>
-          </div>
-        )}
+
 
         <div style={card}>
           <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🏷️ Your Details</h2>
@@ -1316,7 +1249,7 @@ Return ONLY JSON:
         )}
         <button onClick={()=>{if(canGenerate()&&!s.loading)generate()}}
           style={{background:canGenerate()&&!s.loading?"#2AB8D4":"#1a1a1a",color:canGenerate()&&!s.loading?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"15px",fontWeight:"700",cursor:canGenerate()&&!s.loading?"pointer":"not-allowed",fontFamily:"inherit",width:"100%"}}>
-          {s.loading?"Generating...":"✦ Generate Full Outreach Package"}
+          {s.loading?"Generating...":" Generate Full Outreach Package"}
         </button>
         {!canGenerate()&&<p style={{color:"rgba(255,255,255,0.5)",fontSize:"12px",marginTop:"8px",textAlign:"center"}}>Fill in client name, type, and contact reason to continue.</p>}
       </div>
