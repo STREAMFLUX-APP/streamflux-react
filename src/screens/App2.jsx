@@ -287,7 +287,7 @@ export default function App2({ state: appState, setScreen }) {
   const isViewingFollowUp = s.contactReason==="viewing_followup"
   const isPriceDrop = s.contactReason==="price_drop"
   const isNoProperty = ["market_update","financing_update","re_engagement","referral_request","anniversary","neighbourhood_news","market_value_update","reconnect","first_contact"].includes(s.contactReason)
-  const showProp = !isNoProperty&&!isSoldNearby&&!isNeighbourSale&&!isCMA&&!isBuyerMatch&&!isObjection
+  const showProp = !isNoProperty&&!isSoldNearby&&!isCMA&&!isBuyerMatch&&!isObjection
   const showFeatures = showProp&&!isPriceDiscussion&&!isExpiredListing&&!isPreListing&&!isFSBO&&!isTimelineCheckin
   const hideUrgencyTone = isFirstContact&&isBuyer()
   const showSellerProfile = isSeller()&&!isFirstContact&&!isObjection&&!isReconnect&&!isBuyerMatch
