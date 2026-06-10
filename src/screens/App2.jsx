@@ -1287,24 +1287,7 @@ Return ONLY JSON:
 
         {showSellerProfile&&<SellerProfileBox s={s} update={update} tog={tog}/>}
 
-        {isSeller()&&(isReconnect||isCMA||isMarketUpdate)&&(
-          <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:"12px",padding:"22px",marginBottom:"16px"}}>
-            <h2 style={{fontSize:"16px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>👤 Seller Profile & Context</h2>
-            <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The more you tell us, the more personalised the message.</p>
-            <Chips label="Seller Situation" options={[
-              {value:"quick_sale",label:"Wants Quick Sale"},{value:"flexible",label:"Flexible on Timeline"},
-              {value:"top_dollar",label:"Needs Top Dollar"},{value:"downsizing",label:"Downsizing"},
-              {value:"upsizing",label:"Upsizing"},{value:"relocating",label:"Relocating"},
-              {value:"divorce",label:"Divorce Settlement"},{value:"inherited",label:"Inherited Property"},
-              {value:"investment",label:"Investment Property Sale"},{value:"found_new",label:"Already Found New Home"},
-              {value:"testing",label:"Testing the Market"},
-            ]} selected={s.sellerSituation} onToggle={v=>update({sellerSituation:tog(s.sellerSituation,v)})}/>
-            <div style={{marginTop:"8px"}}>
-              <label style={lbl}>Personal Context</label>
-              <textarea placeholder="e.g. They've been thinking about selling for 6 months. The wife is motivated but the husband is hesitant on price. They need to move by summer due to work relocation..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.customSituation||""} onChange={e=>update({customSituation:e.target.value})}/>
-            </div>
-          </div>
-        )}
+
 
 
         {!isReconnect&&!isObjection&&(
