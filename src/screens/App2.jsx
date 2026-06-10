@@ -54,13 +54,13 @@ const REASONS_PAST_EN = [
   {value:"objection_handle",label:"Handle Objection",desc:"They said no"},
 ]
 const CLIENT_TYPES_EN = [
-  {value:"buyer_active",label:"🔥 Active Buyer",desc:"Looking now, ready to move"},
-  {value:"buyer_passive",label:"👀 Passive Buyer",desc:"Interested but not urgent"},
-  {value:"seller_motivated",label:"⚡ Motivated Seller",desc:"Wants to sell fast"},
-  {value:"seller_exploring",label:"🤔 Exploring Seller",desc:"Considering selling"},
-  {value:"investor",label:"💰 Investor",desc:"ROI-focused opportunity"},
-  {value:"cold_lead",label:"❄️ Cold Lead",desc:"No prior contact"},
-  {value:"past_client",label:"🤝 Past Client",desc:"Already closed together"},
+  {value:"buyer_active",label:"Active Buyer",desc:"Looking now, ready to move"},
+  {value:"buyer_passive",label:"Passive Buyer",desc:"Interested but not urgent"},
+  {value:"seller_motivated",label:"Motivated Seller",desc:"Wants to sell fast"},
+  {value:"seller_exploring",label:"Exploring Seller",desc:"Considering selling"},
+  {value:"investor",label:"Investor",desc:"ROI-focused opportunity"},
+  {value:"cold_lead",label:"Cold Lead",desc:"No prior contact"},
+  {value:"past_client",label:"Past Client",desc:"Already closed together"},
 ]
 const TONES_EN = [
   {value:"warm",label:"Warm & Personal",desc:"Friendly, relationship-first"},
@@ -124,7 +124,7 @@ const initState = (lang) => ({
   soldDaysOnMarket:"", soldAboveBelow:"", soldDate:"", soldCondition:"",
   soldPricePerSqft:"", soldKeyFeatures:"",
   marketLocation:"", marketDirection:[], marketInsight:"", marketStats:"",
-  reconnectSituation:[], lookingFor:"",
+  reconnectSituation:[], reconnectOther:"", lookingFor:"",
   introSource:[], introSourceContext:"", introComeAcross:[],
   leadSource:null, leadSourceContext:"", knownAboutProperty:"", firstOutcomeGoal:"",
   daysOnMarket:"", priceReasons:[], sellerUrgency:[],
@@ -529,8 +529,6 @@ Return ONLY JSON:
               <label style={lbl}>Add more context or specify how you got this contact</label>
               <input type="text" placeholder="e.g. Met at a property expo last month, mentioned actively searching for a 3-bed..." style={inp} value={s.introSourceContext||""} onChange={e=>update({introSourceContext:e.target.value})}/>
             </div>
-            <Chips label="Urgency Level" options={URGENCY_EN} selected={s.urgency} onToggle={v=>update({urgency:v})} single/>
-            <Chips label="Communication Tone" options={TONES_EN} selected={s.tone} onToggle={v=>update({tone:v})} single/>
             <div style={{marginTop:"8px"}}>
               <label style={lbl}>Specific Outcome from This Message</label>
               <input type="text" placeholder="e.g. Get them to agree to a 15-minute call this week to discuss what they are looking for..." style={inp} value={s.firstOutcomeGoal||""} onChange={e=>update({firstOutcomeGoal:e.target.value})}/>
@@ -577,6 +575,10 @@ Return ONLY JSON:
               {value:"lease_ending",label:"Rental Lease Ending"},{value:"sold_other",label:"Sold Another Property"},
               ...(isSeller()?[{value:"renovation_complete",label:"Renovation Complete"},{value:"value_increased",label:"Value Increased"},{value:"market_improved",label:"Market Improved"}]:[]),
             ]} selected={s.reconnectSituation} onToggle={v=>update({reconnectSituation:tog(s.reconnectSituation,v)})}/>
+            <div style={{marginBottom:"12px",marginTop:"8px"}}>
+              <label style={lbl}>Any other reason they went quiet?</label>
+              <input type="text" placeholder="e.g. They just got a promotion and are now looking to upgrade..." style={inp} value={s.reconnectOther||""} onChange={e=>update({reconnectOther:e.target.value})}/>
+            </div>
             <div style={{marginTop:"8px"}}><label style={lbl}>What Was the Situation?</label>
               <textarea placeholder="e.g. Searching for 4-bed, budget $650K. We spoke 3 months ago, went quiet after viewing 2 properties..." rows={4} style={{...inp,resize:"vertical"}} value={s.lookingFor||""} onChange={e=>update({lookingFor:e.target.value})}/>
             </div>
