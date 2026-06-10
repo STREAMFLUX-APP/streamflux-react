@@ -277,10 +277,29 @@ export default function App2({ state: appState, setScreen }) {
  const update = u => setS(prev=>({...prev,...u}))
  const tog = (arr,val) => arr.includes(val)?arr.filter(x=>x!==val):[...arr,val]
 
- const isSpa = s.language==="Spanish" const isBuyer = () => s.clientType.includes("buyer")||s.clientType==="investor" const isSeller = () => s.clientType.includes("seller")
+ const isSpa = s.language==="Spanish"
+ const isBuyer = () => s.clientType.includes("buyer")||s.clientType==="investor"
+ const isSeller = () => s.clientType.includes("seller")
  const canGenerate = () => s.clientName&&s.clientType&&s.contactReason
 
- const isCMA = s.contactReason==="free_valuation" const isSoldNearby = s.contactReason==="just_sold" const isMarketUpdate = s.contactReason==="market_update" const isFinancingUpdate = s.contactReason==="financing_update" const isPriceDiscussion = s.contactReason==="price_discussion" const isExpiredListing = s.contactReason==="expired_listing" const isPreListing = s.contactReason==="prelisting_prep" const isTimelineCheckin = s.contactReason==="timeline_checkin" const isBuyerMatch = s.contactReason==="buyer_match" const isFSBO = s.contactReason==="fsbo_outreach" const isReconnect = s.contactReason==="reconnect"||s.contactReason==="re_engagement" const isFirstContact = s.contactReason==="first_contact" const isOfferStrategy = s.contactReason==="offer_strategy" const isObjection = s.contactReason==="objection_handle" const isViewingFollowUp = s.contactReason==="viewing_followup" const isPriceDrop = s.contactReason==="price_drop" const isNoProperty = ["market_update","financing_update","re_engagement","referral_request","anniversary","neighbourhood_news","market_value_update","reconnect","first_contact"].includes(s.contactReason)
+
+  const isCMA = s.contactReason==="free_valuation"
+  const isSoldNearby = s.contactReason==="just_sold"
+  const isMarketUpdate = s.contactReason==="market_update"
+  const isFinancingUpdate = s.contactReason==="financing_update"
+  const isPriceDiscussion = s.contactReason==="price_discussion"
+  const isExpiredListing = s.contactReason==="expired_listing"
+  const isPreListing = s.contactReason==="prelisting_prep"
+  const isTimelineCheckin = s.contactReason==="timeline_checkin"
+  const isBuyerMatch = s.contactReason==="buyer_match"
+  const isFSBO = s.contactReason==="fsbo_outreach"
+  const isReconnect = s.contactReason==="reconnect"||s.contactReason==="re_engagement"
+  const isFirstContact = s.contactReason==="first_contact"
+  const isOfferStrategy = s.contactReason==="offer_strategy"
+  const isObjection = s.contactReason==="objection_handle"
+  const isViewingFollowUp = s.contactReason==="viewing_followup"
+  const isPriceDrop = s.contactReason==="price_drop"
+  const isNoProperty = ["market_update","financing_update","re_engagement","referral_request","anniversary","neighbourhood_news","market_value_update","reconnect","first_contact"].includes(s.contactReason)
  const showProp = !isNoProperty&&!isSoldNearby&&!isCMA&&!isBuyerMatch&&!isObjection
  const showFeatures = showProp&&!isPriceDiscussion&&!isExpiredListing&&!isPreListing&&!isFSBO&&!isTimelineCheckin
  const hideUrgencyTone = isFirstContact&&isBuyer()
@@ -289,8 +308,11 @@ export default function App2({ state: appState, setScreen }) {
 
  const generate = async () => {
  update({loading:true,error:"",result:null})
- const langI = isSpa?"\n\nCRITICO: Escribe TODO completamente en espanol.":"" const safe = async(p,sys,t)=>{try{return await apiClaude(p,sys,t)||{}}catch(e){return{}}}
- const ag = s.agentName||"Agent" const buyerCtx = isBuyer()&&isObjection?`BUYER PROFILE:${(s.buyerProfile||[]).join(",")||"not specified"}|LOOKING FOR:${(s.buyerCriteria||[]).join(",")||"not specified"}|BUDGET:${s.buyerBudget||"not specified"}|SPECIFIC REQS:${s.buyerSpecificReqs||"not specified"}|CONTEXT:${s.customSituation||"none"}`:"" const ctx = `CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}|URGENCY:${s.urgency||"medium"}|TONE:${s.tone||"professional"}
+ const langI = isSpa?"\n\nCRITICO: Escribe TODO completamente en espanol.":""
+ const safe = async(p,sys,t)=>{try{return await apiClaude(p,sys,t)||{}}catch(e){return{}}}
+ const ag = s.agentName||"Agent"
+ const buyerCtx = isBuyer()&&isObjection?`BUYER PROFILE:${(s.buyerProfile||[]).join(",")||"not specified"}|LOOKING FOR:${(s.buyerCriteria||[]).join(",")||"not specified"}|BUDGET:${s.buyerBudget||"not specified"}|SPECIFIC REQS:${s.buyerSpecificReqs||"not specified"}|CONTEXT:${s.customSituation||"none"}`:""
+ const ctx = `CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}|URGENCY:${s.urgency||"medium"}|TONE:${s.tone||"professional"}
 PROPERTY:${s.propAddress||"N/A"}|$${s.propPrice||"N/A"}|${s.propType||""}|Beds:${s.propBeds||""}|Baths:${s.propBaths||""}|${s.propHighlights||""}
 ${s.propInterior.length?"INTERIOR:"+s.propInterior.slice(0,8).join(","):""}${s.propOutdoor.length?" OUTDOOR:"+s.propOutdoor.slice(0,6).join(","):""}
 ${buyerCtx}
@@ -302,7 +324,12 @@ AGENT:${ag}${s.agentPhone?"|"+s.agentPhone:""}${s.agencyName?"|"+s.agencyName:""
  update({loadingMsg:" Writing messages..."})
 
  if(isObjection) {
- const objDetail = s.objectionText||s.objection||"general objection" const objSituation = s.objectionSituation||"No additional context provided" const visitCtx = s.visitedProperty==="yes"?"The buyer HAS visited the property in person.":s.visitedProperty==="no"?"The buyer has NOT visited — only seen details online.":"" const compCtx = s.compAddress?`COMPARABLE: ${s.compAddress} sold $${s.compPrice} | ${s.compBeds}bed/${s.compBaths}bath | ${s.compSqft}sqft | ${s.compCondition} | ${s.compKeyFeatures} | ${s.compDaysOnMarket} days on market | ${s.compAboveBelow}`:"No comparable provided" const objCtx = `${ctx}
+
+        const objDetail = s.objectionText||s.objection||"general objection"
+        const objSituation = s.objectionSituation||"No additional context provided"
+        const visitCtx = s.visitedProperty==="yes"?"The buyer HAS visited the property in person.":s.visitedProperty==="no"?"The buyer has NOT visited — only seen details online.":""
+        const compCtx = s.compAddress?`COMPARABLE: ${s.compAddress} sold $${s.compPrice} | ${s.compBeds}bed/${s.compBaths}bath | ${s.compSqft}sqft | ${s.compCondition} | ${s.compKeyFeatures} | ${s.compDaysOnMarket} days on market | ${s.compAboveBelow}`:"No comparable provided"
+        const objCtx = `${ctx}
 OBJECTION:"${objDetail}"
 ${visitCtx}
 ${compCtx}`
