@@ -371,7 +371,7 @@ Return ONLY JSON:
           <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 18px"}}>Every message personalised for {s.clientName} in {s.language}.</p>
           <div style={{display:"flex",gap:"4px",marginBottom:"20px",flexWrap:"wrap",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid rgba(42,184,212,0.25)"}}>
             {TABS_EN.map(tab=>(
-              <button key={tab.id} onClick={()=>{update({activeTab:tab.id});window.scrollTo({top:0,behavior:"smooth"})}}
+              <button key={tab.id} onClick={()=>update({activeTab:tab.id})}
                 style={{background:s.activeTab===tab.id?"#2AB8D4":"#0d0d0d",color:s.activeTab===tab.id?"#060608":"rgba(255,255,255,0.5)",border:s.activeTab===tab.id?"1px solid #252530":"1px solid transparent",borderRadius:"8px",padding:"7px 12px",fontSize:"11px",fontWeight:s.activeTab===tab.id?"700":"500",fontFamily:"inherit",cursor:"pointer",whiteSpace:"nowrap"}}>
                 {tab.label}
               </button>
@@ -424,11 +424,9 @@ Return ONLY JSON:
 
           {s.activeTab==="followups"&&(
             <>
-              <div style={{position:"sticky",top:"56px",zIndex:"999",background:"#060608",paddingTop:"12px",paddingBottom:"12px",marginBottom:"8px"}}>
-                <div style={{display:"flex",gap:"8px"}}>
-                  <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",background:s.fuSubTab==="noreply"?"#2AB8D4":"#1c1c1c",color:s.fuSubTab==="noreply"?"#060608":"#ffffff",border:"2px solid "+(s.fuSubTab==="noreply"?"#2AB8D4":"#444"),borderRadius:"8px",padding:"12px",fontSize:"13px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>No Reply Plan</button>
-                  <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",background:s.fuSubTab==="gotreply"?"#2AB8D4":"#1c1c1c",color:s.fuSubTab==="gotreply"?"#060608":"#ffffff",border:"2px solid "+(s.fuSubTab==="gotreply"?"#2AB8D4":"#444"),borderRadius:"8px",padding:"12px",fontSize:"13px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>Got a Response?</button>
-                </div>
+              <div style={{display:"flex",gap:"4px",marginBottom:"20px",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid #252530"}}>
+                <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",background:s.fuSubTab==="noreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="noreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📋 No Reply Plan</button>
+                <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",background:s.fuSubTab==="gotreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="gotreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📲 Got a Response?</button>
               </div>
               {s.fuSubTab==="noreply"&&(
                 <>
