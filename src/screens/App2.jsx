@@ -274,6 +274,7 @@ export default function App2({ state: appState, setScreen }) {
   const isNoProperty = ["market_update","financing_update","re_engagement","referral_request","anniversary","neighbourhood_news","market_value_update","reconnect","first_contact"].includes(s.contactReason)
   const showProp = !isNoProperty&&!isSoldNearby&&!isCMA&&!isBuyerMatch&&!isObjection
   const showFeatures = showProp&&!isPriceDiscussion&&!isExpiredListing&&!isPreListing&&!isFSBO&&!isTimelineCheckin
+  const hideUrgencyTone = isFirstContact&&isBuyer()
   const showSellerProfile = isSeller()&&!isFirstContact&&!isObjection&&!isReconnect&&!isBuyerMatch
   const CONTACT_REASONS = isSeller()?REASONS_SELLER_EN:s.clientType==="past_client"?REASONS_PAST_EN:s.clientType==="cold_lead"?REASONS_COLD_EN:REASONS_BUYER_EN
 
@@ -423,9 +424,9 @@ Return ONLY JSON:
 
           {s.activeTab==="followups"&&(
             <>
-              <div style={{display:"flex",gap:"4px",marginBottom:"20px",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid #2AB8D4",width:"100%"}}>
-                <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",minWidth:"0",background:s.fuSubTab==="noreply"?"#2AB8D4":"#1a1a1a",color:s.fuSubTab==="noreply"?"#060608":"#ffffff",border:"1px solid #333",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>No Reply Plan</button>
-                <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",minWidth:"0",background:s.fuSubTab==="gotreply"?"#2AB8D4":"#1a1a1a",color:s.fuSubTab==="gotreply"?"#060608":"#ffffff",border:"1px solid #333",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>Got a Response?</button>
+              <div style={{display:"flex",gap:"4px",marginBottom:"20px",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid #252530"}}>
+                <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",background:s.fuSubTab==="noreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="noreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📋 No Reply Plan</button>
+                <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",background:s.fuSubTab==="gotreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="gotreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📲 Got a Response?</button>
               </div>
               {s.fuSubTab==="noreply"&&(
                 <>
@@ -443,7 +444,7 @@ Return ONLY JSON:
                   <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px",lineHeight:"1.6"}}>Got a response? Describe what happened — positive reply, objection, went cold, anything. The AI generates 4 brand new tailored follow-ups instantly.</p>
                   <textarea placeholder="e.g. She replied and said she liked it but her husband isn't convinced. She asked if we could do anything on price..." rows={4}
                     value={s.regenContext||""} onChange={e=>update({regenContext:e.target.value})}
-                    style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.15)",background:"#0d0d0d",marginBottom:"12px",WebkitTextFillColor:"rgba(255,255,255,0.65)",color:"rgba(255,255,255,0.65)"}}/>
+                    style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.15)",background:"#0d0d0d",marginBottom:"12px",WebkitUserSelect:"text",userSelect:"text",WebkitTextFillColor:"rgba(255,255,255,0.65)",color:"rgba(255,255,255,0.65)"}}/>
                   <button onClick={async()=>{
                     if(!s.regenContext||s.regenLoading)return
                     update({regenLoading:true})
@@ -505,7 +506,7 @@ Return ONLY JSON:
           <div style={{marginBottom:"16px"}}><label style={lbl}>Client First Name</label><input type="text" placeholder="Sarah" style={inp} value={s.clientName||""} onChange={e=>update({clientName:e.target.value})}/></div>
           <Chips label="Client Type" options={CLIENT_TYPES_EN} selected={s.clientType} onToggle={v=>update({clientType:v,contactReason:""})} single/>
           {s.clientType&&<Chips label="Reason for Contacting" options={CONTACT_REASONS} selected={s.contactReason} onToggle={v=>update({contactReason:v})} single/>}
-          {s.contactReason&&<>
+          {s.contactReason&&!hideUrgencyTone&&<>
             <Chips label="Urgency Level" options={URGENCY_EN} selected={s.urgency} onToggle={v=>update({urgency:v})} single/>
             <Chips label="Communication Tone" options={TONES_EN} selected={s.tone} onToggle={v=>update({tone:v})} single/>
           </>}
