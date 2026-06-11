@@ -423,9 +423,9 @@ Return ONLY JSON:
 
           {s.activeTab==="followups"&&(
             <>
-              <div style={{display:"flex",gap:"4px",marginBottom:"20px",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid #252530"}}>
-                <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",background:s.fuSubTab==="noreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="noreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📋 No Reply Plan</button>
-                <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",background:s.fuSubTab==="gotreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="gotreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📲 Got a Response?</button>
+              <div style={{display:"flex",gap:"4px",marginBottom:"20px",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid #252530",width:"100%"}}>
+                <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",minWidth:"0",background:s.fuSubTab==="noreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="noreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>No Reply Plan</button>
+                <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",minWidth:"0",background:s.fuSubTab==="gotreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="gotreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>Got a Response?</button>
               </div>
               {s.fuSubTab==="noreply"&&(
                 <>
