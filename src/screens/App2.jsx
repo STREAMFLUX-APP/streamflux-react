@@ -371,7 +371,7 @@ Return ONLY JSON:
           <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 18px"}}>Every message personalised for {s.clientName} in {s.language}.</p>
           <div style={{display:"flex",gap:"4px",marginBottom:"20px",flexWrap:"wrap",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid rgba(42,184,212,0.25)"}}>
             {TABS_EN.map(tab=>(
-              <button key={tab.id} onClick={()=>update({activeTab:tab.id})}
+              <button key={tab.id} onClick={()=>{update({activeTab:tab.id});window.scrollTo({top:0,behavior:"smooth"})}}
                 style={{background:s.activeTab===tab.id?"#2AB8D4":"#0d0d0d",color:s.activeTab===tab.id?"#060608":"rgba(255,255,255,0.5)",border:s.activeTab===tab.id?"1px solid #252530":"1px solid transparent",borderRadius:"8px",padding:"7px 12px",fontSize:"11px",fontWeight:s.activeTab===tab.id?"700":"500",fontFamily:"inherit",cursor:"pointer",whiteSpace:"nowrap"}}>
                 {tab.label}
               </button>
