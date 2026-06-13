@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { G, GL, SF, btnStyle } from '../globals.js'
+import { G, GL, SF, btnStyle, followUpStatus, STATUS_META } from '../globals.js'
 
 export default function Dashboard({ state, setScreen }) {
   const { user } = state
@@ -11,9 +11,8 @@ export default function Dashboard({ state, setScreen }) {
   const listings = SF.getListings()
   const clients = SF.getClients()
   const followUpsDue = clients.filter(c=>{
-    if(!c.savedAt) return false
-    const d = Math.ceil((Date.now()-new Date(c.savedAt))/864e5)
-    return d>=3&&d<=30
+    const st = followUpStatus(c)
+    return st==="awaiting"||st==="overdue"
   }).length
   const firstName = user.name ? user.name.split(" ")[0] : "there"
 
@@ -136,10 +135,18 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, isApp1, setScreen, l
               {hist.slice(0,10).map(item=>{
                 const lbl = isApp1 ? (item.address||(item.city?"Property in "+item.city:"Package "+item.savedAt)) : (item.clientName||"Client")
                 const sub2 = isApp1 ? ((item.mode||"")+" · "+(item.savedAt||"")) : ((item.contactReason||"")+" · "+(item.savedAt||""))
+                const dst = !isApp1 ? followUpStatus(item) : null
+                const meta = dst ? STATUS_META[dst] : null
                 return (
                   <div key={item.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"9px 12px",background:"#060608",borderRadius:"8px",marginBottom:"4px",border:"1px solid #222"}}>
                     <div style={{flex:"1",minWidth:"0",marginRight:"8px"}}>
                       <div style={{fontSize:"12px",fontWeight:"600",color:"#fff",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lbl}</div>
+                      {meta && (
+                        <div style={{display:"flex",alignItems:"center",gap:"6px",marginTop:"3px"}}>
+                          <span style={{width:"7px",height:"7px",borderRadius:"50%",background:meta.dot,flexShrink:"0"}}/>
+                          <span style={{fontSize:"10px",color:meta.dot,fontWeight:"700"}}>{meta.label}</span>
+                        </div>
+                      )}
                       <div style={{fontSize:"10px",color:"rgba(255,255,255,0.5)",marginTop:"2px",fontFamily:"DM Mono,monospace"}}>{sub2}</div>
                     </div>
                     {item.result && (
