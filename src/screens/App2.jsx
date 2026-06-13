@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { G, SF, apiClaude, inputStyle, cardStyle, labelStyle, btnStyle } from '../globals.js'
+import { G, SF, apiClaude, inputStyle, cardStyle, labelStyle, btnStyle, followUpStatus, STATUS_META } from '../globals.js'
 import { CopyCard } from '../components/shared/CopyCard.jsx'
 import { Chips } from '../components/shared/Chips.jsx'
 
@@ -145,6 +145,7 @@ const initState = (lang) => ({
   ],
   agentName:"", agentPhone:"", agencyName:"",
   regenContext:"", regenLoading:false, fuSubTab:"noreply",
+  savedClientId:null, fuStatus:"new",
   loading:false, loadingMsg:"", result:null, error:"", activeTab:"messages",
 })
 
@@ -246,6 +247,30 @@ function PropCard({ s, update, tog, title, showFeatures }) {
   )
 }
 
+function FollowUpBar({ status, onSent, onResponded, onClosed, onReopen }) {
+  const meta = STATUS_META[status] || STATUS_META.new
+  const wrap = {background:"#0c0c10",border:"1px solid #252530",borderRadius:"12px",padding:"16px 18px",marginBottom:"20px"}
+  const row = {display:"flex",alignItems:"center",gap:"8px",marginBottom:"12px"}
+  const btn = (bg,col,brd) => ({flex:"1",background:bg,color:col,border:brd||"none",borderRadius:"8px",padding:"11px 14px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",minWidth:"140px"})
+  const btnRow = {display:"flex",gap:"8px",flexWrap:"wrap"}
+  return (
+    <div style={wrap}>
+      <div style={row}>
+        <span style={{width:"9px",height:"9px",borderRadius:"50%",background:meta.dot,flexShrink:"0",boxShadow:`0 0 8px ${meta.dot}`}}/>
+        <span style={{fontSize:"11px",fontWeight:"700",letterSpacing:"0.12em",textTransform:"uppercase",color:"#fff"}}>Follow-Up Status: {meta.label}</span>
+      </div>
+      <div style={btnRow}>
+        {status==="new" && <button onClick={onSent} style={btn("#2AB8D4","#060608")}>📤 I sent it — start my clock</button>}
+        {(status==="new"||status==="awaiting"||status==="overdue"||status==="active") &&
+          <button onClick={onResponded} style={btn("rgba(42,184,212,0.12)","#2AB8D4","1px solid rgba(42,184,212,0.4)")}>📲 They responded — log it</button>}
+        {(status==="awaiting"||status==="overdue"||status==="active") &&
+          <button onClick={onClosed} style={btn("rgba(61,158,92,0.12)","#3d9e5c","1px solid rgba(61,158,92,0.4)")}>✓ Mark deal closed</button>}
+        {status==="closed" && <button onClick={onReopen} style={btn("rgba(255,255,255,0.06)","rgba(255,255,255,0.65)","1px solid #252530")}>↩ Reopen client</button>}
+      </div>
+    </div>
+  )
+}
+
 export default function App2({ state: appState, setScreen }) {
   const [s, setS] = useState(initState(appState.lang))
   const update = u => setS(prev=>({...prev,...u}))
@@ -335,7 +360,8 @@ Return ONLY JSON:
         const schedResult = await safe(`CLIENT:${s.clientName}|REASON:objection_handle\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"","tasks":["Send your chosen approach (pick 1 of 3)","If no reply 4 hours, send SMS","Note client status"]},{"day":"Day 3","icon":"","tasks":["Send Follow-Up #1 — new angle","Don't repeat the same approach"]},{"day":"Day 7","icon":"","tasks":["Send Follow-Up #2 — add value","Make a call — listen more than pitch"]},{"day":"Day 14","icon":"","tasks":["Send Follow-Up #3 — casual","Share market update if relevant"]},{"day":"Day 30","icon":"","tasks":["Send Follow-Up #4 — warm touch"]},{"day":"Day 60","icon":"","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,600)
         const result = {...objResult,...fuResult,...schedResult}
         update({result,activeTab:"messages"})
-        SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
+        const recObj = SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
+        update({savedClientId:recObj?.id||null,fuStatus:"new"})
         update({loading:false})
         return
       }
@@ -351,7 +377,8 @@ Return ONLY JSON:
       const part3=await safe(`CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"","tasks":["Send WhatsApp","If no reply 2 hours, send SMS","Save in CRM"]},{"day":"Day 3","icon":"","tasks":["Send Follow-Up #1","Check if email opened"]},{"day":"Day 7","icon":"","tasks":["Send Follow-Up #2","Make phone call — listen first"]},{"day":"Day 14","icon":"","tasks":["Send Follow-Up #3","Share market update"]},{"day":"Day 30","icon":"","tasks":["Send Follow-Up #4"]},{"day":"Day 60","icon":"","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,500)
       const result={...part1,...part2,...part3}
       update({result,activeTab:"messages"})
-      SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
+      const recNorm = SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
+      update({savedClientId:recNorm?.id||null,fuStatus:"new"})
     }catch(err){update({error:"Error: "+err.message})}
     update({loading:false})
   }
@@ -370,6 +397,13 @@ Return ONLY JSON:
         </div>
         <div style={{maxWidth:"720px",margin:"0 auto",padding:"22px 16px 60px"}}>
           <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 18px"}}>Every message personalised for {s.clientName} in {s.language}.</p>
+          <FollowUpBar
+            status={s.fuStatus}
+            onSent={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"awaiting",sentAt:Date.now()});update({fuStatus:"awaiting"})}}
+            onResponded={()=>update({activeTab:"followups",fuSubTab:"gotreply"})}
+            onClosed={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"closed"});update({fuStatus:"closed"})}}
+            onReopen={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"awaiting"});update({fuStatus:"awaiting"})}}
+          />
           <div style={{display:"flex",gap:"4px",marginBottom:"20px",flexWrap:"wrap",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid rgba(42,184,212,0.25)"}}>
             {TABS_EN.map(tab=>(
               <button key={tab.id} onClick={()=>update({activeTab:tab.id})}
@@ -451,7 +485,9 @@ Return ONLY JSON:
                     update({regenLoading:true})
                     try{
                       const regen=await apiClaude(`Original: CLIENT ${s.clientName}|${s.contactReason}\nWhat happened: ${s.regenContext}\n\nReturn ONLY JSON:\n{"followup_1":"New Day 3. 50-60 words.","followup_2":"New Week 1. 50-60 words.","followup_3":"New Week 2. 40-50 words.","followup_4":"New Month 1. 40-50 words."}`,SYSTEM,700)
-                      update({result:{...s.result,regen_fu1:regen.followup_1,regen_fu2:regen.followup_2,regen_fu3:regen.followup_3,regen_fu4:regen.followup_4},regenContext:""})
+                      const merged={...s.result,regen_fu1:regen.followup_1,regen_fu2:regen.followup_2,regen_fu3:regen.followup_3,regen_fu4:regen.followup_4}
+                      update({result:merged,regenContext:"",fuStatus:"active"})
+                      if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"active",result:merged})
                     }catch(e){update({error:"Failed: "+e.message})}
                     update({regenLoading:false})
                   }} style={{background:s.regenLoading?"#1a1a1a":"#2AB8D4",color:s.regenLoading?"rgba(255,255,255,0.5)":"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
