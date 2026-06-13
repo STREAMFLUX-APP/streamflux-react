@@ -99,9 +99,46 @@ export const SF = {
   getListings: () => { try { return JSON.parse(localStorage.getItem("sf_listings")||"[]"); } catch { return []; } },
   saveListings: (arr) => localStorage.setItem("sf_listings", JSON.stringify(arr.slice(0,10))),
   getClients: () => { try { return JSON.parse(localStorage.getItem("sf_clients")||"[]"); } catch { return []; } },
-  saveClients: (arr) => localStorage.setItem("sf_clients", JSON.stringify(arr.slice(0,10))),
+  saveClients: (arr) => localStorage.setItem("sf_clients", JSON.stringify(arr.slice(0,50))),
   addListing: (listing) => { const arr=SF.getListings(); arr.unshift({...listing,id:Date.now(),savedAt:new Date().toLocaleDateString()}); SF.saveListings(arr); },
-  addClient: (client) => { const arr=SF.getClients(); arr.unshift({...client,id:Date.now(),savedAt:new Date().toLocaleDateString()}); SF.saveClients(arr); },
+  addClient: (client) => {
+    const arr=SF.getClients();
+    const rec={...client,id:Date.now(),savedAt:new Date().toLocaleDateString(),status:client.status||"new",sentAt:client.sentAt||null};
+    arr.unshift(rec);
+    SF.saveClients(arr);
+    return rec;
+  },
+  updateClient: (id, updates) => {
+    const arr=SF.getClients();
+    const i=arr.findIndex(c=>c.id===id);
+    if(i===-1) return null;
+    arr[i]={...arr[i],...updates};
+    SF.saveClients(arr);
+    return arr[i];
+  },
+};
+
+// ── FOLLOW-UP STATUS ──────────────────────────────────────
+// Derives the live status of a client for the Follow-Up Engine.
+// Returns one of: "new" | "awaiting" | "overdue" | "active" | "closed"
+export const followUpStatus = (client) => {
+  const st = client?.status || "new";
+  if (st === "closed") return "closed";
+  if (st === "active") return "active";
+  if (st === "awaiting") {
+    if (client.sentAt && (Date.now() - client.sentAt) >= 3*864e5) return "overdue";
+    return "awaiting";
+  }
+  return "new";
+};
+
+// Visual meta for each status — colored dot + label (no emoji, on-brand).
+export const STATUS_META = {
+  new:      { dot:"#5a5a66", label:"Not sent yet" },
+  awaiting: { dot:"#D4A843", label:"Awaiting reply" },
+  overdue:  { dot:"#ef4444", label:"Follow-up overdue" },
+  active:   { dot:"#3d9e5c", label:"Active" },
+  closed:   { dot:"#2AB8D4", label:"Closed" },
 };
 
 // ── SHARED STYLES ─────────────────────────────────────────
