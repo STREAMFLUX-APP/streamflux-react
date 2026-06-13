@@ -1,5 +1,4 @@
 import { G, inputStyle } from '../../globals.js'
-
 export function Chips({ label, hint, options, selected, onToggle, single }) {
   return (
     <div style={{marginBottom:"20px"}}>
@@ -10,7 +9,9 @@ export function Chips({ label, hint, options, selected, onToggle, single }) {
           const val = typeof opt==="string" ? opt : opt.value
           const lbl = typeof opt==="string" ? opt : opt.label
           const sub = typeof opt==="object" ? opt.desc : null
-          const active = single ? selected===val : (selected||[]).includes(val)
+          const active = single
+            ? (Array.isArray(selected) ? selected.includes(val) : selected===val)
+            : (selected||[]).includes(val)
           return (
             <button
               key={val}
