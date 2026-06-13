@@ -3,6 +3,7 @@ import { G, SF, apiClaude, inputStyle, cardStyle, labelStyle, btnStyle } from '.
 import { CopyCard } from '../components/shared/CopyCard.jsx'
 import { Chips } from '../components/shared/Chips.jsx'
 
+
 const INTERIOR_EN = ["Open Plan Living","High Ceilings","Double Height Ceilings","Exposed Beams","Hardwood Floors","Marble Floors","Porcelain Floors","Polished Concrete Floors","Radiant Floor Heating","Modern Kitchen","Chef's Kitchen","Gourmet Kitchen","Granite Countertops","Quartz Countertops","Marble Countertops","Kitchen Island","Butler's Pantry","Scullery / Second Kitchen","Stainless Steel Appliances","High-End Appliances","Wine Refrigerator","Built-in Coffee Machine","Master Suite","Suite with Terrace","Walk-in Wardrobe","His & Hers Wardrobes","En-suite Bathrooms","Double Vanity","Freestanding Soaking Tub","Jetted / Whirlpool Tub","Rainfall Shower","Frameless Glass Shower","Sauna","Steam Room","Home Office","Media Room / Cinema","Game Room","Music Room","Library / Study","Art Studio","Indoor Gym","Flex / Bonus Room","Fireplace","Double-Sided Fireplace","Wet Bar","Climate-Controlled Wine Cellar","Tasting Room","Laundry Room","Laundry Room with Sink","Finished Basement","Finished Attic / Loft","Smart Home System","Multi-Zone Audio","Smart Lighting","Motorized Blinds / Shades","Smart Thermostat","Video Intercom","App-Controlled Home","Cat6 / Fibre Wiring","Security Alarm System","Surveillance Cameras","Fingerprint / Keypad Entry","Built-in Safe","Solar Panels","Solar Battery Storage","Whole-Home Generator","Premium Insulation","Triple-Glazed Windows","Underfloor Heating","Multi-Zone A/C","Heat Recovery Ventilation","Wheelchair Accessible","Private Elevator","Access Ramp","Adapted Bathroom","Wide Doorways"]
 const OUTDOOR_EN = ["Private Pool","Heated Pool","Infinity Pool","Overflow Pool","Pool with Waterfall","Natural / Bio Pool","Hot Tub / Outdoor Spa","Outdoor Shower","Rooftop Terrace","Terrace with Views","Covered Patio / Pergola","Rear Patio","Front Porch","Private Garden","Landscaped Yard","Zen Garden","Tropical Garden","Winter Garden / Greenhouse","Full Outdoor Kitchen","Built-in BBQ / Grill","Wood-Fired Pizza Oven","Fire Pit / Outdoor Fireplace","Outdoor Bar","Outdoor Dining Area","Private Boat Dock","Marina Slip","Boat Launch Ramp","Boat Storage","Private Beach Access","Private Ocean Access","Private Lake Access","Tennis Court","Padel Court","Basketball Court","Putting Green","Boules / Petanque Court","Playground / Play Area","Guest House / Casita","Pool House","Garden Studio / Office","Garage (1 Car)","Garage (2 Car)","Garage (3+ Car)","Boat / RV Garage","Workshop / Storage","EV Charging Station","Gated Entry","Automatic Gate","Outdoor Security Cameras","Landscape Lighting","Solar Lighting","Paved Driveway","Green Roof","Vegetable Garden / Orchard","Private Well","Automated Irrigation System","Running / Jogging Track"]
 const BUILDING_EN = ["24/7 Concierge Service","Digital Concierge","Doorman","Overnight Doorman","Valet Parking","24/7 Security","Private Security Guard","Access Control System","Key Fob / App Access","Rooftop Pool","Indoor Pool","Outdoor Community Pool","Jacuzzi / Hot Tub Area","Sundeck / Solarium","Private Beach Club","Full Fitness Center","Yoga Studio","Pilates Studio","Boxing Gym","Squash Court","Full-Service Spa","Shared Sauna","Massage Room","Beauty Salon","Co-working Space","Meeting Rooms","Conference Center","Business Center","Community Library","Community Cinema","Party / Event Room","Social Lounge","Community Rooftop Terrace","BBQ Area","Children's Play Area","Dog Park","Pet-Friendly","Pet Care Services","Housekeeping Service","Laundry Service","Private Storage Unit","Bike Storage","Low HOA Fees","No HOA","Utilities Included","Maintenance Service Included","Covered Parking","Double Parking","Visitor Parking","EV Charging in Parking","LEED Certified","Energy Class A Building","BREEAM Certified","Community Solar Panels","Disability Access","High-Capacity Elevator","Smart Package Lockers","Bike Share / E-Bike Program"]
@@ -425,12 +426,12 @@ Return ONLY JSON:
           {s.activeTab==="followups"&&(
             <>
               <div style={{display:"flex",gap:"4px",marginBottom:"20px",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid #252530"}}>
-                <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",background:s.fuSubTab==="noreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="noreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📋 No Reply Plan</button>
-                <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",background:s.fuSubTab==="gotreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="gotreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>📲 Got a Response?</button>
+                <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",background:s.fuSubTab==="noreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="noreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",WebkitTapHighlightColor:"rgba(42,184,212,0.3)",touchAction:"manipulation"}}>No Reply Plan</button>
+                <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",background:s.fuSubTab==="gotreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="gotreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",WebkitTapHighlightColor:"rgba(42,184,212,0.3)",touchAction:"manipulation"}}>Got a Response?</button>
               </div>
               {s.fuSubTab==="noreply"&&(
                 <>
-                  <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 16px",lineHeight:"1.6"}}>Use these if your client goes quiet. Send in order. 80% of deals close between touch 5–12 — don't stop.</p>
+                  <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 16px",lineHeight:"1.6"}}>Use these if your client goes quiet. Send in order. 80% of deals close between touch 5-12.</p>
                   <CopyCard title="Follow-Up #1 — Day 3" content={r.followup_1||""} icon="" lang={s.language}/>
                   <CopyCard title="Follow-Up #2 — Week 1" content={r.followup_2||""} icon="" lang={s.language}/>
                   <CopyCard title="Follow-Up #3 — Week 2" content={r.followup_3||""} icon="" lang={s.language}/>
@@ -440,11 +441,11 @@ Return ONLY JSON:
               )}
               {s.fuSubTab==="gotreply"&&(
                 <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:"10px",padding:"20px"}}>
-                  <div style={{fontSize:"13px",fontWeight:"700",color:"#fff",marginBottom:"6px"}}>📲 Log What Happened — Get New Follow-Ups</div>
-                  <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px",lineHeight:"1.6"}}>Got a response? Describe what happened — positive reply, objection, went cold, anything. The AI generates 4 brand new tailored follow-ups instantly.</p>
-                  <textarea placeholder="e.g. She replied and said she liked it but her husband isn't convinced. She asked if we could do anything on price..." rows={4}
+                  <div style={{fontSize:"13px",fontWeight:"700",color:"#fff",marginBottom:"6px"}}>Log What Happened — Get New Follow-Ups</div>
+                  <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px",lineHeight:"1.6"}}>Got a response? Describe what happened. The AI generates 4 new tailored follow-ups instantly.</p>
+                  <textarea placeholder="e.g. She replied and said she liked it but her husband isn't convinced..." rows={4}
                     value={s.regenContext||""} onChange={e=>update({regenContext:e.target.value})}
-                    style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.15)",background:"#0d0d0d",marginBottom:"12px"}}/>
+                    style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.15)",background:"#0d0d0d",marginBottom:"12px",WebkitUserSelect:"text",userSelect:"text",WebkitTextFillColor:"rgba(255,255,255,0.65)",color:"rgba(255,255,255,0.65)"}}/>
                   <button onClick={async()=>{
                     if(!s.regenContext||s.regenLoading)return
                     update({regenLoading:true})
@@ -504,7 +505,7 @@ Return ONLY JSON:
         <div style={card}>
           <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>👤 Who Are You Contacting?</h2>
           <div style={{marginBottom:"16px"}}><label style={lbl}>Client First Name</label><input type="text" placeholder="Sarah" style={inp} value={s.clientName||""} onChange={e=>update({clientName:e.target.value})}/></div>
-          <Chips label="Client Type" options={CLIENT_TYPES_EN} selected={s.clientType} onToggle={v=>update({clientType:v,contactReason:""})} single/>
+          <Chips label="Client Type" options={CLIENT_TYPES_EN} selected={s.clientType} onToggle={v=>update({clientType:v,contactReason:"",urgency:"",tone:""})} single/>
           {s.clientType&&<Chips label="Reason for Contacting" options={CONTACT_REASONS} selected={s.contactReason} onToggle={v=>update({contactReason:v})} single/>}
           {s.contactReason&&!hideUrgencyTone&&<>
             <Chips label="Urgency Level" options={URGENCY_EN} selected={s.urgency} onToggle={v=>update({urgency:v})} single/>
