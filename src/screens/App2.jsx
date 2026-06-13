@@ -511,8 +511,8 @@ Return ONLY JSON:
         <div style={card}>
           <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>👤 Who Are You Contacting?</h2>
           <div style={{marginBottom:"16px"}}><label style={lbl}>Client First Name</label><input type="text" placeholder="Sarah" style={inp} value={s.clientName||""} onChange={e=>update({clientName:e.target.value})}/></div>
-          <Chips label="Client Type" options={CLIENT_TYPES_EN} selected={s.clientType} onToggle={v=>update({clientType:v,contactReason:"",urgency:"",tone:""})} single/>
-          {s.clientType&&<Chips label="Reason for Contacting" options={CONTACT_REASONS} selected={s.contactReason} onToggle={v=>update({contactReason:v})} single/>}
+          <Chips label="Client Type" options={CLIENT_TYPES_EN} selected={s.clientType} onToggle={v=>setS({...initState(s.language),clientType:v})} single/>
+          {s.clientType&&<Chips label="Reason for Contacting" options={CONTACT_REASONS} selected={s.contactReason} onToggle={v=>setS({...initState(s.language),clientName:s.clientName,clientType:s.clientType,contactReason:v})} single/>}
           {s.contactReason&&!hideUrgencyTone&&<>
             <Chips label="Urgency Level" options={URGENCY_EN} selected={s.urgency} onToggle={v=>update({urgency:v})} single/>
             <Chips label="Communication Tone" options={TONES_EN} selected={s.tone} onToggle={v=>update({tone:v})} single/>
