@@ -451,12 +451,18 @@ Return ONLY JSON:
                     update({regenLoading:true})
                     try{
                       const regen=await apiClaude(`Original: CLIENT ${s.clientName}|${s.contactReason}\nWhat happened: ${s.regenContext}\n\nReturn ONLY JSON:\n{"followup_1":"New Day 3. 50-60 words.","followup_2":"New Week 1. 50-60 words.","followup_3":"New Week 2. 40-50 words.","followup_4":"New Month 1. 40-50 words."}`,SYSTEM,700)
-                      update({result:{...s.result,...regen},regenContext:""})
+                      update({result:{...s.result,regen_fu1:regen.followup_1,regen_fu2:regen.followup_2,regen_fu3:regen.followup_3,regen_fu4:regen.followup_4},regenContext:""})
                     }catch(e){update({error:"Failed: "+e.message})}
                     update({regenLoading:false})
                   }} style={{background:s.regenLoading?"#1a1a1a":"#2AB8D4",color:s.regenLoading?"rgba(255,255,255,0.5)":"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
                     {s.regenLoading?"Generating...":"✦ Get New Follow-Ups Based on Response"}
                   </button>
+                  {s.result.regen_fu1&&(<div style={{marginTop:"20px"}}>
+                    <CopyCard title="New Follow-Up #1" content={s.result.regen_fu1||""} icon="" lang={s.language}/>
+                    <CopyCard title="New Follow-Up #2" content={s.result.regen_fu2||""} icon="" lang={s.language}/>
+                    <CopyCard title="New Follow-Up #3" content={s.result.regen_fu3||""} icon="" lang={s.language}/>
+                    <CopyCard title="New Follow-Up #4" content={s.result.regen_fu4||""} icon="" lang={s.language}/>
+                  </div>)}
                 </div>
               )}
             </>
@@ -513,7 +519,7 @@ Return ONLY JSON:
           </>}
         </div>
 
-        {isFirstContact&&isBuyer()&&(
+        {isFirstContact&&(isBuyer()||s.clientType==="cold_lead")&&(
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>👋 First Contact Details</h2>
             <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>The AI uses this to craft the perfect opening message and call script.</p>
@@ -667,7 +673,7 @@ Return ONLY JSON:
           </div>
         )}
 
-        {isObjection&&isBuyer()&&(
+        {isObjection&&(isBuyer()||s.clientType==="cold_lead"||s.clientType==="past_client")&&(
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>🛡️ Handle Objection</h2>
             <Chips label="Objection They Raised" options={[
