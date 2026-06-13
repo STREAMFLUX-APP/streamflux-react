@@ -14,7 +14,8 @@ export function Chips({ label, hint, options, selected, onToggle, single }) {
           return (
             <button
               key={val}
-              onClick={()=>onToggle(val)}
+              onClick={(e)=>{e.preventDefault();e.stopPropagation();onToggle(val)}}
+              onTouchEnd={(e)=>{e.preventDefault();onToggle(val)}}
               style={{
                 background: active ? G.aquaDim : G.bg,
                 border: "1px solid "+(active ? G.aqua : "rgba(42,184,212,0.18)"),
@@ -24,7 +25,11 @@ export function Chips({ label, hint, options, selected, onToggle, single }) {
                 padding: sub ? "10px 14px" : "7px 12px",
                 cursor:"pointer",
                 fontFamily:"inherit",
-                textAlign:"left"
+                textAlign:"left",
+                WebkitTapHighlightColor:"rgba(42,184,212,0.3)",
+                touchAction:"manipulation",
+                userSelect:"none",
+                WebkitUserSelect:"none",
               }}
             >
               <div style={{fontWeight:active?"700":"400"}}>{lbl}</div>
