@@ -9,23 +9,26 @@ const inp = {width:"100%",background:"#060608",border:"1px solid #252530",border
 
 function FollowUpBar({ status, onSent, onResponded, onClosed, onReopen }) {
   const meta = STATUS_META[status] || STATUS_META.new
-  const wrap = {background:"#0c0c10",border:"1px solid #252530",borderRadius:"12px",padding:"16px 18px",marginBottom:"20px"}
-  const row = {display:"flex",alignItems:"center",gap:"8px",marginBottom:"12px"}
-  const btn = (bg,col,brd) => ({flex:"1",background:bg,color:col,border:brd||"none",borderRadius:"8px",padding:"11px 14px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",minWidth:"140px"})
-  const btnRow = {display:"flex",gap:"8px",flexWrap:"wrap"}
+  const isNew = status==="new"
+  const wrap = {background:"rgba(255,255,255,0.02)",border:"1px solid #1c1c24",borderRadius:"10px",padding:"9px 13px",marginBottom:"18px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"10px",flexWrap:"wrap"}
+  const left = {display:"flex",alignItems:"center",gap:"8px",minWidth:"0"}
+  const btn = (bg,col,brd) => ({background:bg,color:col,border:brd||"none",borderRadius:"7px",padding:"7px 11px",fontSize:"11px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"})
+  const btnRow = {display:"flex",gap:"7px",flexWrap:"wrap"}
   return (
     <div style={wrap}>
-      <div style={row}>
-        <span style={{width:"9px",height:"9px",borderRadius:"50%",background:meta.dot,flexShrink:"0",boxShadow:`0 0 8px ${meta.dot}`}}/>
-        <span style={{fontSize:"11px",fontWeight:"700",letterSpacing:"0.12em",textTransform:"uppercase",color:"#fff"}}>Follow-Up Status: {meta.label}</span>
+      <div style={left}>
+        <span style={{width:"8px",height:"8px",borderRadius:"50%",background:meta.dot,flexShrink:"0"}}/>
+        <span style={{fontSize:"11px",fontWeight:"700",letterSpacing:"0.03em",color:isNew?"rgba(255,255,255,0.6)":"#fff"}}>
+          {isNew ? "Send your outreach to activate" : "Follow-Up Status: "+meta.label}
+        </span>
       </div>
       <div style={btnRow}>
-        {status==="new" && <button onClick={onSent} style={btn("#2AB8D4","#060608")}>📤 I sent it — start my clock</button>}
+        {status==="new" && <button onClick={onSent} style={btn("#2AB8D4","#060608")}>📤 I sent it</button>}
         {(status==="new"||status==="awaiting"||status==="overdue"||status==="active") &&
-          <button onClick={onResponded} style={btn("rgba(42,184,212,0.12)","#2AB8D4","1px solid rgba(42,184,212,0.4)")}>📲 They responded — log it</button>}
+          <button onClick={onResponded} style={btn("rgba(42,184,212,0.12)","#2AB8D4","1px solid rgba(42,184,212,0.4)")}>📲 They responded</button>}
         {(status==="awaiting"||status==="overdue"||status==="active") &&
-          <button onClick={onClosed} style={btn("rgba(61,158,92,0.12)","#3d9e5c","1px solid rgba(61,158,92,0.4)")}>✓ Mark deal closed</button>}
-        {status==="closed" && <button onClick={onReopen} style={btn("rgba(255,255,255,0.06)","rgba(255,255,255,0.65)","1px solid #252530")}>↩ Reopen client</button>}
+          <button onClick={onClosed} style={btn("transparent","rgba(255,255,255,0.55)","1px solid #2a2a33")}>✓ Mark closed</button>}
+        {status==="closed" && <button onClick={onReopen} style={btn("transparent","rgba(255,255,255,0.55)","1px solid #2a2a33")}>↩ Reopen</button>}
       </div>
     </div>
   )
@@ -70,6 +73,16 @@ export default function SavedResults({ state, setScreen, app }) {
           </>}
         </div>
 
+        {/* Tabs */}
+        <div style={{display:"flex",gap:"6px",marginBottom:"14px",flexWrap:"wrap"}}>
+          {tabs.map(tab=>(
+            <button key={tab.id} onClick={()=>setActiveTab(tab.id)}
+              style={{background:activeTab===tab.id?G.aqua:"#0d0d0d",color:activeTab===tab.id?"#060608":G.muted,border:`1px solid ${activeTab===tab.id?G.aqua:G.border}`,borderRadius:"8px",padding:"7px 12px",fontSize:"12px",fontWeight:activeTab===tab.id?"700":"400",fontFamily:"inherit",cursor:"pointer"}}>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
         {/* Follow-Up status bar (App02 only) */}
         {!isApp1 && (
           <FollowUpBar
@@ -80,16 +93,6 @@ export default function SavedResults({ state, setScreen, app }) {
             onReopen={()=>{persist({status:"awaiting"});setFuStatus("awaiting")}}
           />
         )}
-
-        {/* Tabs */}
-        <div style={{display:"flex",gap:"6px",marginBottom:"20px",flexWrap:"wrap"}}>
-          {tabs.map(tab=>(
-            <button key={tab.id} onClick={()=>setActiveTab(tab.id)}
-              style={{background:activeTab===tab.id?G.aqua:"#0d0d0d",color:activeTab===tab.id?"#060608":G.muted,border:`1px solid ${activeTab===tab.id?G.aqua:G.border}`,borderRadius:"8px",padding:"7px 12px",fontSize:"12px",fontWeight:activeTab===tab.id?"700":"400",fontFamily:"inherit",cursor:"pointer"}}>
-              {tab.label}
-            </button>
-          ))}
-        </div>
 
         {/* ===== APP 1 (unchanged) ===== */}
         {isApp1 && <>
@@ -112,7 +115,6 @@ export default function SavedResults({ state, setScreen, app }) {
         {!isApp1 && <>
           {activeTab==="messages" && (isObj?(
             <>
-              <p style={{color:"rgba(255,255,255,0.6)",fontSize:"13px",margin:"0 0 16px"}}>Three approaches to handle this objection. Pick the one that fits — or use all three across different follow-ups.</p>
               {["v1","v2","v3"].map(v=>(
                 r[v+"_whatsapp"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
                   <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
@@ -141,7 +143,6 @@ export default function SavedResults({ state, setScreen, app }) {
 
           {activeTab==="voice" && (isObj?(
             <>
-              <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 16px"}}>Three call scripts — each a different approach. Read naturally.</p>
               {["v1","v2","v3"].map(v=>(
                 r[v+"_voice"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
                   <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
