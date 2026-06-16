@@ -6,12 +6,12 @@ import BrokerDashboard from './screens/BrokerDashboard.jsx'
 import App1 from './screens/App1.jsx'
 import App2 from './screens/App2.jsx'
 import App3 from './screens/App3.jsx'
+import FollowUp from './screens/FollowUp.jsx'
 import Admin from './screens/Admin.jsx'
 import TrialExpired from './screens/TrialExpired.jsx'
 import SeatLimit from './screens/SeatLimit.jsx'
 import SetPassword from './screens/SetPassword.jsx'
 import SavedResults from './screens/SavedResults.jsx'
-
 export default function App() {
   const [state, setState] = useState({
     screen: "login",
@@ -21,9 +21,7 @@ export default function App() {
     resetToken: null,
     resetEmail: null,
   })
-
   const setScreen = (updates) => setState(prev => ({...prev, ...updates}))
-
   // Check URL for set-password token on load
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -43,9 +41,7 @@ export default function App() {
       }).catch(() => {})
     }
   }, [])
-
   const props = { state, setScreen }
-
   switch(state.screen) {
     case "login":         return <Login {...props} />
     case "set-password":  return <SetPassword {...props} />
@@ -58,6 +54,7 @@ export default function App() {
     case "app1":          return <App1 {...props} />
     case "app2":          return <App2 {...props} />
     case "app3":          return <App3 {...props} />
+    case "followup":      return <FollowUp {...props} />
     case "app1_results":  return <SavedResults {...props} app="app1" />
     case "app2_results":  return <SavedResults {...props} app="app2" />
     default:              return <Login {...props} />
