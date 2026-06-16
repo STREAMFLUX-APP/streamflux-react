@@ -126,7 +126,7 @@ const initState = (lang) => ({
   soldPricePerSqft:"", soldKeyFeatures:"",
   marketLocation:"", marketDirection:[], marketInsight:"", marketStats:"",
   reconnectSituation:[], reconnectOther:"", lookingFor:"",
-  introSource:[], introSourceContext:"", introComeAcross:[],
+  introSource:null, introSourceContext:"", introComeAcross:[],
   leadSource:null, leadSourceContext:"", knownAboutProperty:"", firstOutcomeGoal:"",
   daysOnMarket:"", priceReasons:[], sellerUrgency:[],
   expOrigPrice:"", expDays:"", expiredReasons:[], expiredReasonsOther:"", relistStrategy:[], relistDifferent:"",
@@ -545,11 +545,11 @@ Return ONLY JSON:
         <div style={card}>
           <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"16px",color:"#fff"}}>👤 Who Are You Contacting?</h2>
           <div style={{marginBottom:"16px"}}><label style={lbl}>Client First Name</label><input type="text" placeholder="Sarah" style={inp} value={s.clientName||""} onChange={e=>update({clientName:e.target.value})}/></div>
-          <Chips label="Client Type" options={CLIENT_TYPES_EN} selected={s.clientType} onToggle={v=>setS({...initState(s.language),clientType:v})} single/>
-          {s.clientType&&<Chips label="Reason for Contacting" options={CONTACT_REASONS} selected={s.contactReason} onToggle={v=>setS({...initState(s.language),clientName:s.clientName,clientType:s.clientType,contactReason:v})} single/>}
+          <Chips label="Client Type" options={CLIENT_TYPES_EN} selected={s.clientType} onToggle={v=>setS({...initState(s.language),clientName:s.clientName,clientType:s.clientType===v?"":v})} single/>
+          {s.clientType&&<Chips label="Reason for Contacting" options={CONTACT_REASONS} selected={s.contactReason} onToggle={v=>setS({...initState(s.language),clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason===v?"":v})} single/>}
           {s.contactReason&&!hideUrgencyTone&&<>
-            <Chips label="Urgency Level" options={URGENCY_EN} selected={s.urgency} onToggle={v=>update({urgency:v})} single/>
-            <Chips label="Communication Tone" options={TONES_EN} selected={s.tone} onToggle={v=>update({tone:v})} single/>
+            <Chips label="Urgency Level" options={URGENCY_EN} selected={s.urgency} onToggle={v=>update({urgency:s.urgency===v?"":v})} single/>
+            <Chips label="Communication Tone" options={TONES_EN} selected={s.tone} onToggle={v=>update({tone:s.tone===v?"":v})} single/>
           </>}
         </div>
 
@@ -565,7 +565,7 @@ Return ONLY JSON:
               {value:"linkedin",label:"LinkedIn"},{value:"online_lead",label:"Online Lead"},
               {value:"door_knock",label:"Door Knock"},{value:"area_farming",label:"Area Farming"},
               {value:"cold_dm",label:"Cold DM"},{value:"phone_inquiry",label:"Phone Inquiry"},
-            ]} selected={s.introSource} onToggle={v=>update({introSource:tog(s.introSource,v)})}/>
+            ]} selected={s.introSource?[s.introSource]:[]} onToggle={v=>update({introSource:s.introSource===v?null:v})} single/>
             <div style={{marginBottom:"12px",marginTop:"8px"}}>
               <label style={lbl}>Add more context or specify how you got this contact</label>
               <input type="text" placeholder="e.g. Met at a property expo last month, mentioned actively searching for a 3-bed..." style={inp} value={s.introSourceContext||""} onChange={e=>update({introSourceContext:e.target.value})}/>
@@ -587,7 +587,7 @@ Return ONLY JSON:
               {value:"online",label:"Online Lead"},{value:"direct_mail",label:"Direct Mail"},
               {value:"farming",label:"Area Farming"},{value:"social_media",label:"Social Media"},
               {value:"open_house",label:"Open House"},{value:"networking",label:"Networking"},
-            ]} selected={s.leadSource?[s.leadSource]:[]} onToggle={v=>update({leadSource:v})} single/>
+            ]} selected={s.leadSource?[s.leadSource]:[]} onToggle={v=>update({leadSource:s.leadSource===v?null:v})} single/>
             <div style={{marginBottom:"12px",marginTop:"8px"}}>
               <label style={lbl}>Add more context or specify how you got this lead</label>
               <input type="text" placeholder="e.g. Knocked on their door after seeing property vacant for 3 months, said they were thinking about selling..." style={inp} value={s.leadSourceContext||""} onChange={e=>update({leadSourceContext:e.target.value})}/>
@@ -746,7 +746,7 @@ Return ONLY JSON:
                   <label style={lbl}>Did They Visit the Property?</label>
                   <div style={{display:"flex",gap:"8px",marginTop:"8px",flexWrap:"wrap"}}>
                     {[["yes","Yes — visited in person"],["no","No — only seen online"],["viewing_booked","Viewing booked"]].map(([v,l])=>(
-                      <button key={v} onClick={()=>update({visitedProperty:v})} style={{background:s.visitedProperty===v?"rgba(42,184,212,0.15)":"#060608",border:`1px solid ${s.visitedProperty===v?"#2AB8D4":"#252530"}`,borderRadius:"8px",padding:"8px 14px",fontSize:"12px",color:s.visitedProperty===v?"#2AB8D4":"rgba(255,255,255,0.65)",cursor:"pointer",fontFamily:"inherit",fontWeight:s.visitedProperty===v?"700":"400"}}>{l}</button>
+                      <button key={v} onClick={()=>update({visitedProperty:s.visitedProperty===v?null:v})} style={{background:s.visitedProperty===v?"rgba(42,184,212,0.15)":"#060608",border:`1px solid ${s.visitedProperty===v?"#2AB8D4":"#252530"}`,borderRadius:"8px",padding:"8px 14px",fontSize:"12px",color:s.visitedProperty===v?"#2AB8D4":"rgba(255,255,255,0.65)",cursor:"pointer",fontFamily:"inherit",fontWeight:s.visitedProperty===v?"700":"400"}}>{l}</button>
                     ))}
                   </div>
                 </div>
@@ -845,8 +845,8 @@ Return ONLY JSON:
                   <div><label style={lbl}>Mortgage Remaining</label><input type="text" placeholder="e.g. $180,000" style={inp} value={s.currentPropMortgage||""} onChange={e=>update({currentPropMortgage:e.target.value})}/></div>
                   <div><label style={lbl}>Target Sale Price ($)</label><input type="text" placeholder="e.g. $540,000" style={inp} value={s.currentPropTargetPrice||""} onChange={e=>update({currentPropTargetPrice:e.target.value})}/></div>
                 </div>
-                <Chips label="Is Their Property Currently Listed?" options={[{value:"listed_active",label:"Yes — Active on Market"},{value:"not_listed_soon",label:"Not Yet — Planning Soon"},{value:"not_decided",label:"Still Deciding"},{value:"no_plans",label:"No Plans Yet"}]} selected={s.currentPropListedStatus?[s.currentPropListedStatus]:[]} onToggle={v=>update({currentPropListedStatus:v})} single/>
-                <Chips label="Who Is Handling the Sale?" options={[{value:"has_agent",label:"Already Have an Agent"},{value:"fsbo",label:"Thinking of Selling Themselves"},{value:"looking_agent",label:"Still Looking for an Agent"},{value:"open_to_discuss",label:"Open to Discussing It"}]} selected={s.currentPropAgentStatus?[s.currentPropAgentStatus]:[]} onToggle={v=>update({currentPropAgentStatus:v})} single/>
+                <Chips label="Is Their Property Currently Listed?" options={[{value:"listed_active",label:"Yes — Active on Market"},{value:"not_listed_soon",label:"Not Yet — Planning Soon"},{value:"not_decided",label:"Still Deciding"},{value:"no_plans",label:"No Plans Yet"}]} selected={s.currentPropListedStatus?[s.currentPropListedStatus]:[]} onToggle={v=>update({currentPropListedStatus:s.currentPropListedStatus===v?null:v})} single/>
+                <Chips label="Who Is Handling the Sale?" options={[{value:"has_agent",label:"Already Have an Agent"},{value:"fsbo",label:"Thinking of Selling Themselves"},{value:"looking_agent",label:"Still Looking for an Agent"},{value:"open_to_discuss",label:"Open to Discussing It"}]} selected={s.currentPropAgentStatus?[s.currentPropAgentStatus]:[]} onToggle={v=>update({currentPropAgentStatus:s.currentPropAgentStatus===v?null:v})} single/>
                 <Chips label="How Motivated Are They to Sell?" options={[{value:"very_motivated",label:"Very Motivated — Need to Sell Fast"},{value:"moderate",label:"Moderate — Taking Their Time"},{value:"low",label:"Low — Only If Price Is Right"},{value:"nervous",label:"Nervous About Timing Both"}]} selected={s.currentPropMotivation||[]} onToggle={v=>update({currentPropMotivation:tog(s.currentPropMotivation||[],v)})} single/>
                 <Chips label="Main Concern About Selling First" options={[{value:"right_price",label:"Getting the Right Price"},{value:"timing_both",label:"Timing Both Transactions"},{value:"left_without_home",label:"Fear of Being Left Without a Home"},{value:"no_new_home",label:"Not Finding Right New Home First"},{value:"too_much_hassle",label:"Too Much Hassle and Stress"},{value:"financial_bridge",label:"Financial Bridge Between Sales"}]} selected={s.currentPropConcern||[]} onToggle={v=>update({currentPropConcern:tog(s.currentPropConcern||[],v)})}/>
                 <div style={{marginTop:"8px"}}><label style={lbl}>About This Buyer</label><textarea placeholder="e.g. Active buyer, pre-approved, has been looking 3 months, very motivated..." rows={2} style={{...inp,resize:"vertical"}} value={s.currentPropBuyerContext||""} onChange={e=>update({currentPropBuyerContext:e.target.value})}/></div>
@@ -856,7 +856,7 @@ Return ONLY JSON:
             {s.objection==="bad_timing"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <Chips label="Why Is the Timing Bad?" options={[{value:"financial_not_ready",label:"Financial Situation Not Ready"},{value:"job_uncertainty",label:"Job Uncertainty"},{value:"family_changing",label:"Family Situation Changing"},{value:"need_sell_first",label:"Need to Sell Current Home First"},{value:"waiting_market",label:"Waiting for Better Market"},{value:"too_much_going_on",label:"Too Much Going On Personally"},{value:"possible_relocation",label:"Possible Relocation"},{value:"life_transition",label:"Life Transition — Divorce / Marriage / Baby"},{value:"kids_school",label:"Kids Finishing School"},{value:"waiting_mortgage",label:"Waiting for Mortgage Approval"},{value:"general_fear",label:"General Fear and Anxiety"}]} selected={s.badTimingReasons||[]} onToggle={v=>update({badTimingReasons:tog(s.badTimingReasons||[],v)})}/>
-                <Chips label="How Much Time Are They Thinking?" options={[{value:"1month",label:"1 Month"},{value:"3months",label:"3 Months"},{value:"6months",label:"6 Months"},{value:"1year",label:"1 Year+"},{value:"not_sure",label:"Not Sure Yet"}]} selected={s.badTimingHowLong?[s.badTimingHowLong]:[]} onToggle={v=>update({badTimingHowLong:v})} single/>
+                <Chips label="How Much Time Are They Thinking?" options={[{value:"1month",label:"1 Month"},{value:"3months",label:"3 Months"},{value:"6months",label:"6 Months"},{value:"1year",label:"1 Year+"},{value:"not_sure",label:"Not Sure Yet"}]} selected={s.badTimingHowLong?[s.badTimingHowLong]:[]} onToggle={v=>update({badTimingHowLong:s.badTimingHowLong===v?null:v})} single/>
                 <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason</label><input type="text" placeholder="e.g. They just started a new business..." style={inp} value={s.badTimingOther||""} onChange={e=>update({badTimingOther:e.target.value})}/></div>
               </div>
             )}
@@ -864,7 +864,7 @@ Return ONLY JSON:
             {s.objection==="not_pre_approved"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <div style={{marginBottom:"12px"}}><label style={lbl}>Reason Why Not Pre-Approved Yet</label><textarea placeholder="e.g. Self-employed, not sure they qualify, haven't prioritised it yet..." rows={2} style={{...inp,resize:"vertical"}} value={s.notApprovedReason||""} onChange={e=>update({notApprovedReason:e.target.value})}/></div>
-                <Chips label="Have They Spoken to a Lender?" options={[{value:"yes",label:"Yes"},{value:"no",label:"Not yet"},{value:"in_progress",label:"In Progress"}]} selected={s.spokeToLender?[s.spokeToLender]:[]} onToggle={v=>update({spokeToLender:v})} single/>
+                <Chips label="Have They Spoken to a Lender?" options={[{value:"yes",label:"Yes"},{value:"no",label:"Not yet"},{value:"in_progress",label:"In Progress"}]} selected={s.spokeToLender?[s.spokeToLender]:[]} onToggle={v=>update({spokeToLender:s.spokeToLender===v?null:v})} single/>
                 <Chips label="Main Concern About Getting Approved" options={[{value:"not_enough_income",label:"Not Enough Income"},{value:"self_employed",label:"Self-Employed Complexity"},{value:"credit_score",label:"Credit Score Concerns"},{value:"too_much_debt",label:"Too Much Existing Debt"},{value:"not_enough_deposit",label:"Not Enough Deposit Saved"},{value:"visa_status",label:"Foreign National / Visa Status"},{value:"no_time",label:"Haven't Had Time to Sort It"}]} selected={s.approvalConcerns||[]} onToggle={v=>update({approvalConcerns:tog(s.approvalConcerns||[],v)})}/>
               </div>
             )}
@@ -872,7 +872,7 @@ Return ONLY JSON:
             {s.objection==="need_more_time"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
                 <Chips label="Why Do They Need More Time?" options={[{value:"saving_deposit",label:"Still Saving for Deposit"},{value:"job_situation",label:"Waiting for Job Situation to Settle"},{value:"family_flux",label:"Family Situation in Flux"},{value:"need_sell_first",label:"Need to Sell First"},{value:"too_much_going_on",label:"Too Much Going On"},{value:"not_emotionally_ready",label:"Not Emotionally Ready"},{value:"waiting_market",label:"Waiting for Better Market"},{value:"kids_school",label:"Kids Finishing School First"}]} selected={s.needMoreTimeReasons||[]} onToggle={v=>update({needMoreTimeReasons:tog(s.needMoreTimeReasons||[],v)})}/>
-                <Chips label="How Much Time Are They Thinking?" options={[{value:"1month",label:"1 Month"},{value:"3months",label:"3 Months"},{value:"6months",label:"6 Months"},{value:"1year",label:"1 Year+"},{value:"not_sure",label:"Not Sure"}]} selected={s.needMoreTimeHowLong?[s.needMoreTimeHowLong]:[]} onToggle={v=>update({needMoreTimeHowLong:v})} single/>
+                <Chips label="How Much Time Are They Thinking?" options={[{value:"1month",label:"1 Month"},{value:"3months",label:"3 Months"},{value:"6months",label:"6 Months"},{value:"1year",label:"1 Year+"},{value:"not_sure",label:"Not Sure"}]} selected={s.needMoreTimeHowLong?[s.needMoreTimeHowLong]:[]} onToggle={v=>update({needMoreTimeHowLong:s.needMoreTimeHowLong===v?null:v})} single/>
                 <div style={{marginTop:"8px"}}><label style={lbl}>Any Other Reason They Need More Time</label><input type="text" placeholder="e.g. Waiting for a bonus payout..." style={inp} value={s.needMoreTimeOther||""} onChange={e=>update({needMoreTimeOther:e.target.value})}/></div>
               </div>
             )}
@@ -900,7 +900,7 @@ Return ONLY JSON:
 
             {s.objection==="already_have_agent"&&(
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-                <Chips label="Are They Happy with Their Current Agent?" options={[{value:"very_happy",label:"Very Happy"},{value:"somewhat_happy",label:"Somewhat Happy"},{value:"not_really",label:"Not Really"},{value:"not_happy",label:"Not Happy at All"},{value:"not_sure",label:"Not Sure Yet"}]} selected={s.agentSatisfaction?[s.agentSatisfaction]:[]} onToggle={v=>update({agentSatisfaction:v})} single/>
+                <Chips label="Are They Happy with Their Current Agent?" options={[{value:"very_happy",label:"Very Happy"},{value:"somewhat_happy",label:"Somewhat Happy"},{value:"not_really",label:"Not Really"},{value:"not_happy",label:"Not Happy at All"},{value:"not_sure",label:"Not Sure Yet"}]} selected={s.agentSatisfaction?[s.agentSatisfaction]:[]} onToggle={v=>update({agentSatisfaction:s.agentSatisfaction===v?null:v})} single/>
                 <div style={{marginTop:"8px"}}>
                   <label style={lbl}>Any Reason They Might Consider Switching?</label>
                   <textarea placeholder="e.g. They mentioned the agent hasn't been responsive, no offers after 60 days..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.agentSwitchReason||""} onChange={e=>update({agentSwitchReason:e.target.value})}/>
