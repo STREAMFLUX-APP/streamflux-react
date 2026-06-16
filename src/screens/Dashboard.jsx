@@ -87,9 +87,9 @@ export default function Dashboard({ state, setScreen }) {
         </div>
 
         {/* Tools grid */}
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"1px",background:G.border,borderRadius:"14px",overflow:"hidden",border:"1px solid rgba(255,255,255,0.25)"}}>
-          {hasApp1 && <ToolCard num="APP 01" title={g.app1title||"Property Marketing Machine"} sub="Generate 13 marketing outputs for any listing in minutes." btnLabel={g.newListing||"New Listing →"} onNew={()=>setScreen({screen:"app1"})} hist={listings} isApp1 setScreen={setScreen} lang={state.lang} />}
-          {hasApp2 && <ToolCard num="APP 02" title={g.app2title||"Client Outreach Machine"} sub="Personalised outreach packages for any client, any situation." btnLabel={g.newClient||"New Client →"} onNew={()=>setScreen({screen:"app2"})} hist={clients} setScreen={setScreen} lang={state.lang} />}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"1px",background:G.border,borderRadius:"14px",overflow:"hidden",border:"1px solid rgba(255,255,255,0.25)",alignItems:"stretch"}}>
+          {hasApp1 && <ToolCard num="APP 01" title={g.app1title||"Property Marketing"} sub="Generate 13 marketing outputs for any listing in minutes." btnLabel={g.newListing||"New Listing →"} onNew={()=>setScreen({screen:"app1"})} hist={listings} isApp1 setScreen={setScreen} lang={state.lang} />}
+          {hasApp2 && <ToolCard num="APP 02" title={g.app2title||"Client Outreach"} sub="Personalised outreach packages for any client, any situation." btnLabel={g.newClient||"New Client →"} onNew={()=>setScreen({screen:"app2"})} hist={clients} setScreen={setScreen} lang={state.lang} />}
           <ToolCard num="APP 03" title={g.app3title||"Newsletter Generator"} sub="Monthly client newsletter ready to send." btnLabel="📰 New Newsletter →" onNew={()=>setScreen({screen:"app3"})} hist={[]} setScreen={setScreen} lang={state.lang} />
         </div>
 
@@ -113,14 +113,14 @@ export default function Dashboard({ state, setScreen }) {
 function ToolCard({ num, title, sub, onNew, btnLabel, hist, isApp1, setScreen, lang }) {
   const [open, setOpen] = useState(false)
   return (
-    <div style={{background:"#0c0c10",padding:"28px",display:"flex",flexDirection:"column"}}>
+    <div style={{background:"#0c0c10",padding:"28px",display:"flex",flexDirection:"column",height:"100%"}}>
       <div style={{minHeight:"90px",marginBottom:"20px"}}>
         <div style={{fontSize:"9px",fontWeight:"700",letterSpacing:"0.3em",textTransform:"uppercase",color:"#2AB8D4",marginBottom:"10px",fontFamily:"DM Mono,monospace"}}>// {num}</div>
         <div style={{fontSize:"16px",fontWeight:"700",color:"#fff",marginBottom:"5px",lineHeight:"1.3"}}>{title}</div>
         <div style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",lineHeight:"1.5"}}>{sub}</div>
       </div>
       <button onClick={onNew}
-        style={{background:"#2AB8D4",color:"#060608",border:"none",borderRadius:"8px",padding:"12px 18px",fontSize:"13px",fontWeight:"800",cursor:"pointer",fontFamily:"inherit",width:"100%",marginBottom:"16px"}}>
+        style={{background:"#2AB8D4",color:"#060608",border:"none",borderRadius:"8px",padding:"12px 18px",fontSize:"13px",fontWeight:"800",cursor:"pointer",fontFamily:"inherit",width:"100%",marginBottom:"16px",marginTop:"auto"}}>
         {btnLabel}
       </button>
       {hist && hist.length > 0 && (
