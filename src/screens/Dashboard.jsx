@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { G, GL, SF, btnStyle, followUpStatus, STATUS_META } from '../globals.js'
 
 export default function Dashboard({ state, setScreen }) {
@@ -16,6 +16,14 @@ export default function Dashboard({ state, setScreen }) {
     return st==="awaiting"||st==="overdue"
   }).length
   const firstName = user.name ? user.name.split(" ")[0] : "there"
+
+  // Responsive tool grid: 1 column on phones, 2x2 on desktop
+  const [toolCols, setToolCols] = useState(typeof window!=="undefined" && window.innerWidth < 720 ? 1 : 2)
+  useEffect(() => {
+    const onResize = () => setToolCols(window.innerWidth < 720 ? 1 : 2)
+    window.addEventListener("resize", onResize)
+    return () => window.removeEventListener("resize", onResize)
+  }, [])
 
   // Clean app titles (no "Machine"), bilingual
   const T = isSpa
@@ -93,7 +101,7 @@ export default function Dashboard({ state, setScreen }) {
         </div>
 
         {/* Tools grid */}
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"1px",background:G.border,borderRadius:"14px",overflow:"hidden",border:"1px solid rgba(255,255,255,0.25)",alignItems:"stretch"}}>
+        <div style={{display:"grid",gridTemplateColumns:`repeat(${toolCols},1fr)`,gap:"1px",background:G.border,borderRadius:"14px",overflow:"hidden",border:"1px solid rgba(255,255,255,0.25)",alignItems:"stretch"}}>
           {hasApp1 && <ToolCard num="APP 01" title={T.a1} sub="Generate 13 marketing outputs for any listing in minutes." btnLabel={g.newListing||"New Listing →"} onNew={()=>setScreen({screen:"app1"})} hist={listings} isApp1 setScreen={setScreen} lang={state.lang} />}
           {hasApp2 && <ToolCard num="APP 02" title={T.a2} sub="Personalised outreach packages for any client, any situation." btnLabel={g.newClient||"New Client →"} onNew={()=>setScreen({screen:"app2"})} hist={clients} setScreen={setScreen} lang={state.lang} />}
           {hasApp2 && <ToolCard num="APP 03" title={T.a3} sub="Work every client's follow-up in one place — nothing slips." btnLabel={isSpa?"Abrir Seguimiento →":"Open Follow-Up →"} onNew={()=>setScreen({screen:"followup"})} hist={[]} setScreen={setScreen} lang={state.lang} />}
