@@ -4,6 +4,7 @@ import { G, GL, SF, btnStyle, followUpStatus, STATUS_META } from '../globals.js'
 export default function Dashboard({ state, setScreen }) {
   const { user } = state
   const g = GL[state.lang] || GL.English
+  const isSpa = state.lang==="Spanish"
   const agencyPlans = ["starter","pro","elite","enterprise"]
   const hasApp1 = user.plan==="marketing"||user.plan==="bundle"||agencyPlans.includes(user.plan)
   const hasApp2 = user.plan==="outreach"||user.plan==="bundle"||agencyPlans.includes(user.plan)
@@ -15,6 +16,11 @@ export default function Dashboard({ state, setScreen }) {
     return st==="awaiting"||st==="overdue"
   }).length
   const firstName = user.name ? user.name.split(" ")[0] : "there"
+
+  // Clean app titles (no "Machine"), bilingual
+  const T = isSpa
+    ? {a1:"Marketing Inmobiliario", a2:"Captación de Clientes", a3:"Motor de Seguimiento", a4:"Generador de Newsletter"}
+    : {a1:"Property Marketing", a2:"Client Outreach", a3:"Follow-Up Engine", a4:"Newsletter Generator"}
 
   // Redirect if trial expired
   if (!user.subscribed && !user.trialActive) {
@@ -46,7 +52,7 @@ export default function Dashboard({ state, setScreen }) {
           {!user.subscribed && (
             <button onClick={()=>window.open("https://buy.stripe.com/5kQdR93uUbHp7Kc4sjds403","_blank")}
               style={{...btnStyle(false),padding:"6px 16px",fontSize:"12px"}}>
-              {state.lang==="Spanish"?"Suscribirse →":"Subscribe Now →"}
+              {isSpa?"Suscribirse →":"Subscribe Now →"}
             </button>
           )}
           <button onClick={()=>setScreen({screen:"admin"})}
@@ -64,7 +70,7 @@ export default function Dashboard({ state, setScreen }) {
         {/* Hero */}
         <div style={{marginBottom:"40px",paddingBottom:"36px",borderBottom:`1px solid ${G.border}`}}>
           <h1 style={{fontSize:"clamp(18px,2.5vw,24px)",fontWeight:"400",color:G.white,lineHeight:"1.5"}}>
-            {state.lang==="Spanish"?"Bienvenido a tu sistema de IA, ":"Welcome to your AI marketing, outreach & newsletter system, "}
+            {isSpa?"Bienvenido a tu sistema de IA, ":"Welcome to your AI marketing, outreach & newsletter system, "}
             <span style={{color:G.aqua}}>{firstName}</span>.
           </h1>
         </div>
@@ -88,9 +94,10 @@ export default function Dashboard({ state, setScreen }) {
 
         {/* Tools grid */}
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"1px",background:G.border,borderRadius:"14px",overflow:"hidden",border:"1px solid rgba(255,255,255,0.25)",alignItems:"stretch"}}>
-          {hasApp1 && <ToolCard num="APP 01" title={g.app1title||"Property Marketing"} sub="Generate 13 marketing outputs for any listing in minutes." btnLabel={g.newListing||"New Listing →"} onNew={()=>setScreen({screen:"app1"})} hist={listings} isApp1 setScreen={setScreen} lang={state.lang} />}
-          {hasApp2 && <ToolCard num="APP 02" title={g.app2title||"Client Outreach"} sub="Personalised outreach packages for any client, any situation." btnLabel={g.newClient||"New Client →"} onNew={()=>setScreen({screen:"app2"})} hist={clients} setScreen={setScreen} lang={state.lang} />}
-          <ToolCard num="APP 03" title={g.app3title||"Newsletter Generator"} sub="Monthly client newsletter ready to send." btnLabel="📰 New Newsletter →" onNew={()=>setScreen({screen:"app3"})} hist={[]} setScreen={setScreen} lang={state.lang} />
+          {hasApp1 && <ToolCard num="APP 01" title={T.a1} sub="Generate 13 marketing outputs for any listing in minutes." btnLabel={g.newListing||"New Listing →"} onNew={()=>setScreen({screen:"app1"})} hist={listings} isApp1 setScreen={setScreen} lang={state.lang} />}
+          {hasApp2 && <ToolCard num="APP 02" title={T.a2} sub="Personalised outreach packages for any client, any situation." btnLabel={g.newClient||"New Client →"} onNew={()=>setScreen({screen:"app2"})} hist={clients} setScreen={setScreen} lang={state.lang} />}
+          {hasApp2 && <ToolCard num="APP 03" title={T.a3} sub="Work every client's follow-up in one place — nothing slips." btnLabel={isSpa?"Abrir Seguimiento →":"Open Follow-Up →"} onNew={()=>setScreen({screen:"followup"})} hist={[]} setScreen={setScreen} lang={state.lang} />}
+          <ToolCard num="APP 04" title={T.a4} sub="Monthly client newsletter ready to send." btnLabel={isSpa?"+ Nuevo Newsletter":"📰 New Newsletter →"} onNew={()=>setScreen({screen:"app3"})} hist={[]} setScreen={setScreen} lang={state.lang} />
         </div>
 
         {/* Trial bar */}
