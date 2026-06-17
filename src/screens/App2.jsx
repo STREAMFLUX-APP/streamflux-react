@@ -84,7 +84,6 @@ const TABS_EN = [
   {id:"messages",label:"Messages"},
   {id:"email",label:"Email"},
   {id:"voice",label:"Voice"},
-  {id:"schedule",label:"Schedule"},
 ]
 const SYSTEM = "You are an elite real estate sales coach. Respond with ONLY a raw valid JSON object. Start with { end with }. No markdown. No backticks. No explanation."
 
@@ -363,8 +362,7 @@ Return ONLY JSON:
         const objResult = await safe(objPrompt, SYSTEM, 2500)
         update({loadingMsg:"✦ Building follow-up plan..."})
         const fuResult = await safe(`CLIENT:${s.clientName}|OBJECTION:${objDetail}|SITUATION:${objSituation}|AGENT:${ag}${langI}\n\nCRITICAL: Never invent market data or facts not provided. Warm human follow-ups only. Each ends with gentle open question.\n\nReturn ONLY JSON:\n{"followup_1":"Day 3. 50-60 words. Warm check-in referencing their specific situation. No invented data. Ends with gentle open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented data. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual, human, no pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch, genuine care. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open. No pressure."}`,SYSTEM,900)
-        const schedResult = await safe(`CLIENT:${s.clientName}|REASON:objection_handle\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"","tasks":["Send your chosen approach (pick 1 of 3)","If no reply 4 hours, send SMS","Note client status"]},{"day":"Day 3","icon":"","tasks":["Send Follow-Up #1 — new angle","Don't repeat the same approach"]},{"day":"Day 7","icon":"","tasks":["Send Follow-Up #2 — add value","Make a call — listen more than pitch"]},{"day":"Day 14","icon":"","tasks":["Send Follow-Up #3 — casual","Share market update if relevant"]},{"day":"Day 30","icon":"","tasks":["Send Follow-Up #4 — warm touch"]},{"day":"Day 60","icon":"","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,600)
-        const result = {...objResult,...fuResult,...schedResult}
+        const result = {...objResult,...fuResult}
         update({result,activeTab:"messages"})
         const recObj = SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
         update({savedClientId:recObj?.id||null,fuStatus:"new"})
@@ -379,9 +377,7 @@ Return ONLY JSON:
       const part1=await safe(p1,SYSTEM,2200)
       update({loadingMsg:"✦ Writing letter & follow-ups..."})
       const part2=await safe(`${ctx}${langI}\n\nReturn ONLY JSON:\n{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words. Warm, personal, specific. Never invent data. Ends with open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented facts. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual check-in. No pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open."}`,SYSTEM,1300)
-      update({loadingMsg:"✦ Building schedule..."})
-      const part3=await safe(`CLIENT:${s.clientName}|TYPE:${s.clientType}|REASON:${s.contactReason}\n\nReturn ONLY JSON:\n{"schedule":[{"day":"Today","icon":"","tasks":["Send WhatsApp","If no reply 2 hours, send SMS","Save in CRM"]},{"day":"Day 3","icon":"","tasks":["Send Follow-Up #1","Check if email opened"]},{"day":"Day 7","icon":"","tasks":["Send Follow-Up #2","Make phone call — listen first"]},{"day":"Day 14","icon":"","tasks":["Send Follow-Up #3","Share market update"]},{"day":"Day 30","icon":"","tasks":["Send Follow-Up #4"]},{"day":"Day 60","icon":"","tasks":["Send Follow-Up #5 — final","80% of deals close between touch 5-12"]}]}`,SYSTEM,500)
-      const result={...part1,...part2,...part3}
+      const result={...part1,...part2}
       update({result,activeTab:"messages"})
       const recNorm = SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
       update({savedClientId:recNorm?.id||null,fuStatus:"new"})
@@ -470,24 +466,6 @@ Return ONLY JSON:
             <CopyCard title="Phone Call Script" content={r.voice_script||"No call script generated — please regenerate."} icon="" lang={s.language}/></>
           ))}
 
-          {s.activeTab==="schedule"&&r.schedule&&(
-            <>
-              <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 18px"}}>Your exact follow-up plan for {s.clientName}.</p>
-              {r.schedule.map((day,i)=>(
-                <div key={i} style={{background:"#0c0c10",border:"1px solid #252530",borderRadius:"10px",padding:"14px 16px",marginBottom:"8px"}}>
-                  <div style={{display:"flex",alignItems:"center",gap:"10px",marginBottom:"10px"}}>
-                    <span style={{fontSize:"14px",fontWeight:"700",color:"#2AB8D4"}}>{day.day||""}</span>
-                  </div>
-                  {(day.tasks||[]).map((t,j)=>(
-                    <div key={j} style={{display:"flex",gap:"8px",marginBottom:"6px"}}>
-                      <span style={{color:"#2AB8D4",fontWeight:"700",flexShrink:"0"}}>→</span>
-                      <span style={{fontSize:"14px",color:"#ccc",lineHeight:"1.6"}}>{t}</span>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </>
-          )}
           <button onClick={()=>update({...initState(s.language)})} style={{background:"transparent",color:"rgba(255,255,255,0.5)",border:"1px solid #222",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",marginTop:"16px"}}>← New Client</button>
         </div>
       </div>
