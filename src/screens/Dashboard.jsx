@@ -11,10 +11,13 @@ export default function Dashboard({ state, setScreen }) {
   const hasApp3 = agencyPlans.includes(user.plan)||user.plan==="bundle"
   const listings = SF.getListings()
   const clients = SF.getClients()
-  const followUpsDue = clients.filter(c=>{
+  const newsletters = SF.getNewsletters()
+  // Clients that need attention right now (waiting for a reply, or overdue)
+  const needNow = clients.filter(c=>{
     const st = followUpStatus(c)
     return st==="awaiting"||st==="overdue"
-  }).length
+  })
+  const followUpsDue = needNow.length
   const firstName = user.name ? user.name.split(" ")[0] : "there"
 
   // Responsive tool grid: 1 column on phones, 2x2 on desktop
@@ -102,10 +105,10 @@ export default function Dashboard({ state, setScreen }) {
 
         {/* Tools grid */}
         <div style={{display:"grid",gridTemplateColumns:`repeat(${toolCols},1fr)`,gap:"1px",background:G.border,borderRadius:"14px",overflow:"hidden",border:"1px solid rgba(255,255,255,0.25)",alignItems:"stretch"}}>
-          {hasApp1 && <ToolCard num="APP 01" title={T.a1} sub="Generate 13 marketing outputs for any listing in minutes." btnLabel={g.newListing||"New Listing →"} onNew={()=>setScreen({screen:"app1"})} hist={listings} isApp1 setScreen={setScreen} lang={state.lang} />}
-          {hasApp2 && <ToolCard num="APP 02" title={T.a2} sub="Personalised outreach packages for any client, any situation." btnLabel={g.newClient||"New Client →"} onNew={()=>setScreen({screen:"app2"})} hist={clients} setScreen={setScreen} lang={state.lang} />}
-          {hasApp2 && <ToolCard num="APP 03" title={T.a3} sub="Work every client's follow-up in one place — nothing slips." btnLabel={isSpa?"📲 Seguimiento →":"📲 Follow-Up →"} onNew={()=>setScreen({screen:"followup"})} hist={[]} setScreen={setScreen} lang={state.lang} />}
-          <ToolCard num="APP 04" title={T.a4} sub="Monthly client newsletter ready to send." btnLabel={isSpa?"+ Nuevo Newsletter":"📰 New Newsletter →"} onNew={()=>setScreen({screen:"app3"})} hist={[]} setScreen={setScreen} lang={state.lang} />
+          {hasApp1 && <ToolCard num="APP 01" title={T.a1} sub="Generate 13 marketing outputs for any listing in minutes." btnLabel={g.newListing||"New Listing →"} onNew={()=>setScreen({screen:"app1"})} hist={listings} mode="app1" setScreen={setScreen} lang={state.lang} />}
+          {hasApp2 && <ToolCard num="APP 02" title={T.a2} sub="Personalised outreach packages for any client, any situation." btnLabel={g.newClient||"New Client →"} onNew={()=>setScreen({screen:"app2"})} hist={clients} mode="app2" setScreen={setScreen} lang={state.lang} />}
+          {hasApp2 && <ToolCard num="APP 03" title={T.a3} sub="Work every client's follow-up in one place — nothing slips." btnLabel={isSpa?"📲 Seguimiento →":"📲 Follow-Up →"} onNew={()=>setScreen({screen:"followup"})} hist={needNow} mode="followup" setScreen={setScreen} lang={state.lang} />}
+          <ToolCard num="APP 04" title={T.a4} sub="Monthly client newsletter ready to send." btnLabel={isSpa?"📰 Nuevo Newsletter →":"📰 New Newsletter →"} onNew={()=>setScreen({screen:"app3",savedResult:null})} hist={newsletters} mode="newsletter" setScreen={setScreen} lang={state.lang} />
         </div>
 
         {/* Trial bar */}
@@ -125,8 +128,20 @@ export default function Dashboard({ state, setScreen }) {
   )
 }
 
-function ToolCard({ num, title, sub, onNew, btnLabel, hist, isApp1, setScreen, lang }) {
+function ToolCard({ num, title, sub, onNew, btnLabel, hist, mode, setScreen, lang }) {
   const [open, setOpen] = useState(false)
+  const isSpa = lang==="Spanish"
+  const isApp1 = mode==="app1"
+  const isFollowUp = mode==="followup"
+  const isNewsletter = mode==="newsletter"
+
+  // The expandable list label. Follow-Up card uses a "who needs me now" label; others use Recent Packages.
+  const listLabel = isFollowUp
+    ? (isSpa?"Quién me necesita ahora":"Who needs me now")
+    : (isSpa?"Paquetes Recientes Generados":"Recent Packages Generated")
+
+  const hasList = hist && hist.length > 0
+
   return (
     <div style={{background:"#0c0c10",padding:"28px",display:"flex",flexDirection:"column",height:"100%"}}>
       <div style={{minHeight:"90px",marginBottom:"20px"}}>
@@ -138,36 +153,85 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, isApp1, setScreen, l
         style={{background:"#2AB8D4",color:"#060608",border:"none",borderRadius:"8px",padding:"12px 18px",fontSize:"13px",fontWeight:"800",cursor:"pointer",fontFamily:"inherit",width:"100%",marginBottom:"16px",marginTop:"auto"}}>
         {btnLabel}
       </button>
-      {hist && hist.length > 0 && (
+
+      {/* Follow-Up card: show an "all caught up" state even when nobody needs attention */}
+      {isFollowUp && !hasList && (
+        <div style={{background:"rgba(61,158,92,0.08)",border:"1px solid rgba(61,158,92,0.3)",borderRadius:"8px",padding:"11px 14px",display:"flex",alignItems:"center",gap:"8px"}}>
+          <span style={{fontSize:"13px",color:"#3d9e5c",fontWeight:"700"}}>✓</span>
+          <span style={{fontSize:"12px",color:"rgba(255,255,255,0.75)",fontWeight:"600"}}>{isSpa?"Estás al día — nadie te necesita ahora.":"You're all caught up — nobody needs you right now."}</span>
+        </div>
+      )}
+
+      {hasList && (
         <>
           <button onClick={()=>setOpen(!open)}
             style={{background:"rgba(255,255,255,0.06)",color:"#fff",border:"1px solid rgba(255,255,255,0.3)",borderRadius:"8px",padding:"8px 14px",fontSize:"11px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-            <span>{lang==="Spanish"?"Paquetes Recientes Generados":"Recent Packages Generated"}</span>
+            <span style={{display:"flex",alignItems:"center",gap:"8px"}}>
+              {listLabel}
+              {isFollowUp && (
+                <span style={{background:"#ef4444",color:"#fff",borderRadius:"100px",fontSize:"9px",fontWeight:"800",padding:"1px 7px",minWidth:"14px",textAlign:"center"}}>{hist.length}</span>
+              )}
+            </span>
             <span style={{fontSize:"10px",opacity:"0.6"}}>{open?"▲":"▼"}</span>
           </button>
           {open && (
-            <div style={{marginTop:"8px"}}>
-              {hist.slice(0,10).map(item=>{
-                const lbl = isApp1 ? (item.address||(item.city?"Property in "+item.city:"Package "+item.savedAt)) : (item.clientName||"Client")
-                const sub2 = isApp1 ? ((item.mode||"")+" · "+(item.savedAt||"")) : ((item.contactReason||"")+" · "+(item.savedAt||""))
-                const dst = !isApp1 ? followUpStatus(item) : null
-                const meta = dst ? STATUS_META[dst] : null
-                return (
-                  <div key={item.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"9px 12px",background:"#060608",borderRadius:"8px",marginBottom:"4px",border:"1px solid #222"}}>
-                    <div style={{flex:"1",minWidth:"0",marginRight:"8px"}}>
-                      <div style={{fontSize:"12px",fontWeight:"600",color:"#fff",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lbl}</div>
-                      {meta && (
-                        <div style={{display:"flex",alignItems:"center",gap:"6px",marginTop:"3px"}}>
-                          <span style={{width:"7px",height:"7px",borderRadius:"50%",background:meta.dot,flexShrink:"0"}}/>
-                          <span style={{fontSize:"10px",color:meta.dot,fontWeight:"700"}}>{meta.label}</span>
+            <div style={{marginTop:"8px",maxHeight:"232px",overflowY:"auto",paddingRight:"2px"}}>
+              {hist.slice(0,20).map(item=>{
+
+                // ── Follow-Up card row: client name + colored status, tap opens that client ──
+                if (isFollowUp) {
+                  const st = followUpStatus(item)
+                  const meta = STATUS_META[st] || STATUS_META.new
+                  return (
+                    <div key={item.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"8px",padding:"10px 12px",background:"#0a0a0e",borderRadius:"9px",marginBottom:"6px",border:"1px solid #1c1c24"}}>
+                      <div style={{display:"flex",alignItems:"center",gap:"9px",minWidth:"0",flex:"1"}}>
+                        <span style={{width:"8px",height:"8px",borderRadius:"50%",background:meta.dot,flexShrink:"0"}}/>
+                        <div style={{minWidth:"0"}}>
+                          <div style={{fontSize:"12px",fontWeight:"700",color:"#fff",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{item.clientName||"Client"}</div>
+                          <div style={{fontSize:"10px",color:meta.dot,fontWeight:"700",marginTop:"1px"}}>{meta.label}</div>
                         </div>
+                      </div>
+                      <button onClick={()=>setScreen({screen:"app2_results",savedResult:item})}
+                        style={{background:"transparent",color:"#2AB8D4",border:"1px solid rgba(42,184,212,0.3)",borderRadius:"6px",padding:"5px 11px",fontSize:"10px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",flexShrink:"0"}}>
+                        {isSpa?"Abrir →":"Open →"}
+                      </button>
+                    </div>
+                  )
+                }
+
+                // ── Newsletter card row ──
+                if (isNewsletter) {
+                  const nlTitle = item.subject || (item.city ? (isSpa?"Newsletter de ":"Newsletter for ")+item.city : (isSpa?"Newsletter":"Newsletter"))
+                  const nlSub = [item.city, item.savedAt].filter(Boolean).join(" · ")
+                  return (
+                    <div key={item.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"8px",padding:"10px 12px",background:"#0a0a0e",borderRadius:"9px",marginBottom:"6px",border:"1px solid #1c1c24"}}>
+                      <div style={{flex:"1",minWidth:"0"}}>
+                        <div style={{fontSize:"12px",fontWeight:"700",color:"#fff",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nlTitle}</div>
+                        <div style={{fontSize:"10px",color:"rgba(255,255,255,0.45)",marginTop:"2px",fontFamily:"DM Mono,monospace"}}>{nlSub}</div>
+                      </div>
+                      {item.result && (
+                        <button onClick={()=>setScreen({screen:"app3",savedResult:item})}
+                          style={{background:"transparent",color:"#2AB8D4",border:"1px solid rgba(42,184,212,0.3)",borderRadius:"6px",padding:"5px 11px",fontSize:"10px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",flexShrink:"0"}}>
+                          {isSpa?"Abrir →":"Open →"}
+                        </button>
                       )}
-                      <div style={{fontSize:"10px",color:"rgba(255,255,255,0.5)",marginTop:"2px",fontFamily:"DM Mono,monospace"}}>{sub2}</div>
+                    </div>
+                  )
+                }
+
+                // ── App 01 (listings) and App 02 (clients) rows: name + reason/mode + date, NO status ──
+                const lbl = isApp1 ? (item.address||(item.city?(isSpa?"Propiedad en ":"Property in ")+item.city:(isSpa?"Paquete ":"Package ")+item.savedAt)) : (item.clientName||"Client")
+                const sub2 = isApp1 ? [item.mode,item.savedAt].filter(Boolean).join(" · ") : [(item.contactReason||"").replace(/_/g," "),item.savedAt].filter(Boolean).join(" · ")
+                return (
+                  <div key={item.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"8px",padding:"10px 12px",background:"#0a0a0e",borderRadius:"9px",marginBottom:"6px",border:"1px solid #1c1c24"}}>
+                    <div style={{flex:"1",minWidth:"0"}}>
+                      <div style={{fontSize:"12px",fontWeight:"700",color:"#fff",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lbl}</div>
+                      <div style={{fontSize:"10px",color:"rgba(255,255,255,0.45)",marginTop:"2px",fontFamily:"DM Mono,monospace",textTransform:"capitalize"}}>{sub2}</div>
                     </div>
                     {item.result && (
                       <button onClick={()=>setScreen({screen:isApp1?"app1_results":"app2_results",savedResult:item})}
-                        style={{background:"transparent",color:"#2AB8D4",border:"1px solid rgba(42,184,212,0.25)",borderRadius:"6px",padding:"4px 10px",fontSize:"10px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit"}}>
-                        Open →
+                        style={{background:"transparent",color:"#2AB8D4",border:"1px solid rgba(42,184,212,0.3)",borderRadius:"6px",padding:"5px 11px",fontSize:"10px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",flexShrink:"0"}}>
+                        {isSpa?"Abrir →":"Open →"}
                       </button>
                     )}
                   </div>
