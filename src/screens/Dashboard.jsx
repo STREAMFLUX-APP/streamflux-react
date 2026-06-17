@@ -104,7 +104,7 @@ export default function Dashboard({ state, setScreen }) {
         </div>
 
         {/* Tools grid */}
-        <div style={{display:"grid",gridTemplateColumns:`repeat(${toolCols},1fr)`,gap:"1px",background:G.border,borderRadius:"14px",overflow:"hidden",border:"1px solid rgba(255,255,255,0.25)",alignItems:"stretch"}}>
+        <div style={{display:"grid",gridTemplateColumns:`repeat(${toolCols},1fr)`,gap:"1px",background:G.border,borderRadius:"14px",overflow:"visible",border:"1px solid rgba(255,255,255,0.25)",alignItems:"stretch"}}>
           {hasApp1 && <ToolCard num="APP 01" title={T.a1} sub="Generate 13 marketing outputs for any listing in minutes." btnLabel={g.newListing||"New Listing →"} onNew={()=>setScreen({screen:"app1"})} hist={listings} mode="app1" setScreen={setScreen} lang={state.lang} />}
           {hasApp2 && <ToolCard num="APP 02" title={T.a2} sub="Personalised outreach packages for any client, any situation." btnLabel={g.newClient||"New Client →"} onNew={()=>setScreen({screen:"app2"})} hist={clients} mode="app2" setScreen={setScreen} lang={state.lang} />}
           {hasApp2 && <ToolCard num="APP 03" title={T.a3} sub="Work every client's follow-up in one place — nothing slips." btnLabel={isSpa?"📲 Seguimiento →":"📲 Follow-Up →"} onNew={()=>setScreen({screen:"followup"})} hist={needNow} mode="followup" setScreen={setScreen} lang={state.lang} />}
@@ -135,10 +135,12 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, mode, setScreen, lan
   const isFollowUp = mode==="followup"
   const isNewsletter = mode==="newsletter"
 
-  // The expandable list label. Follow-Up card uses a "who needs me now" label; others use Recent Packages.
+  // The expandable list label, per card type.
   const listLabel = isFollowUp
-    ? (isSpa?"Quién me necesita ahora":"Who needs me now")
-    : (isSpa?"Paquetes Recientes Generados":"Recent Packages Generated")
+    ? (isSpa?"Estado de seguimiento reciente":"Recent follow-up status")
+    : isNewsletter
+      ? (isSpa?"Newsletters Recientes Generados":"Recent Newsletters Generated")
+      : (isSpa?"Paquetes Recientes Generados":"Recent Packages Generated")
 
   const hasList = hist && hist.length > 0
 
@@ -154,28 +156,15 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, mode, setScreen, lan
         {btnLabel}
       </button>
 
-      {/* Follow-Up card: show an "all caught up" state even when nobody needs attention */}
-      {isFollowUp && !hasList && (
-        <div style={{background:"rgba(61,158,92,0.08)",border:"1px solid rgba(61,158,92,0.3)",borderRadius:"8px",padding:"11px 14px",display:"flex",alignItems:"center",gap:"8px"}}>
-          <span style={{fontSize:"13px",color:"#3d9e5c",fontWeight:"700"}}>✓</span>
-          <span style={{fontSize:"12px",color:"rgba(255,255,255,0.75)",fontWeight:"600"}}>{isSpa?"Estás al día — nadie te necesita ahora.":"You're all caught up — nobody needs you right now."}</span>
-        </div>
-      )}
-
       {hasList && (
-        <>
+        <div style={{position:"relative"}}>
           <button onClick={()=>setOpen(!open)}
             style={{background:"rgba(255,255,255,0.06)",color:"#fff",border:"1px solid rgba(255,255,255,0.3)",borderRadius:"8px",padding:"8px 14px",fontSize:"11px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-            <span style={{display:"flex",alignItems:"center",gap:"8px"}}>
-              {listLabel}
-              {isFollowUp && (
-                <span style={{background:"#ef4444",color:"#fff",borderRadius:"100px",fontSize:"9px",fontWeight:"800",padding:"1px 7px",minWidth:"14px",textAlign:"center"}}>{hist.length}</span>
-              )}
-            </span>
+            <span>{listLabel}</span>
             <span style={{fontSize:"10px",opacity:"0.6"}}>{open?"▲":"▼"}</span>
           </button>
           {open && (
-            <div style={{marginTop:"8px",maxHeight:"232px",overflowY:"auto",paddingRight:"2px"}}>
+            <div style={{position:"absolute",...( (isFollowUp||isNewsletter) ? {bottom:"calc(100% + 6px)"} : {top:"calc(100% + 6px)"} ),left:"0",right:"0",zIndex:"50",maxHeight:"260px",overflowY:"auto",background:"#0c0c10",border:"1px solid #252530",borderRadius:"10px",padding:"8px",boxShadow:"0 12px 40px rgba(0,0,0,0.6)"}}>
               {hist.slice(0,20).map(item=>{
 
                 // ── Follow-Up card row: client name + colored status, tap opens that client ──
@@ -239,7 +228,7 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, mode, setScreen, lan
               })}
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   )
