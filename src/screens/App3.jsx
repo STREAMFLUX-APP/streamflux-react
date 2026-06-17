@@ -1,18 +1,21 @@
 import { useState } from 'react'
-import { G, apiClaude, inputStyle, cardStyle, labelStyle, btnStyle } from '../globals.js'
+import { G, SF, apiClaude, inputStyle, cardStyle, labelStyle, btnStyle } from '../globals.js'
 import { Chips } from '../components/shared/Chips.jsx'
 
 const TONES_EN = [{value:"warm",label:"Warm & Personal"},{value:"professional",label:"Professional"},{value:"luxury",label:"Luxury & Exclusive"}]
 const TONES_ES = [{value:"warm",label:"Cálido y Personal"},{value:"professional",label:"Profesional"},{value:"luxury",label:"Lujo y Exclusivo"}]
 
 export default function App3({ state: appState, setScreen }) {
+  // If we arrived here from the Dashboard "Open" on a saved newsletter, preload it.
+  const reopened = appState.savedResult && appState.savedResult.result && appState.savedResult.newsletter ? appState.savedResult : null
+
   const [s, setS] = useState({
-    language: appState.lang||"English",
-    agentName:"", agentPhone:"", agentEmail:"",
-    city:"", neighbourhood:"",
+    language: (reopened?.language) || appState.lang || "English",
+    agentName: reopened?.agentName || "", agentPhone: reopened?.agentPhone || "", agentEmail: reopened?.agentEmail || "",
+    city: reopened?.city || "", neighbourhood: reopened?.neighbourhood || "",
     featuredAddress:"", featuredPrice:"", featuredBeds:"", featuredBaths:"", featuredHighlight:"",
     marketUpdate:"", personalNote:"", homeownerTip:"",
-    tone:"professional", loading:false, result:null, error:""
+    tone:"professional", loading:false, result: reopened?.result || null, error:""
   })
   const update = (u) => setS(prev=>({...prev,...u}))
   const isSpa = s.language === "Spanish"
@@ -26,6 +29,15 @@ export default function App3({ state: appState, setScreen }) {
     try {
       const r = await apiClaude(`${details}\n\nAll in ${isSpa?"Spanish":"English"}. Return ONLY JSON:\n{"subject_line":"Email subject line under 10 words","greeting":"Warm opening 2-3 sentences personalised to city and season","market_update":"60-80 word local market update. Trends, what buyers and sellers should know.","featured_listing":"50-70 word featured property highlight. Exciting and specific.","homeowner_tip":"40-60 word practical homeowner tip for this month.","personal_note":"30-40 word warm personal note from the agent.","cta":"Strong CTA asking them to reply or call for a free market valuation."}${langInstr}`, sys, 1400)
       update({result:r})
+      // Save the newsletter so it shows in the Dashboard "Recent Packages Generated" list and can be reopened.
+      SF.addNewsletter({
+        newsletter:true,
+        language:s.language,
+        agentName:s.agentName, agentPhone:s.agentPhone, agentEmail:s.agentEmail,
+        city:s.city, neighbourhood:s.neighbourhood,
+        subject:r.subject_line||"",
+        result:r,
+      })
     } catch(err) { update({error:err.message}) }
     update({loading:false})
   }
@@ -36,7 +48,7 @@ export default function App3({ state: appState, setScreen }) {
   const Nav = () => (
     <div style={{background:G.card,borderBottom:`1px solid ${G.border}`,padding:"14px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
       <span style={{fontSize:"16px",fontWeight:"700",letterSpacing:"2px",color:G.white}}>STREAM<span style={{color:G.aqua}}>FLUX</span></span>
-      <button onClick={()=>setScreen({screen:"dashboard"})} style={{background:"transparent",color:G.muted,border:`1px solid ${G.border}`,borderRadius:"8px",padding:"6px 14px",fontSize:"12px",cursor:"pointer",fontFamily:"inherit"}}>{isSpa?"← Panel":"← Dashboard"}</button>
+      <button onClick={()=>setScreen({screen:"dashboard",savedResult:null})} style={{background:"transparent",color:G.muted,border:`1px solid ${G.border}`,borderRadius:"8px",padding:"6px 14px",fontSize:"12px",cursor:"pointer",fontFamily:"inherit"}}>{isSpa?"← Panel":"← Dashboard"}</button>
     </div>
   )
 
@@ -94,7 +106,7 @@ export default function App3({ state: appState, setScreen }) {
             </div>
           </div>
           <button onClick={copyAll} style={{...btnStyle(false,"#22c55e"),width:"100%",marginBottom:"10px"}}>{isSpa?"📋 Copiar Newsletter Completo":"📋 Copy Full Newsletter"}</button>
-          <button onClick={()=>update({result:null})} style={{...btnStyle(false),background:"transparent",color:G.muted,border:`1px solid ${G.border}`,width:"100%"}}>{isSpa?"← Nuevo Newsletter":"← New Newsletter"}</button>
+          <button onClick={()=>{ setScreen({savedResult:null}); update({result:null}) }} style={{...btnStyle(false),background:"transparent",color:G.muted,border:`1px solid ${G.border}`,width:"100%"}}>{isSpa?"← Nuevo Newsletter":"← New Newsletter"}</button>
         </div>
       </div>
     )
