@@ -406,8 +406,8 @@ Return ONLY JSON:
 
           {s.fuStatus==="new" ? (
             <div style={{background:"rgba(42,184,212,0.08)",border:"2px solid #2AB8D4",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
-              <div style={{fontSize:"15px",fontWeight:"800",color:"#fff",marginBottom:"6px"}}>📲 One last step — activate {s.clientName} in your Follow-Up Engine</div>
-              <p style={{fontSize:"13px",color:"rgba(255,255,255,0.7)",margin:"0 0 14px",lineHeight:"1.6"}}>Did you send this message or call them? Tap the button to start tracking. Their follow-ups are ready and waiting in the Follow-Up Engine.</p>
+              <div style={{fontSize:"13px",fontWeight:"800",color:"#fff",marginBottom:"6px"}}>⚠️ One last step — activate {s.clientName}</div>
+              <p style={{fontSize:"13px",color:"rgba(255,255,255,0.7)",margin:"0 0 14px",lineHeight:"1.6"}}>Hit the button below to activate this client in your Follow-Up app — you need to click it once you've sent the message.</p>
               <button onClick={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"awaiting",sentAt:Date.now()});update({fuStatus:"awaiting"})}}
                 style={{background:"#2AB8D4",color:"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"800",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
                 ✓ Yes — I sent it
