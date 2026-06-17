@@ -170,7 +170,7 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, mode, setScreen, lan
             <span style={{fontSize:"10px",opacity:"0.6"}}>{open?"▲":"▼"}</span>
           </button>
           {open && (
-            <div style={{position:"absolute",...( (isFollowUp||isNewsletter) ? {bottom:"calc(100% + 6px)"} : {top:"calc(100% + 6px)"} ),left:"0",right:"0",zIndex:"50",maxHeight:"260px",overflowY:"auto",background:"#0c0c10",border:"1px solid #252530",borderRadius:"10px",padding:"8px",boxShadow:"0 12px 40px rgba(0,0,0,0.6)"}}>
+            <div style={{position:"absolute",top:"calc(100% + 6px)",left:"0",right:"0",zIndex:"50",maxHeight:"260px",overflowY:"auto",background:"#0c0c10",border:"1px solid #252530",borderRadius:"10px",padding:"8px",boxShadow:"0 12px 40px rgba(0,0,0,0.6)"}}>
               {!hasList && (
                 <div style={{padding:"16px 12px",textAlign:"center",fontSize:"12px",color:"rgba(255,255,255,0.45)",fontWeight:"600"}}>{emptyLabel}</div>
               )}
