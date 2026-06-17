@@ -100,6 +100,8 @@ export const SF = {
   saveListings: (arr) => localStorage.setItem("sf_listings", JSON.stringify(arr.slice(0,10))),
   getClients: () => { try { return JSON.parse(localStorage.getItem("sf_clients")||"[]"); } catch { return []; } },
   saveClients: (arr) => localStorage.setItem("sf_clients", JSON.stringify(arr.slice(0,50))),
+  getNewsletters: () => { try { return JSON.parse(localStorage.getItem("sf_newsletters")||"[]"); } catch { return []; } },
+  saveNewsletters: (arr) => localStorage.setItem("sf_newsletters", JSON.stringify(arr.slice(0,10))),
   addListing: (listing) => { const arr=SF.getListings(); arr.unshift({...listing,id:Date.now(),savedAt:new Date().toLocaleDateString()}); SF.saveListings(arr); },
   addClient: (client) => {
     const arr=SF.getClients();
@@ -115,6 +117,13 @@ export const SF = {
     arr[i]={...arr[i],...updates};
     SF.saveClients(arr);
     return arr[i];
+  },
+  addNewsletter: (newsletter) => {
+    const arr=SF.getNewsletters();
+    const rec={...newsletter,id:Date.now(),savedAt:new Date().toLocaleDateString()};
+    arr.unshift(rec);
+    SF.saveNewsletters(arr);
+    return rec;
   },
 };
 
