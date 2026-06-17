@@ -97,7 +97,7 @@ const initState = (lang) => ({
   propInterior:[], propOutdoor:[], propBuilding:[],
   compAddress:"", compPrice:"", compBeds:"", compBaths:"", compSqft:"",
   compCondition:"", compKeyFeatures:"", compDaysOnMarket:"", compAboveBelow:"",
-  buyerBudget:"", buyerCriteria:[], buyerNeeds:"", buyerProfile:[], buyerWhatLookingFor:"", buyerMotivations:[],
+  buyerBudget:"", buyerCriteria:[], buyerNeeds:"", buyerProfile:[], buyerWhatLookingFor:"", buyerMotivations:[], buyerWishlist:"",
   buyerMatchBeds:"", buyerMatchBaths:"", buyerMatchSqft:"", buyerMatchType:"", buyerMatchCondition:"",
   buyerSpecificReqs:"", buyerProfileOther:"", customSituation:"",
   partnerNotConvincedReason:"",
@@ -153,7 +153,7 @@ const lbl = {display:"block",fontSize:"10px",fontWeight:"700",letterSpacing:"0.1
 const card = {background:"#0c0c10",border:"1px solid #252530",borderRadius:"12px",padding:"22px",marginBottom:"16px"}
 const ctxStyle = {background:"rgba(255,255,255,0.04)",border:"1.5px solid rgba(255,255,255,0.12)",borderRadius:"10px",padding:"16px",marginBottom:"16px"}
 
-function BuyerProfileBox({ s, update, tog }) {
+function BuyerProfileBox({ s, update, tog, hideLooking }) {
   return (
     <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:"12px",padding:"22px",marginBottom:"16px"}}>
       <h2 style={{fontSize:"16px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>👤 Buyer Profile, Criteria & Context</h2>
@@ -171,10 +171,10 @@ function BuyerProfileBox({ s, update, tog }) {
         <label style={lbl}>Anything else about this buyer not listed above?</label>
         <input type="text" placeholder="e.g. Needs to complete before school term, partner is non-resident..." style={inp} value={s.buyerProfileOther||""} onChange={e=>update({buyerProfileOther:e.target.value})}/>
       </div>
-      <div style={{marginBottom:"14px"}}>
+      {!hideLooking&&<div style={{marginBottom:"14px"}}>
         <label style={lbl}>What Are They Looking For & Why?</label>
         <textarea placeholder="e.g. 3-bed house with garden near good schools, wants to upsize because they are starting a family, needs a home office..." rows={3} style={{...inp,resize:"vertical",marginTop:"6px"}} value={s.buyerWhatLookingFor||""} onChange={e=>update({buyerWhatLookingFor:e.target.value})}/>
-      </div>
+      </div>}
       <div style={{marginBottom:"12px"}}>
         <label style={lbl}>Budget Value</label>
         <input type="text" placeholder="e.g. $800,000" style={inp} value={s.buyerBudget||""} onChange={e=>update({buyerBudget:e.target.value})}/>
@@ -299,6 +299,9 @@ export default function App2({ state: appState, setScreen }) {
   const isObjection = s.contactReason==="objection_handle"
   const isViewingFollowUp = s.contactReason==="viewing_followup"
   const isPriceDrop = s.contactReason==="price_drop"
+  const isNewListing = s.contactReason==="new_listing"
+  const isOffMarket = s.contactReason==="off_market"
+  const showWishlist = isNewListing||isPriceDrop||isViewingFollowUp||isOffMarket
   const isNoProperty = ["market_update","financing_update","re_engagement","referral_request","anniversary","neighbourhood_news","market_value_update","reconnect","first_contact"].includes(s.contactReason)
   const showProp = !isNoProperty&&!isSoldNearby&&!isCMA&&!isBuyerMatch&&!isObjection
   const showFeatures = showProp&&!isPriceDiscussion&&!isExpiredListing&&!isPreListing&&!isFSBO&&!isTimelineCheckin
@@ -318,6 +321,7 @@ ${s.propInterior.length?"INTERIOR:"+s.propInterior.slice(0,8).join(","):""}${s.p
 ${buyerCtx}
 ${isSeller()?"SELLER SITUATION:"+s.sellerSituation.join(","):""}
 ${!isObjection&&s.customSituation?"AGENT CONTEXT: "+s.customSituation:""}
+${showWishlist&&s.buyerWishlist?"BUYER WISHLIST: "+s.buyerWishlist+" | CRITICAL: Only mention wishlist items the property above ACTUALLY has. Never claim the property matches a want unless the property data confirms it. Stay silent on wishes the property doesn't meet.":""}
 AGENT:${ag}${s.agentPhone?"|"+s.agentPhone:""}${s.agencyName?"|"+s.agencyName:""}`
 
     try {
@@ -368,11 +372,11 @@ Return ONLY JSON:
         return
       }
 
-      let p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word WhatsApp. Warm, use ${s.clientName} first name. End with easy question.","sms":"SMS max 160 chars.","voice_script":"Call script: OPENING, REASON, VALUE PITCH, CLOSE. Labelled.","email_subject":"Subject under 10 words.","email_body":"130-160 word email. Opener, opportunity, CTA. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
+      let p1=`${ctx}${langI}\n\nGenerate TWO different versions of this outreach so the agent can choose. Both must respect the chosen tone, but be genuinely different in wording and angle.\n\nReturn ONLY JSON:\n{"v1_label":"Option 1","v1_whatsapp":"60-80 word WhatsApp. Warm, use ${s.clientName} first name. End with easy question.","v1_sms":"SMS max 160 chars.","v1_voice":"Call script: OPENING, REASON, VALUE PITCH, CLOSE. Labelled.","v1_email_subject":"Subject under 10 words.","v1_email":"130-160 word email. Opener, opportunity, CTA. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}.","v2_label":"Option 2","v2_whatsapp":"Different angle. 60-80 word WhatsApp. Use ${s.clientName} first name. End with easy question.","v2_sms":"Different SMS max 160 chars.","v2_voice":"Different call script: OPENING, REASON, VALUE PITCH, CLOSE. Labelled.","v2_email_subject":"Different subject under 10 words.","v2_email":"Different 130-160 word email. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
       if(s.contactReason==="referral_request")p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word referral request. Warm, celebrate, ask naturally.","sms":"Referral SMS max 160 chars.","voice_script":"Referral call: OPENING, CELEBRATION, ASK, CLOSE. Labelled.","email_subject":"Subject under 9 words.","email_body":"120-140 word referral email. Signed by ${ag}."}`;
       if(s.contactReason==="anniversary")p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word anniversary WhatsApp. Warm, celebratory.","sms":"Anniversary SMS max 160 chars.","voice_script":"Anniversary call: OPENING, CELEBRATE, MARKET UPDATE, SOFT CTA. Labelled.","email_subject":"Subject under 9 words.","email_body":"120-140 word anniversary email. Signed by ${ag}."}`;
       if(isCMA)p1=`${ctx}\nSUBJECT:${s.cmaSubject.address}|$${s.cmaSubject.price}|${s.cmaSubject.beds}bed/${s.cmaSubject.baths}bath\nCOMPS:${s.cmaComps.map((c,i)=>`${i+1}. ${c.address} sold $${c.salePrice} ${c.saleDate}`).join("|")}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word WhatsApp. Warm, valuation complete, booking question.","sms":"SMS max 160 chars.","voice_script":"Call: OPENING, CMA COMPLETE, INSIGHT, BOOK MEETING. Labelled.","email_subject":"Subject under 10 words.","email_body":"140-160 word email. Valuation, insight, invite meeting. Signed by ${ag}."}`;
-      const part1=await safe(p1,SYSTEM,1300)
+      const part1=await safe(p1,SYSTEM,2200)
       update({loadingMsg:"✦ Writing letter & follow-ups..."})
       const part2=await safe(`${ctx}${langI}\n\nReturn ONLY JSON:\n{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words. Warm, personal, specific. Never invent data. Ends with open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented facts. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual check-in. No pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open."}`,SYSTEM,1300)
       update({loadingMsg:"✦ Building schedule..."})
@@ -428,7 +432,7 @@ Return ONLY JSON:
             <>
               {["v1","v2","v3"].map(v=>(
                 r[v+"_whatsapp"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
-                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
+                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>{r[v+"_label"]||("Option "+v.slice(1))}</div>
                   <CopyCard title="WhatsApp" content={r[v+"_whatsapp"]||""} icon="" lang={s.language}/>
                   <CopyCard title="SMS" content={r[v+"_sms"]||""} icon="" lang={s.language}/>
                 </div>
@@ -442,7 +446,7 @@ Return ONLY JSON:
             <>
               {["v1","v2","v3"].map(v=>(
                 r[v+"_email"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
-                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
+                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>{r[v+"_label"]||("Option "+v.slice(1))}</div>
                   <CopyCard title="Email Subject" content={r[v+"_email_subject"]||""} icon="" lang={s.language}/>
                   <CopyCard title="Email Body" content={r[v+"_email"]||""} icon="" lang={s.language}/>
                 </div>
@@ -456,7 +460,7 @@ Return ONLY JSON:
             <>
               {["v1","v2","v3"].map(v=>(
                 r[v+"_voice"]&&<div key={v} style={{background:"#0c0c10",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px",marginBottom:"16px"}}>
-                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>APPROACH {v.slice(1)} — {r[v+"_label"]||""}</div>
+                  <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"2px",textTransform:"uppercase",color:"#ffffff",marginBottom:"12px"}}>{r[v+"_label"]||("Option "+v.slice(1))}</div>
                   <CopyCard title="Phone Call Script" content={r[v+"_voice"]||""} icon="" lang={s.language}/>
                 </div>
               ))}
@@ -620,7 +624,7 @@ Return ONLY JSON:
         )}
 
         {isViewingFollowUp&&<PropCard s={s} update={update} tog={tog} title="🏠 Property Viewed" showFeatures={true}/>}
-        {isViewingFollowUp&&<BuyerProfileBox s={s} update={update} tog={tog}/>}
+        {isViewingFollowUp&&<BuyerProfileBox s={s} update={update} tog={tog} hideLooking={showWishlist}/>}
 
         {isPriceDrop&&isBuyer()&&(
           <div style={card}>
@@ -1080,8 +1084,16 @@ Return ONLY JSON:
           />
         )}
 
+        {showWishlist&&(
+          <div style={card}>
+            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>💭 Her Wishlist — what she really wants in a home</h2>
+            <p style={{fontSize:"12px",color:"#2AB8D4",fontWeight:"600",marginBottom:"12px",lineHeight:"1.5"}}>Important: fill this in — it helps us craft a powerful message that lands with the client. We only mention what this property actually has.</p>
+            <textarea placeholder="e.g. 4 beds, gourmet kitchen, pool, near good schools, quiet street…" rows={3} style={{...inp,resize:"vertical"}} value={s.buyerWishlist||""} onChange={e=>update({buyerWishlist:e.target.value})}/>
+          </div>
+        )}
+
         {isBuyer()&&!isObjection&&!isViewingFollowUp&&!isReconnect&&!["first_contact","offer_strategy","open_house","financing_update"].includes(s.contactReason)&&(
-          <BuyerProfileBox s={s} update={update} tog={tog}/>
+          <BuyerProfileBox s={s} update={update} tog={tog} hideLooking={showWishlist}/>
         )}
 
         {showSellerProfile&&<SellerProfileBox s={s} update={update} tog={tog}/>}
