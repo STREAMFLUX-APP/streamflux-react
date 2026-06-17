@@ -84,7 +84,6 @@ const TABS_EN = [
   {id:"messages",label:"Messages"},
   {id:"email",label:"Email"},
   {id:"voice",label:"Voice"},
-  {id:"followups",label:"Follow-Up Engine"},
   {id:"schedule",label:"Schedule"},
 ]
 const SYSTEM = "You are an elite real estate sales coach. Respond with ONLY a raw valid JSON object. Start with { end with }. No markdown. No backticks. No explanation."
@@ -405,13 +404,25 @@ Return ONLY JSON:
             ))}
           </div>
 
-          <FollowUpBar
-            status={s.fuStatus}
-            onSent={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"awaiting",sentAt:Date.now()});update({fuStatus:"awaiting"})}}
-            onResponded={()=>update({activeTab:"followups",fuSubTab:"gotreply"})}
-            onClosed={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"closed"});update({fuStatus:"closed"})}}
-            onReopen={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"awaiting"});update({fuStatus:"awaiting"})}}
-          />
+          {s.fuStatus==="new" ? (
+            <div style={{background:"rgba(42,184,212,0.08)",border:"2px solid #2AB8D4",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
+              <div style={{fontSize:"15px",fontWeight:"800",color:"#fff",marginBottom:"6px"}}>📲 One last step — activate {s.clientName} in your Follow-Up Engine</div>
+              <p style={{fontSize:"13px",color:"rgba(255,255,255,0.7)",margin:"0 0 14px",lineHeight:"1.6"}}>Did you send this message or call them? Tap the button to start tracking. Their follow-ups are ready and waiting in the Follow-Up Engine.</p>
+              <button onClick={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"awaiting",sentAt:Date.now()});update({fuStatus:"awaiting"})}}
+                style={{background:"#2AB8D4",color:"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"800",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
+                ✓ Yes — I sent it
+              </button>
+            </div>
+          ) : (
+            <div style={{background:"rgba(61,158,92,0.1)",border:"1px solid rgba(61,158,92,0.5)",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
+              <div style={{fontSize:"15px",fontWeight:"800",color:"#fff",marginBottom:"6px"}}>✅ {s.clientName} is now in your Follow-Up Engine</div>
+              <p style={{fontSize:"13px",color:"rgba(255,255,255,0.7)",margin:"0 0 14px",lineHeight:"1.6"}}>Open it anytime to see every follow-up, send the next one, or log their reply.</p>
+              <button onClick={()=>setScreen({screen:"followup"})}
+                style={{background:"transparent",color:"#2AB8D4",border:"1px solid #2AB8D4",borderRadius:"8px",padding:"12px 22px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
+                📲 Open Follow-Up Engine →
+              </button>
+            </div>
+          )}
 
           {s.activeTab==="messages"&&(isObj?(
             <>
@@ -454,53 +465,6 @@ Return ONLY JSON:
             <><p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 12px"}}>Read naturally — don't sound like you're reading a script.</p>
             <CopyCard title="Phone Call Script" content={r.voice_script||"No call script generated — please regenerate."} icon="" lang={s.language}/></>
           ))}
-
-          {s.activeTab==="followups"&&(
-            <>
-              <div style={{display:"flex",gap:"4px",marginBottom:"20px",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid #252530"}}>
-                <button onClick={()=>update({fuSubTab:"noreply"})} style={{flex:"1",background:s.fuSubTab==="noreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="noreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",WebkitTapHighlightColor:"rgba(42,184,212,0.3)",touchAction:"manipulation"}}>No Reply Plan</button>
-                <button onClick={()=>update({fuSubTab:"gotreply"})} style={{flex:"1",background:s.fuSubTab==="gotreply"?"#2AB8D4":"transparent",color:s.fuSubTab==="gotreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",WebkitTapHighlightColor:"rgba(42,184,212,0.3)",touchAction:"manipulation"}}>Got a Response?</button>
-              </div>
-              {s.fuSubTab==="noreply"&&(
-                <>
-                  <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 16px",lineHeight:"1.6"}}>Use these if your client goes quiet. Send in order. 80% of deals close between touch 5-12.</p>
-                  <CopyCard title="Follow-Up #1 — Day 3" content={r.followup_1||""} icon="" lang={s.language}/>
-                  <CopyCard title="Follow-Up #2 — Week 1" content={r.followup_2||""} icon="" lang={s.language}/>
-                  <CopyCard title="Follow-Up #3 — Week 2" content={r.followup_3||""} icon="" lang={s.language}/>
-                  <CopyCard title="Follow-Up #4 — Month 1" content={r.followup_4||""} icon="" lang={s.language}/>
-                  <CopyCard title="Follow-Up #5 — Month 2" content={r.followup_5||""} icon="" lang={s.language}/>
-                </>
-              )}
-              {s.fuSubTab==="gotreply"&&(
-                <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:"10px",padding:"20px"}}>
-                  <div style={{fontSize:"13px",fontWeight:"700",color:"#fff",marginBottom:"6px"}}>Log What Happened — Get New Follow-Ups</div>
-                  <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px",lineHeight:"1.6"}}>Got a response? Describe what happened. The AI generates 4 new tailored follow-ups instantly.</p>
-                  <textarea placeholder="e.g. She replied and said she liked it but her husband isn't convinced..." rows={4}
-                    value={s.regenContext||""} onChange={e=>update({regenContext:e.target.value})}
-                    style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.15)",background:"#0d0d0d",marginBottom:"12px",WebkitUserSelect:"text",userSelect:"text",WebkitTextFillColor:"rgba(255,255,255,0.65)",color:"rgba(255,255,255,0.65)"}}/>
-                  <button onClick={async()=>{
-                    if(!s.regenContext||s.regenLoading)return
-                    update({regenLoading:true})
-                    try{
-                      const regen=await apiClaude(`Original: CLIENT ${s.clientName}|${s.contactReason}\nWhat happened: ${s.regenContext}\n\nReturn ONLY JSON:\n{"followup_1":"New Day 3. 50-60 words.","followup_2":"New Week 1. 50-60 words.","followup_3":"New Week 2. 40-50 words.","followup_4":"New Month 1. 40-50 words."}`,SYSTEM,700)
-                      const merged={...s.result,regen_fu1:regen.followup_1,regen_fu2:regen.followup_2,regen_fu3:regen.followup_3,regen_fu4:regen.followup_4}
-                      update({result:merged,regenContext:"",fuStatus:"active"})
-                      if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"active",result:merged})
-                    }catch(e){update({error:"Failed: "+e.message})}
-                    update({regenLoading:false})
-                  }} style={{background:s.regenLoading?"#1a1a1a":"#2AB8D4",color:s.regenLoading?"rgba(255,255,255,0.5)":"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
-                    {s.regenLoading?"Generating...":"✦ Get New Follow-Ups Based on Response"}
-                  </button>
-                  {s.result.regen_fu1&&(<div style={{marginTop:"20px"}}>
-                    <CopyCard title="New Follow-Up #1" content={s.result.regen_fu1||""} icon="" lang={s.language}/>
-                    <CopyCard title="New Follow-Up #2" content={s.result.regen_fu2||""} icon="" lang={s.language}/>
-                    <CopyCard title="New Follow-Up #3" content={s.result.regen_fu3||""} icon="" lang={s.language}/>
-                    <CopyCard title="New Follow-Up #4" content={s.result.regen_fu4||""} icon="" lang={s.language}/>
-                  </div>)}
-                </div>
-              )}
-            </>
-          )}
 
           {s.activeTab==="schedule"&&r.schedule&&(
             <>
