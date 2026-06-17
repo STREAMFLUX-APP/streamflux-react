@@ -10,31 +10,33 @@ const card = {background:"#0c0c10",border:"1px solid #252530",borderRadius:"12px
 
 const daysSince = ts => ts ? Math.floor((Date.now()-ts)/864e5) : 0
 
-// One bucket per client: needs | waiting | cold | closed
+// One bucket per client. new = not activated yet (confirmed in Client Outreach) → hidden.
 const tabOf = c => {
   const base = followUpStatus(c)
+  if (base==="new") return null
   if (base==="closed") return "closed"
+  if (base==="active") return "active"
   if (c.sentAt && daysSince(c.sentAt)>=COLD_DAYS) return "cold"
-  if (base==="new"||base==="overdue"||base==="active") return "needs"
+  if (base==="overdue") return "needs"
   if (base==="awaiting") return "waiting"
-  return "needs"
+  return null
 }
 
 // Row label + colour
 const rowInfo = c => {
   const base = followUpStatus(c)
-  const cold = c.sentAt && daysSince(c.sentAt)>=COLD_DAYS && base!=="closed"
   if (base==="closed") return {line:"Closed — deal done", color:STATUS_META.closed.dot}
-  if (cold) return {line:`Going cold — no contact ${daysSince(c.sentAt)} days`, color:"#888780"}
+  if (base==="active") return {line:"They replied — log it to get the next message", color:STATUS_META.active.dot}
+  if (c.sentAt && daysSince(c.sentAt)>=COLD_DAYS) return {line:`Going cold — no contact ${daysSince(c.sentAt)} days`, color:"#888780"}
   if (base==="overdue") return {line:`Follow up now — ${daysSince(c.sentAt)} days gone`, color:STATUS_META.overdue.dot}
   if (base==="awaiting") return {line:"Waiting for reply", color:STATUS_META.awaiting.dot}
-  if (base==="active") return {line:"They replied — keep it going", color:STATUS_META.active.dot}
-  return {line:"Not sent yet — send the first message", color:STATUS_META.new.dot}
+  return {line:"Not sent yet", color:STATUS_META.new.dot}
 }
 
 const TABS = [
   {id:"needs", label:"Needs action now", bg:"#A32D2D", fg:"#fff"},
   {id:"waiting", label:"Waiting for reply", bg:"#D4A843", fg:"#060608"},
+  {id:"active", label:"Active chats", bg:"#3d9e5c", fg:"#fff"},
   {id:"cold", label:"Going cold", bg:"#888780", fg:"#060608"},
   {id:"closed", label:"Closed", bg:"#2AB8D4", fg:"#060608"},
 ]
@@ -54,6 +56,7 @@ export default function FollowUp({ state: appState, setScreen }) {
   const isSpa = lang==="Spanish"
 
   const counts = TABS.reduce((a,t)=>{a[t.id]=clients.filter(c=>tabOf(c)===t.id).length;return a},{})
+  const shown = Object.values(counts).reduce((a,b)=>a+b,0)
 
   const Nav = ({back}) => (
     <div style={{background:"#0c0c10",borderBottom:"1px solid #222",padding:"0 22px",display:"flex",alignItems:"center",justifyContent:"space-between",height:"56px",position:"sticky",top:"0",zIndex:"1000"}}>
@@ -162,9 +165,9 @@ export default function FollowUp({ state: appState, setScreen }) {
         <div style={{marginBottom:"18px",padding:"0 4px"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <h1 style={{fontSize:"20px",fontWeight:"700",color:"#fff",margin:"0"}}>Follow-Up</h1>
-            <span style={{fontSize:"12px",color:"rgba(255,255,255,0.5)"}}>{clients.length} contacts</span>
+            <span style={{fontSize:"12px",color:"rgba(255,255,255,0.5)"}}>{shown} contacts</span>
           </div>
-          <p style={{fontSize:"13px",color:"rgba(255,255,255,0.5)",margin:"8px 0 0",lineHeight:"1.5"}}>Tap any contact to copy their next message, mark it sent, or log a reply to get a fresh follow-up. Red = act now, yellow = waiting on them.</p>
+          <p style={{fontSize:"13px",color:"rgba(255,255,255,0.5)",margin:"8px 0 0",lineHeight:"1.5"}}>Tap a contact to copy their next message or log a reply. Red = act now, yellow = waiting on them, green = active chat.</p>
         </div>
 
         <div style={{display:"flex",gap:"6px",marginBottom:"20px",flexWrap:"wrap"}}>
@@ -192,7 +195,7 @@ export default function FollowUp({ state: appState, setScreen }) {
             {rows.map(c=>{
               const {line,color} = rowInfo(c)
               return (
-                <button key={c.id} onClick={()=>{setOpenId(c.id);setSubTab("noreply")}}
+                <button key={c.id} onClick={()=>{setOpenId(c.id);setSubTab(followUpStatus(c)==="active"?"gotreply":"noreply")}}
                   style={{textAlign:"left",background:"#0c0c10",border:"1px solid #252530",borderLeft:`3px solid ${color}`,borderRadius:"0 10px 10px 0",padding:"13px 15px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"10px",cursor:"pointer",fontFamily:"inherit"}}>
                   <div style={{minWidth:"0"}}>
                     <div style={{fontSize:"14px",fontWeight:"700",color:"#fff",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.clientName||"Client"}</div>
