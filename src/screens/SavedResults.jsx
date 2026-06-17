@@ -3,36 +3,9 @@ import { G, SF, apiClaude, followUpStatus, STATUS_META } from '../globals.js'
 import { CopyCard } from '../components/shared/CopyCard.jsx'
 
 const APP1_TABS = [{id:"listing",label:"🏠 Listing"},{id:"social",label:"📱 Social"},{id:"ads",label:"🎯 Ads & SMS"},{id:"tiktok",label:"🎬 TikTok"},{id:"neighbours",label:"✉️ Neighbours"},{id:"schedule",label:"📅 Schedule"}]
-const APP2_TABS = [{id:"messages",label:"Messages"},{id:"email",label:"Email"},{id:"voice",label:"Voice"},{id:"followups",label:"Follow-Up Engine"},{id:"schedule",label:"Schedule"}]
+const APP2_TABS = [{id:"messages",label:"Messages"},{id:"email",label:"Email"},{id:"voice",label:"Voice"}]
 const SYSTEM = "You are an elite real estate sales coach. Respond with ONLY a raw valid JSON object. Start with { end with }. No markdown. No backticks. No explanation."
 const inp = {width:"100%",background:"#060608",border:"1px solid #252530",borderRadius:"8px",color:"rgba(255,255,255,0.65)",fontSize:"14px",padding:"11px 14px",outline:"none",fontFamily:"inherit",boxSizing:"border-box",WebkitTextFillColor:"rgba(255,255,255,0.55)"}
-
-function FollowUpBar({ status, onSent, onResponded, onClosed, onReopen }) {
-  const meta = STATUS_META[status] || STATUS_META.new
-  const isNew = status==="new"
-  const wrap = {background:"rgba(255,255,255,0.02)",border:"1px solid #1c1c24",borderRadius:"10px",padding:"9px 13px",marginBottom:"18px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"10px",flexWrap:"wrap"}
-  const left = {display:"flex",alignItems:"center",gap:"8px",minWidth:"0"}
-  const btn = (bg,col,brd) => ({background:bg,color:col,border:brd||"none",borderRadius:"7px",padding:"7px 11px",fontSize:"11px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"})
-  const btnRow = {display:"flex",gap:"7px",flexWrap:"wrap"}
-  return (
-    <div style={wrap}>
-      <div style={left}>
-        <span style={{width:"8px",height:"8px",borderRadius:"50%",background:meta.dot,flexShrink:"0"}}/>
-        <span style={{fontSize:"11px",fontWeight:"700",letterSpacing:"0.03em",color:isNew?"rgba(255,255,255,0.6)":"#fff"}}>
-          {isNew ? "Send your outreach to activate" : "Follow-Up Status: "+meta.label}
-        </span>
-      </div>
-      <div style={btnRow}>
-        {status==="new" && <button onClick={onSent} style={btn("#2AB8D4","#060608")}>📤 I sent it</button>}
-        {(status==="new"||status==="awaiting"||status==="overdue"||status==="active") &&
-          <button onClick={onResponded} style={btn("rgba(42,184,212,0.12)","#2AB8D4","1px solid rgba(42,184,212,0.4)")}>📲 They responded</button>}
-        {(status==="awaiting"||status==="overdue"||status==="active") &&
-          <button onClick={onClosed} style={btn("transparent","rgba(255,255,255,0.55)","1px solid #2a2a33")}>✓ Mark closed</button>}
-        {status==="closed" && <button onClick={onReopen} style={btn("transparent","rgba(255,255,255,0.55)","1px solid #2a2a33")}>↩ Reopen</button>}
-      </div>
-    </div>
-  )
-}
 
 export default function SavedResults({ state, setScreen, app }) {
   const saved = state.savedResult || {}
@@ -54,6 +27,15 @@ export default function SavedResults({ state, setScreen, app }) {
 
   const persist = (updates) => { if(saved.id) SF.updateClient(saved.id, updates) }
 
+  // Title shown in the premium header
+  const headerTitle = isApp1
+    ? (saved.address||(saved.city?(isSpa?"Propiedad en ":"Property in ")+saved.city:(isSpa?"Propiedad":"Property")))
+    : (saved.clientName||"Client")
+  const headerSubParts = isApp1
+    ? [saved.mode, saved.propType, saved.price?("$"+saved.price):"", saved.savedAt].filter(Boolean)
+    : [(saved.contactReason||"").replace(/_/g," "), saved.savedAt].filter(Boolean)
+  const initial = (headerTitle||"?").trim().charAt(0).toUpperCase()
+
   return (
     <div style={{minHeight:"100vh",background:G.bg}}>
       <div style={{background:G.card,borderBottom:`1px solid ${G.border}`,padding:"14px 22px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
@@ -62,15 +44,21 @@ export default function SavedResults({ state, setScreen, app }) {
       </div>
 
       <div style={{maxWidth:"720px",margin:"0 auto",padding:"22px 16px 60px"}}>
-        {/* Info bar */}
-        <div style={{background:"#111",border:`1px solid ${G.border}`,borderRadius:"8px",padding:"12px 16px",marginBottom:"18px"}}>
-          {isApp1 ? <>
-            <p style={{color:G.white,fontSize:"14px",fontWeight:"600",marginBottom:"2px"}}>{saved.address||(saved.city?(isSpa?"Propiedad en ":"Property in ")+saved.city:"")}</p>
-            <p style={{color:G.muted,fontSize:"12px"}}>{saved.mode||""} · {saved.propType||""} · {saved.price?"$"+saved.price:""} · {saved.savedAt||""}</p>
-          </> : <>
-            <p style={{color:G.white,fontSize:"14px",fontWeight:"600",marginBottom:"2px"}}>{saved.clientName||"Client"}</p>
-            <p style={{color:G.muted,fontSize:"12px"}}>{saved.contactReason||""} · {saved.savedAt||""}</p>
-          </>}
+        {/* ===== Premium header ===== */}
+        <div style={{position:"relative",overflow:"hidden",background:"linear-gradient(135deg,#0d0d11 0%,#0a0a0e 60%,#0c1417 100%)",border:"1px solid #1c1c24",borderRadius:"16px",padding:"22px",marginBottom:"20px",display:"flex",alignItems:"center",gap:"16px"}}>
+          <div style={{position:"absolute",top:"-40px",right:"-30px",width:"160px",height:"160px",borderRadius:"50%",background:"radial-gradient(circle,rgba(42,184,212,0.14),transparent 70%)",pointerEvents:"none"}}/>
+          <div style={{flexShrink:"0",width:"54px",height:"54px",borderRadius:"14px",background:"linear-gradient(135deg,#2AB8D4,#1c8aa3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"24px",fontWeight:"800",color:"#060608",boxShadow:"0 6px 18px rgba(42,184,212,0.3)"}}>{initial}</div>
+          <div style={{minWidth:"0",flex:"1"}}>
+            <h1 style={{fontSize:"22px",fontWeight:"800",color:G.white,margin:"0 0 4px",letterSpacing:"-0.01em",lineHeight:"1.2",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{headerTitle}</h1>
+            <div style={{display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap"}}>
+              {headerSubParts.map((p,i)=>(
+                <span key={i} style={{display:"inline-flex",alignItems:"center",gap:"8px"}}>
+                  {i>0&&<span style={{width:"3px",height:"3px",borderRadius:"50%",background:"rgba(255,255,255,0.3)"}}/>}
+                  <span style={{fontSize:"12px",color:"rgba(255,255,255,0.55)",fontFamily:"DM Mono,monospace",textTransform:"capitalize"}}>{p}</span>
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Tabs */}
@@ -82,17 +70,6 @@ export default function SavedResults({ state, setScreen, app }) {
             </button>
           ))}
         </div>
-
-        {/* Follow-Up status bar (App02 only) */}
-        {!isApp1 && (
-          <FollowUpBar
-            status={fuStatus}
-            onSent={()=>{persist({status:"awaiting",sentAt:Date.now()});setFuStatus("awaiting")}}
-            onResponded={()=>{setActiveTab("followups");setFuSubTab("gotreply")}}
-            onClosed={()=>{persist({status:"closed"});setFuStatus("closed")}}
-            onReopen={()=>{persist({status:"awaiting"});setFuStatus("awaiting")}}
-          />
-        )}
 
         {/* ===== APP 1 (unchanged) ===== */}
         {isApp1 && <>
@@ -111,7 +88,7 @@ export default function SavedResults({ state, setScreen, app }) {
           )}
         </>}
 
-        {/* ===== APP 2 (rebuilt to match live App02) ===== */}
+        {/* ===== APP 2 (Messages / Email / Voice only) ===== */}
         {!isApp1 && <>
           {activeTab==="messages" && (isObj?(
             <>
@@ -155,63 +132,8 @@ export default function SavedResults({ state, setScreen, app }) {
             <CopyCard title="Phone Call Script" content={r.voice_script||"No call script generated."} icon="" lang={lang}/></>
           ))}
 
-          {activeTab==="followups" && (
-            <>
-              <div style={{display:"flex",gap:"4px",marginBottom:"20px",background:"#0c0c10",padding:"4px",borderRadius:"10px",border:"1px solid #252530"}}>
-                <button onClick={()=>setFuSubTab("noreply")} style={{flex:"1",background:fuSubTab==="noreply"?"#2AB8D4":"transparent",color:fuSubTab==="noreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",WebkitTapHighlightColor:"rgba(42,184,212,0.3)",touchAction:"manipulation"}}>No Reply Plan</button>
-                <button onClick={()=>setFuSubTab("gotreply")} style={{flex:"1",background:fuSubTab==="gotreply"?"#2AB8D4":"transparent",color:fuSubTab==="gotreply"?"#060608":"rgba(255,255,255,0.5)",border:"none",borderRadius:"8px",padding:"10px",fontSize:"12px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",WebkitTapHighlightColor:"rgba(42,184,212,0.3)",touchAction:"manipulation"}}>Got a Response?</button>
-              </div>
-              {fuSubTab==="noreply" && (
-                <>
-                  <p style={{color:"rgba(255,255,255,0.5)",fontSize:"13px",margin:"0 0 16px",lineHeight:"1.6"}}>Use these if your client goes quiet. Send in order. 80% of deals close between touch 5-12.</p>
-                  <CopyCard title="Follow-Up #1 — Day 3" content={r.followup_1||""} icon="" lang={lang}/>
-                  <CopyCard title="Follow-Up #2 — Week 1" content={r.followup_2||""} icon="" lang={lang}/>
-                  <CopyCard title="Follow-Up #3 — Week 2" content={r.followup_3||""} icon="" lang={lang}/>
-                  <CopyCard title="Follow-Up #4 — Month 1" content={r.followup_4||""} icon="" lang={lang}/>
-                  {r.followup_5 && <CopyCard title="Follow-Up #5 — Month 2" content={r.followup_5||""} icon="" lang={lang}/>}
-                </>
-              )}
-              {fuSubTab==="gotreply" && (
-                <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:"10px",padding:"20px"}}>
-                  <div style={{fontSize:"13px",fontWeight:"700",color:"#fff",marginBottom:"6px"}}>Log What Happened — Get New Follow-Ups</div>
-                  <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"14px",lineHeight:"1.6"}}>Got a response? Describe what happened. The AI generates 4 new tailored follow-ups instantly.</p>
-                  <textarea placeholder="e.g. She replied and said she liked it but her husband isn't convinced..." rows={4}
-                    value={regenContext} onChange={e=>setRegenContext(e.target.value)}
-                    style={{...inp,resize:"vertical",borderColor:"rgba(255,255,255,0.15)",background:"#0d0d0d",marginBottom:"12px",WebkitUserSelect:"text",userSelect:"text",WebkitTextFillColor:"rgba(255,255,255,0.65)",color:"rgba(255,255,255,0.65)"}}/>
-                  <button onClick={async()=>{
-                    if(!regenContext||regenLoading)return
-                    setRegenLoading(true)
-                    const langI = isSpa?"\n\nCRITICO: Escribe TODO completamente en espanol.":""
-                    try{
-                      const regen=await apiClaude(`Original: CLIENT ${saved.clientName}|${saved.contactReason}\nWhat happened: ${regenContext}${langI}\n\nReturn ONLY JSON:\n{"followup_1":"New Day 3. 50-60 words.","followup_2":"New Week 1. 50-60 words.","followup_3":"New Week 2. 40-50 words.","followup_4":"New Month 1. 40-50 words."}`,SYSTEM,700)
-                      const merged={...result,regen_fu1:regen.followup_1,regen_fu2:regen.followup_2,regen_fu3:regen.followup_3,regen_fu4:regen.followup_4}
-                      setResult(merged); setRegenContext("")
-                      persist({status:"active",result:merged}); setFuStatus("active")
-                    }catch(e){setErr("Failed: "+e.message)}
-                    setRegenLoading(false)
-                  }} style={{background:regenLoading?"#1a1a1a":"#2AB8D4",color:regenLoading?"rgba(255,255,255,0.5)":"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
-                    {regenLoading?"Generating...":"✦ Get New Follow-Ups Based on Response"}
-                  </button>
-                  {err && <p style={{color:"#f87171",fontSize:"12px",marginTop:"10px"}}>{err}</p>}
-                  {result.regen_fu1 && (<div style={{marginTop:"20px"}}>
-                    <CopyCard title="New Follow-Up #1" content={result.regen_fu1||""} icon="" lang={lang}/>
-                    <CopyCard title="New Follow-Up #2" content={result.regen_fu2||""} icon="" lang={lang}/>
-                    <CopyCard title="New Follow-Up #3" content={result.regen_fu3||""} icon="" lang={lang}/>
-                    <CopyCard title="New Follow-Up #4" content={result.regen_fu4||""} icon="" lang={lang}/>
-                  </div>)}
-                </div>
-              )}
-            </>
-          )}
-
-          {activeTab==="schedule" && result.schedule && (
-            <>{result.schedule.map((d,i)=>(
-              <div key={i} style={{background:"#0d0d0d",border:`1px solid ${G.border}`,borderRadius:"8px",padding:"14px 16px",marginBottom:"10px"}}>
-                <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"10px",fontWeight:"700",color:G.white,fontSize:"14px"}}><span style={{color:G.aqua}}>{d.day||d.label}</span></div>
-                {d.tasks && <ul style={{paddingLeft:"18px",margin:"0"}}>{d.tasks.map((t,j)=><li key={j} style={{color:"#ccc",fontSize:"14px",lineHeight:"1.7",marginBottom:"4px"}}>{t}</li>)}</ul>}
-              </div>
-            ))}</>
-          )}
+          {/* Quick link into the Follow-Up app for this client */}
+          <button onClick={()=>setScreen({screen:"followup"})} style={{background:"transparent",color:"#2AB8D4",border:"1px solid #2AB8D4",borderRadius:"8px",padding:"12px 22px",fontSize:"13px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%",marginTop:"8px"}}>📲 Open Follow-Up Engine →</button>
         </>}
       </div>
     </div>
