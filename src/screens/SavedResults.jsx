@@ -44,17 +44,17 @@ export default function SavedResults({ state, setScreen, app }) {
       </div>
 
       <div style={{maxWidth:"720px",margin:"0 auto",padding:"22px 16px 60px"}}>
-        {/* ===== Premium header ===== */}
-        <div style={{position:"relative",overflow:"hidden",background:"linear-gradient(135deg,#0d0d11 0%,#0a0a0e 60%,#0c1417 100%)",border:"1px solid #1c1c24",borderRadius:"16px",padding:"22px",marginBottom:"20px",display:"flex",alignItems:"center",gap:"16px"}}>
-          <div style={{position:"absolute",top:"-40px",right:"-30px",width:"160px",height:"160px",borderRadius:"50%",background:"radial-gradient(circle,rgba(42,184,212,0.14),transparent 70%)",pointerEvents:"none"}}/>
-          <div style={{flexShrink:"0",width:"54px",height:"54px",borderRadius:"14px",background:"linear-gradient(135deg,#2AB8D4,#1c8aa3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"24px",fontWeight:"800",color:"#060608",boxShadow:"0 6px 18px rgba(42,184,212,0.3)"}}>{initial}</div>
+        {/* ===== Header ===== */}
+        <div style={{position:"relative",overflow:"hidden",background:"#0a0a0e",border:"1px solid #1c1c24",borderRadius:"14px",padding:"18px 20px",marginBottom:"20px",display:"flex",alignItems:"center",gap:"14px"}}>
+          <div style={{position:"absolute",top:"0",left:"0",width:"100%",height:"1px",background:"linear-gradient(90deg,transparent,rgba(42,184,212,0.5),transparent)",pointerEvents:"none"}}/>
+          <div style={{flexShrink:"0",width:"44px",height:"44px",borderRadius:"11px",background:"rgba(42,184,212,0.1)",border:"1px solid rgba(42,184,212,0.35)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"19px",fontWeight:"800",color:"#2AB8D4"}}>{initial}</div>
           <div style={{minWidth:"0",flex:"1"}}>
-            <h1 style={{fontSize:"22px",fontWeight:"800",color:G.white,margin:"0 0 4px",letterSpacing:"-0.01em",lineHeight:"1.2",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{headerTitle}</h1>
-            <div style={{display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap"}}>
+            <h1 style={{fontSize:"19px",fontWeight:"800",color:G.white,margin:"0 0 5px",letterSpacing:"-0.01em",lineHeight:"1.15",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{headerTitle}</h1>
+            <div style={{display:"flex",alignItems:"center",gap:"7px",flexWrap:"wrap"}}>
               {headerSubParts.map((p,i)=>(
-                <span key={i} style={{display:"inline-flex",alignItems:"center",gap:"8px"}}>
-                  {i>0&&<span style={{width:"3px",height:"3px",borderRadius:"50%",background:"rgba(255,255,255,0.3)"}}/>}
-                  <span style={{fontSize:"12px",color:"rgba(255,255,255,0.55)",fontFamily:"DM Mono,monospace",textTransform:"capitalize"}}>{p}</span>
+                <span key={i} style={{display:"inline-flex",alignItems:"center",gap:"7px"}}>
+                  {i>0&&<span style={{width:"3px",height:"3px",borderRadius:"50%",background:"rgba(255,255,255,0.25)"}}/>}
+                  <span style={{fontSize:"11px",color:"rgba(255,255,255,0.5)",fontFamily:"DM Mono,monospace",textTransform:"capitalize",letterSpacing:"0.02em"}}>{p}</span>
                 </span>
               ))}
             </div>
