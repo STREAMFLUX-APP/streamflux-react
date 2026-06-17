@@ -144,6 +144,13 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, mode, setScreen, lan
 
   const hasList = hist && hist.length > 0
 
+  // Message shown inside the dropdown when nothing has been generated yet.
+  const emptyLabel = isFollowUp
+    ? (isSpa?"Aún no hay seguimientos":"No follow-ups yet")
+    : isNewsletter
+      ? (isSpa?"Aún no hay newsletters generados":"No newsletters generated yet")
+      : (isSpa?"Aún no hay paquetes generados":"No packages generated yet")
+
   return (
     <div style={{background:"#0c0c10",padding:"28px",display:"flex",flexDirection:"column",height:"100%"}}>
       <div style={{minHeight:"90px",marginBottom:"20px"}}>
@@ -156,8 +163,7 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, mode, setScreen, lan
         {btnLabel}
       </button>
 
-      {hasList && (
-        <div style={{position:"relative"}}>
+      <div style={{position:"relative"}}>
           <button onClick={()=>setOpen(!open)}
             style={{background:"rgba(255,255,255,0.06)",color:"#fff",border:"1px solid rgba(255,255,255,0.3)",borderRadius:"8px",padding:"8px 14px",fontSize:"11px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <span>{listLabel}</span>
@@ -165,6 +171,9 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, mode, setScreen, lan
           </button>
           {open && (
             <div style={{position:"absolute",...( (isFollowUp||isNewsletter) ? {bottom:"calc(100% + 6px)"} : {top:"calc(100% + 6px)"} ),left:"0",right:"0",zIndex:"50",maxHeight:"260px",overflowY:"auto",background:"#0c0c10",border:"1px solid #252530",borderRadius:"10px",padding:"8px",boxShadow:"0 12px 40px rgba(0,0,0,0.6)"}}>
+              {!hasList && (
+                <div style={{padding:"16px 12px",textAlign:"center",fontSize:"12px",color:"rgba(255,255,255,0.45)",fontWeight:"600"}}>{emptyLabel}</div>
+              )}
               {hist.slice(0,20).map(item=>{
 
                 // ── Follow-Up card row: client name + colored status, tap opens that client ──
@@ -229,7 +238,6 @@ function ToolCard({ num, title, sub, onNew, btnLabel, hist, mode, setScreen, lan
             </div>
           )}
         </div>
-      )}
     </div>
   )
 }
