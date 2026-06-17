@@ -335,31 +335,50 @@ AGENT:${ag}${s.agentPhone?"|"+s.agentPhone:""}${s.agencyName?"|"+s.agencyName:""
 OBJECTION:"${objDetail}"
 ${visitCtx}
 ${compCtx}`
-        update({loadingMsg:"✦ Crafting 3 powerful approaches..."})
-        const objPrompt = `${objCtx}${langI}
+        // Shared rules + context for every approach. Three SMALL calls (one per approach)
+        // are far more reliable than one huge call, so the JSON always parses cleanly.
+        const objBase = `${objCtx}${langI}
 
 EXACT OBJECTION: "${objDetail}"
 FULL SITUATION: "${objSituation}"
 
 You are an elite real estate sales coach trained in Grant Cardone and Ryan Serhant methodology.
-Generate 3 completely different approaches to handle this exact objection for this exact person.
 
-CRITICAL RULES FOR ALL 3 APPROACHES:
+CRITICAL RULES:
 - Use ${s.clientName}'s name naturally — make it feel like a real conversation, not a script
 - Reference the EXACT details from the situation above — be specific, personal, real
 - Never sound robotic, salesy, or scripted — sound like a trusted advisor who genuinely cares
-- Every approach MUST end with one simple natural open question
+- Every message MUST end with one simple natural open question
 - NEVER use "another source of stress" — say "a source of stress" if needed
 - NEVER reference other buyers as a threat or guilt tool
-- NEVER invent market data, statistics, or listings not provided above
+- NEVER invent market data, statistics, or listings not provided above`
 
-APPROACH 1 — DATA & MARKET PROOF: Facts-first, specific, analytical.
-APPROACH 2 — EMPATHY & RELATIONSHIP: Completely on their side. Trusted friend. Never argue.
-APPROACH 3 — URGENCY & BOLD REFRAME: Their specific power and advantage. Honest and confident. Never guilty.
+        const approach = async (style, prefix) => {
+          const r = await safe(`${objBase}
+
+APPROACH STYLE: ${style}
 
 Return ONLY JSON:
-{"v1_label":"Data & Market Proof","v1_whatsapp":"60-80 words. Specific, data-backed, personal. Ends with open question.","v1_sms":"Max 160 chars. Data-driven. Ends with question.","v1_voice":"Call script: OPENING (name), ACKNOWLEDGE, SPECIFIC FACTS, REFRAME, OPEN QUESTION. Labelled.","v1_email_subject":"Subject under 9 words.","v1_email":"120-140 word email. Specific and personal. Ends with open question. Signed by ${ag}.","v2_label":"Empathy & Relationship","v2_whatsapp":"60-80 words. Warm, human, completely on their side. Ends with gentle open question.","v2_sms":"Max 160 chars. Empathetic. Ends with question.","v2_voice":"Call script: OPENING (name), DEEP ALIGNMENT, VALIDATE FULLY, SPECIFIC DETAIL, GENTLE PIVOT, OPEN QUESTION. Labelled.","v2_email_subject":"Subject under 9 words. Warm.","v2_email":"120-140 word email. Empathy. Never say another source of stress. Ends with open question. Signed by ${ag}.","v3_label":"Urgency & Bold Reframe","v3_whatsapp":"60-80 words. Confident, honest, bold never guilty. Their specific power. Ends with open question.","v3_sms":"Max 160 chars. Bold. Ends with question.","v3_voice":"Call script: OPENING (name), BRIEF AGREEMENT, THEIR SPECIFIC POWER, WHAT THAT MEANS FOR THEM, HONEST REFRAME, OPEN QUESTION. Labelled.","v3_email_subject":"Subject under 9 words. Bold.","v3_email":"120-140 word email. Confident and honest. Never guilt. Ends with open question. Signed by ${ag}."}`
-        const objResult = await safe(objPrompt, SYSTEM, 2500)
+{"whatsapp":"60-80 words. ${style}. Ends with open question.","sms":"Max 160 chars. ${style}. Ends with question.","voice":"Call script: OPENING (name), ACKNOWLEDGE, MAIN POINT, REFRAME, OPEN QUESTION. Labelled.","email_subject":"Subject under 9 words.","email":"120-140 word email. ${style}. Ends with open question. Signed by ${ag}."}`, SYSTEM, 1100)
+          return {
+            [prefix+"_whatsapp"]: r.whatsapp||"",
+            [prefix+"_sms"]: r.sms||"",
+            [prefix+"_voice"]: r.voice||"",
+            [prefix+"_email_subject"]: r.email_subject||"",
+            [prefix+"_email"]: r.email||"",
+          }
+        }
+
+        update({loadingMsg:"✦ Crafting approach 1 of 3 — Data & Market Proof..."})
+        const a1 = await approach("DATA & MARKET PROOF — facts-first, specific, analytical, builds confidence with real detail", "v1")
+        update({loadingMsg:"✦ Crafting approach 2 of 3 — Empathy & Relationship..."})
+        const a2 = await approach("EMPATHY & RELATIONSHIP — completely on their side, warm, trusted friend, never argue", "v2")
+        update({loadingMsg:"✦ Crafting approach 3 of 3 — Urgency & Bold Reframe..."})
+        const a3 = await approach("URGENCY & BOLD REFRAME — confident and honest, shows their specific power and advantage, never guilt", "v3")
+        const objResult = {
+          v1_label:"Data & Market Proof", v2_label:"Empathy & Relationship", v3_label:"Urgency & Bold Reframe",
+          ...a1, ...a2, ...a3
+        }
         update({loadingMsg:"✦ Building follow-up plan..."})
         const fuResult = await safe(`CLIENT:${s.clientName}|OBJECTION:${objDetail}|SITUATION:${objSituation}|AGENT:${ag}${langI}\n\nCRITICAL: Never invent market data or facts not provided. Warm human follow-ups only. Each ends with gentle open question.\n\nReturn ONLY JSON:\n{"followup_1":"Day 3. 50-60 words. Warm check-in referencing their specific situation. No invented data. Ends with gentle open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented data. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual, human, no pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch, genuine care. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open. No pressure."}`,SYSTEM,900)
         const result = {...objResult,...fuResult}
@@ -406,8 +425,8 @@ Return ONLY JSON:
 
           {s.fuStatus==="new" ? (
             <div style={{background:"rgba(42,184,212,0.08)",border:"2px solid #2AB8D4",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
-              <div style={{fontSize:"15px",fontWeight:"800",color:"#fff",marginBottom:"8px"}}>Important message — {s.clientName}</div>
-              <p style={{fontSize:"15px",color:"rgba(255,255,255,0.78)",margin:"0 0 14px",lineHeight:"1.6"}}>Hit the button below to activate this client in your Follow-Up app — you need to click it once you've sent the message.</p>
+              <div style={{fontSize:"18px",fontWeight:"800",color:"#fff",marginBottom:"10px",letterSpacing:"0.01em"}}>Important message — {s.clientName}</div>
+              <p style={{fontSize:"15px",color:"rgba(255,255,255,0.9)",margin:"0 0 14px",lineHeight:"1.65"}}>Hit the button below to activate this client in your Follow-Up app — you need to click it once you've sent the message.</p>
               <button onClick={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"awaiting",sentAt:Date.now()});update({fuStatus:"awaiting"})}}
                 style={{background:"#2AB8D4",color:"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"800",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
                 ✓ Yes — I sent it
