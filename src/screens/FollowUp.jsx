@@ -27,16 +27,16 @@ const rowInfo = c => {
   if (base==="closed") return {line:"Closed — deal done", color:STATUS_META.closed.dot}
   if (cold) return {line:`Going cold — no contact ${daysSince(c.sentAt)} days`, color:"#888780"}
   if (base==="overdue") return {line:`Follow up now — ${daysSince(c.sentAt)} days gone`, color:STATUS_META.overdue.dot}
-  if (base==="awaiting") return {line:`Sent, waiting for reply${c.sentAt?` — ${daysSince(c.sentAt)}d`:""}`, color:STATUS_META.awaiting.dot}
+  if (base==="awaiting") return {line:"Waiting for reply", color:STATUS_META.awaiting.dot}
   if (base==="active") return {line:"They replied — keep it going", color:STATUS_META.active.dot}
   return {line:"Not sent yet — send the first message", color:STATUS_META.new.dot}
 }
 
 const TABS = [
-  {id:"needs", label:"Needs action now"},
-  {id:"waiting", label:"Waiting"},
-  {id:"cold", label:"Going cold"},
-  {id:"closed", label:"Closed"},
+  {id:"needs", label:"Needs action now", bg:"#A32D2D", fg:"#fff"},
+  {id:"waiting", label:"Waiting for reply", bg:"#D4A843", fg:"#060608"},
+  {id:"cold", label:"Going cold", bg:"#888780", fg:"#060608"},
+  {id:"closed", label:"Closed", bg:"#2AB8D4", fg:"#060608"},
 ]
 
 export default function FollowUp({ state: appState, setScreen }) {
@@ -159,18 +159,20 @@ export default function FollowUp({ state: appState, setScreen }) {
       <Nav back={()=>setScreen({screen:"dashboard"})}/>
       <div style={{maxWidth:"720px",margin:"0 auto",padding:"22px 16px 60px"}}>
 
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"16px",padding:"0 4px"}}>
-          <h1 style={{fontSize:"20px",fontWeight:"700",color:"#fff",margin:"0"}}>Follow-Up</h1>
-          <span style={{fontSize:"12px",color:"rgba(255,255,255,0.5)"}}>{clients.length} contacts</span>
+        <div style={{marginBottom:"18px",padding:"0 4px"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <h1 style={{fontSize:"20px",fontWeight:"700",color:"#fff",margin:"0"}}>Follow-Up</h1>
+            <span style={{fontSize:"12px",color:"rgba(255,255,255,0.5)"}}>{clients.length} contacts</span>
+          </div>
+          <p style={{fontSize:"13px",color:"rgba(255,255,255,0.5)",margin:"8px 0 0",lineHeight:"1.5"}}>Tap any contact to copy their next message, mark it sent, or log a reply to get a fresh follow-up. Red = act now, yellow = waiting on them.</p>
         </div>
 
         <div style={{display:"flex",gap:"6px",marginBottom:"20px",flexWrap:"wrap"}}>
           {TABS.map(t=>{
             const on = activeTab===t.id
-            const isNeeds = t.id==="needs"
             return (
               <button key={t.id} onClick={()=>setActiveTab(t.id)}
-                style={{background:on?(isNeeds?"#A32D2D":"#2AB8D4"):"#0c0c10",color:on?"#fff":"rgba(255,255,255,0.55)",border:on?"1px solid transparent":"1px solid #252530",borderRadius:"100px",padding:"7px 13px",fontSize:"12px",fontWeight:on?"700":"500",cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>
+                style={{background:on?t.bg:"#0c0c10",color:on?t.fg:"rgba(255,255,255,0.55)",border:on?"1px solid transparent":"1px solid #252530",borderRadius:"100px",padding:"7px 13px",fontSize:"12px",fontWeight:on?"700":"500",cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>
                 {t.label} · {counts[t.id]}
               </button>
             )
