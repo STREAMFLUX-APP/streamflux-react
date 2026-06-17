@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { G, SF, apiClaude, inputStyle, cardStyle, labelStyle, btnStyle, followUpStatus, STATUS_META } from '../globals.js'
 import { CopyCard } from '../components/shared/CopyCard.jsx'
 import { Chips } from '../components/shared/Chips.jsx'
@@ -277,6 +277,11 @@ export default function App2({ state: appState, setScreen }) {
   const update = u => setS(prev=>({...prev,...u}))
   const tog = (arr,val) => arr.includes(val)?arr.filter(x=>x!==val):[...arr,val]
 
+  // When a result first appears, jump to the top so the user starts at "Important message".
+  useEffect(() => {
+    if (s.result) window.scrollTo(0, 0)
+  }, [s.result])
+
   const isSpa = s.language==="Spanish"
   const isBuyer = () => s.clientType.includes("buyer")||s.clientType==="investor"
   const isSeller = () => s.clientType.includes("seller")
@@ -424,9 +429,10 @@ Return ONLY JSON:
           </div>
 
           {s.fuStatus==="new" ? (
-            <div style={{background:"rgba(42,184,212,0.08)",border:"2px solid #2AB8D4",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
-              <div style={{fontSize:"18px",fontWeight:"800",color:"#fff",marginBottom:"10px",letterSpacing:"0.01em"}}>Important message — {s.clientName}</div>
-              <p style={{fontSize:"15px",color:"rgba(255,255,255,0.9)",margin:"0 0 14px",lineHeight:"1.65"}}>Hit the button below to activate this client in your Follow-Up app — you need to click it once you've sent the message.</p>
+            <div style={{background:"rgba(42,184,212,0.05)",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
+              <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"0.18em",textTransform:"uppercase",color:"#2AB8D4",marginBottom:"8px",fontFamily:"DM Mono,monospace"}}>Important message</div>
+              <div style={{fontSize:"17px",fontWeight:"700",color:"rgba(255,255,255,0.92)",marginBottom:"10px",fontFamily:"DM Mono,monospace"}}>{s.clientName}</div>
+              <p style={{fontSize:"14px",color:"rgba(255,255,255,0.7)",margin:"0 0 14px",lineHeight:"1.6"}}>Hit the button below to activate this client in your Follow-Up app — you need to click it once you've sent the message.</p>
               <button onClick={()=>{if(s.savedClientId)SF.updateClient(s.savedClientId,{status:"awaiting",sentAt:Date.now()});update({fuStatus:"awaiting"})}}
                 style={{background:"#2AB8D4",color:"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"800",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
                 ✓ Yes — I sent it
