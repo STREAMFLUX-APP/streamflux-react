@@ -46,8 +46,6 @@ const REASONS_COLD_EN = [
 ]
 const REASONS_PAST_EN = [
   {value:"reconnect",label:"Reconnecting",desc:"Haven't spoken in a while"},
-  {value:"referral_request",label:"Referral Request",desc:"Ask after closing a deal"},
-  {value:"anniversary",label:"Home Anniversary",desc:"1 year+ since they bought"},
   {value:"market_update",label:"Market Update",desc:"Relevant market news"},
   {value:"just_sold",label:"Property Sold Nearby",desc:"Builds credibility"},
   {value:"market_value_update",label:"Market Value Update",desc:"Their home is worth more now"},
@@ -134,7 +132,9 @@ const initState = (lang) => ({
   offerAskingPrice:"", offerAmount:"", offerDaysOnMarket:"",
   offerPosition:null, offerMarket:[], offerLevers:[], offerDeposit:"", offerClosing:"", sellerPriorities:"",
   fsboReasons:"", fsboAdvantages:[],
-  anniversaryYears:"",
+  openHouseDate:"", openHouseTime:"", openHouseSpecial:"",
+  mvuAddress:"", mvuCurrentValue:"", mvuIncreaseAmount:"", mvuWhy:"", mvuNextStep:"",
+  neighbourhoodNewsContext:"",
   cmaSubject:{address:"",price:"",beds:"",baths:"",sqft:"",yearBuilt:"",parking:"",condition:"",recentRenovations:"",hoaFees:"",features:""},
   cmaComps:[
     {address:"",salePrice:"",saleDate:"",daysOnMarket:"",beds:"",baths:"",sqft:"",pricePerSqft:"",aboveBelow:"",condition:"",notes:""},
@@ -305,12 +305,15 @@ export default function App2({ state: appState, setScreen }) {
   const isPriceDrop = s.contactReason==="price_drop"
   const isNewListing = s.contactReason==="new_listing"
   const isOffMarket = s.contactReason==="off_market"
+  const isOpenHouse = s.contactReason==="open_house"
+  const isMarketValueUpdate = s.contactReason==="market_value_update"
+  const isNeighbourhoodNews = s.contactReason==="neighbourhood_news"
   const showWishlist = isNewListing||isPriceDrop||isViewingFollowUp||isOffMarket
-  const isNoProperty = ["market_update","financing_update","re_engagement","referral_request","anniversary","neighbourhood_news","market_value_update","reconnect","first_contact"].includes(s.contactReason)
+  const isNoProperty = ["market_update","financing_update","re_engagement","neighbourhood_news","market_value_update","reconnect","first_contact"].includes(s.contactReason)
   const showProp = !isNoProperty&&!isSoldNearby&&!isCMA&&!isBuyerMatch&&!isObjection
   const showFeatures = showProp&&!isPriceDiscussion&&!isExpiredListing&&!isPreListing&&!isFSBO&&!isTimelineCheckin
   const hideUrgencyTone = isFirstContact&&isBuyer()
-  const showSellerProfile = isSeller()&&!isFirstContact&&!isObjection&&!isReconnect&&!isBuyerMatch
+  const showSellerProfile = isSeller()&&!isFirstContact&&!isObjection&&!isReconnect&&!isBuyerMatch&&!isCMA
   const CONTACT_REASONS = isSeller()?REASONS_SELLER_EN:s.clientType==="past_client"?REASONS_PAST_EN:s.clientType==="cold_lead"?REASONS_COLD_EN:REASONS_BUYER_EN
 
   const generate = async () => {
@@ -326,6 +329,9 @@ ${buyerCtx}
 ${isSeller()?"SELLER SITUATION:"+s.sellerSituation.join(","):""}
 ${!isObjection&&s.customSituation?"AGENT CONTEXT: "+s.customSituation:""}
 ${showWishlist&&s.buyerWishlist?"BUYER WISHLIST: "+s.buyerWishlist+" | CRITICAL: Only mention wishlist items the property above ACTUALLY has. Never claim the property matches a want unless the property data confirms it. Stay silent on wishes the property doesn't meet.":""}
+${isOpenHouse?"OPEN HOUSE: "+(s.openHouseDate||"date TBD")+" | "+(s.openHouseTime||"time TBD")+" | What makes it special: "+(s.openHouseSpecial||"not specified"):""}
+${isMarketValueUpdate?"MARKET VALUE UPDATE: Address:"+(s.mvuAddress||"N/A")+"|Current Value:$"+(s.mvuCurrentValue||"N/A")+"|Increase:"+(s.mvuIncreaseAmount||"N/A")+"|Why:"+(s.mvuWhy||"not specified")+"|Recommended Next Step:"+(s.mvuNextStep||"not specified")+" | CRITICAL: Only state the value increase and reasons given above. Never invent market data.":""}
+${isNeighbourhoodNews?"NEIGHBOURHOOD NEWS CONTEXT: "+(s.neighbourhoodNewsContext||"not specified")+" | CRITICAL: Only reference what is stated above. Never invent neighbourhood news or developments.":""}
 AGENT:${ag}${s.agentPhone?"|"+s.agentPhone:""}${s.agencyName?"|"+s.agencyName:""}`
 
     try {
@@ -395,9 +401,7 @@ Return ONLY JSON:
       }
 
       let p1=`${ctx}${langI}\n\nGenerate TWO different versions of this outreach so the agent can choose. Both must respect the chosen tone, but be genuinely different in wording and angle.\n\nReturn ONLY JSON:\n{"v1_label":"Option 1","v1_whatsapp":"60-80 word WhatsApp. Warm, use ${s.clientName} first name. End with easy question.","v1_sms":"SMS max 160 chars.","v1_voice":"Call script: OPENING, REASON, VALUE PITCH, CLOSE. Labelled.","v1_email_subject":"Subject under 10 words.","v1_email":"130-160 word email. Opener, opportunity, CTA. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}.","v2_label":"Option 2","v2_whatsapp":"Different angle. 60-80 word WhatsApp. Use ${s.clientName} first name. End with easy question.","v2_sms":"Different SMS max 160 chars.","v2_voice":"Different call script: OPENING, REASON, VALUE PITCH, CLOSE. Labelled.","v2_email_subject":"Different subject under 10 words.","v2_email":"Different 130-160 word email. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
-      if(s.contactReason==="referral_request")p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word referral request. Warm, celebrate, ask naturally.","sms":"Referral SMS max 160 chars.","voice_script":"Referral call: OPENING, CELEBRATION, ASK, CLOSE. Labelled.","email_subject":"Subject under 9 words.","email_body":"120-140 word referral email. Signed by ${ag}."}`;
-      if(s.contactReason==="anniversary")p1=`${ctx}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word anniversary WhatsApp. Warm, celebratory.","sms":"Anniversary SMS max 160 chars.","voice_script":"Anniversary call: OPENING, CELEBRATE, MARKET UPDATE, SOFT CTA. Labelled.","email_subject":"Subject under 9 words.","email_body":"120-140 word anniversary email. Signed by ${ag}."}`;
-      if(isCMA)p1=`${ctx}\nSUBJECT:${s.cmaSubject.address}|$${s.cmaSubject.price}|${s.cmaSubject.beds}bed/${s.cmaSubject.baths}bath\nCOMPS:${s.cmaComps.map((c,i)=>`${i+1}. ${c.address} sold $${c.salePrice} ${c.saleDate}`).join("|")}${langI}\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word WhatsApp. Warm, valuation complete, booking question.","sms":"SMS max 160 chars.","voice_script":"Call: OPENING, CMA COMPLETE, INSIGHT, BOOK MEETING. Labelled.","email_subject":"Subject under 10 words.","email_body":"140-160 word email. Valuation, insight, invite meeting. Signed by ${ag}."}`;
+      if(isCMA)p1=`${ctx}\nSUBJECT:${s.cmaSubject.address}|$${s.cmaSubject.price}|${s.cmaSubject.beds}bed/${s.cmaSubject.baths}bath\nCOMPS:${s.cmaComps.map((c,i)=>`${i+1}. ${c.address} sold $${c.salePrice} ${c.saleDate}`).join("|")}${langI}\n\nCRITICAL: This is an OFFER to provide a free valuation — the valuation has NOT been done yet. Never claim it's already complete or already analyzed. Never invent market conditions, trends, or claims (e.g. "strong seller's market," "hot luxury segment") that are not explicitly given above. If no market data is provided, do not mention market conditions at all — focus purely on offering the free valuation and inviting them to book it.\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word WhatsApp. Warm, OFFERS a free valuation, invites them to book it. No invented market claims.","sms":"SMS max 160 chars. Offers the valuation, invites booking.","voice_script":"Call: OPENING, OFFER FREE VALUATION, WHY IT HELPS THEM, BOOK MEETING. Labelled.","email_subject":"Subject under 10 words.","email_body":"140-160 word email. Offers the free valuation, explains the benefit, invites booking a time. Signed by ${ag}."}`;
       const part1=await safe(p1,SYSTEM,2200)
       update({loadingMsg:"✦ Writing letter & follow-ups..."})
       const part2=await safe(`${ctx}${langI}\n\nReturn ONLY JSON:\n{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words. Warm, personal, specific. Never invent data. Ends with open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented facts. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual check-in. No pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open."}`,SYSTEM,1300)
@@ -441,7 +445,8 @@ Return ONLY JSON:
           ) : (
             <div style={{background:"rgba(61,158,92,0.1)",border:"1px solid rgba(61,158,92,0.5)",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
               <div style={{fontSize:"15px",fontWeight:"800",color:"#fff",marginBottom:"6px"}}>✅ {s.clientName} is now in your Follow-Up Engine</div>
-              <p style={{fontSize:"13px",color:"rgba(255,255,255,0.7)",margin:"0 0 14px",lineHeight:"1.6"}}>Open it anytime to see every follow-up, send the next one, or log their reply.</p>
+              <p style={{fontSize:"13px",color:"rgba(255,255,255,0.7)",margin:"0 0 6px",lineHeight:"1.6"}}>Open it anytime to see every follow-up, send the next one, or log their reply.</p>
+              <p style={{fontSize:"13px",color:"rgba(255,255,255,0.7)",margin:"0 0 14px",lineHeight:"1.6"}}>You'll find them under <strong style={{color:"#fff"}}>Waiting for Reply</strong>.</p>
               <button onClick={()=>setScreen({screen:"followup"})}
                 style={{background:"transparent",color:"#2AB8D4",border:"1px solid #2AB8D4",borderRadius:"8px",padding:"12px 22px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
                 📲 Open Follow-Up Engine →
@@ -627,6 +632,13 @@ Return ONLY JSON:
         )}
 
         {isViewingFollowUp&&<PropCard s={s} update={update} tog={tog} title="🏠 Property Viewed" showFeatures={true}/>}
+        {isViewingFollowUp&&(
+          <div style={card}>
+            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>💭 Her Wishlist — what she really wants in a home</h2>
+            <p style={{fontSize:"12px",color:"#2AB8D4",fontWeight:"600",marginBottom:"12px",lineHeight:"1.5"}}>Important: fill this in — it helps us craft a powerful message that lands with the client. We only mention what this property actually has that matches her wishes.</p>
+            <textarea placeholder="e.g. 4 beds, gourmet kitchen, pool, near good schools, quiet street…" rows={3} style={{...inp,resize:"vertical"}} value={s.buyerWishlist||""} onChange={e=>update({buyerWishlist:e.target.value})}/>
+          </div>
+        )}
         {isViewingFollowUp&&<BuyerProfileBox s={s} update={update} tog={tog} hideLooking={showWishlist}/>}
 
         {isPriceDrop&&isBuyer()&&(
@@ -637,6 +649,18 @@ Return ONLY JSON:
               <div><label style={lbl}>Was ($)</label><input type="text" placeholder="995,000" style={inp} value={s.propOldPrice||""} onChange={e=>update({propOldPrice:e.target.value})}/></div>
             </div>
             <PropCard s={s} update={update} tog={tog} title="🏠 The Property" showFeatures={true}/>
+          </div>
+        )}
+
+        {isOpenHouse&&(
+          <div style={card}>
+            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🚪 Open House Details</h2>
+            <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>This makes the invite specific and compelling rather than generic.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"12px"}}>
+              <div><label style={lbl}>Date</label><input type="text" placeholder="e.g. Saturday, June 28" style={inp} value={s.openHouseDate||""} onChange={e=>update({openHouseDate:e.target.value})}/></div>
+              <div><label style={lbl}>Time</label><input type="text" placeholder="e.g. 1:00 PM - 4:00 PM" style={inp} value={s.openHouseTime||""} onChange={e=>update({openHouseTime:e.target.value})}/></div>
+            </div>
+            <div><label style={lbl}>What Makes This Open House Special?</label><textarea placeholder="e.g. First showing since the renovation, light refreshments, agent will be on-site to answer questions..." rows={3} style={{...inp,resize:"vertical"}} value={s.openHouseSpecial||""} onChange={e=>update({openHouseSpecial:e.target.value})}/></div>
           </div>
         )}
 
@@ -677,6 +701,7 @@ Return ONLY JSON:
             <div><label style={lbl}>What Matters Most to the Seller?</label><input type="text" placeholder="e.g. Quick close, no repairs, stay 30 days after sale" style={inp} value={s.sellerPriorities||""} onChange={e=>update({sellerPriorities:e.target.value})}/></div>
           </div>
         )}
+        {isOfferStrategy&&<BuyerProfileBox s={s} update={update} tog={tog}/>}
 
         {isObjection&&(isBuyer()||s.clientType==="cold_lead"||s.clientType==="past_client")&&(
           <div style={card}>
@@ -929,14 +954,6 @@ Return ONLY JSON:
           </div>
         )}
 
-        {s.contactReason==="anniversary"&&(
-          <div style={card}>
-            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"12px",color:"#fff"}}>🎉 Anniversary Details</h2>
-            <label style={lbl}>Years Since Purchase</label>
-            <input type="number" placeholder="1" style={inp} value={s.anniversaryYears||""} onChange={e=>update({anniversaryYears:e.target.value})}/>
-          </div>
-        )}
-
         {isSoldNearby&&(
           <div style={{...card,background:"rgba(42,184,212,0.03)",border:"1px solid rgba(42,184,212,0.2)"}}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>🏘️ Property Sold Nearby</h2>
@@ -948,6 +965,28 @@ Return ONLY JSON:
               {[["soldAboveBelow","Above/Below Asking","$15K above"],["soldPricePerSqft","Price/Sq Ft","$285"],["soldCondition","Condition","Good"]].map(([k,l,p])=>(<div key={k}><label style={lbl}>{l}</label><input type="text" placeholder={p} style={inp} value={s[k]||""} onChange={e=>update({[k]:e.target.value})}/></div>))}
             </div>
             <div style={{marginBottom:"12px"}}><label style={lbl}>Key Features</label><input type="text" placeholder="e.g. Private pool, ocean views, renovated kitchen..." style={inp} value={s.soldKeyFeatures||""} onChange={e=>update({soldKeyFeatures:e.target.value})}/></div>
+          </div>
+        )}
+
+        {isMarketValueUpdate&&(
+          <div style={card}>
+            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📈 Market Value Update</h2>
+            <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>Tell them their home is worth more — be specific so it feels real, not generic.</p>
+            <div style={{marginBottom:"12px"}}><label style={lbl}>Their Property Address</label><input type="text" placeholder="22 Oak Avenue, Tampa FL" style={inp} value={s.mvuAddress||""} onChange={e=>update({mvuAddress:e.target.value})}/></div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"12px"}}>
+              <div><label style={lbl}>Estimated Current Value ($)</label><input type="text" placeholder="e.g. 540,000" style={inp} value={s.mvuCurrentValue||""} onChange={e=>update({mvuCurrentValue:e.target.value})}/></div>
+              <div><label style={lbl}>How Much It's Risen</label><input type="text" placeholder="e.g. up $45,000 since purchase" style={inp} value={s.mvuIncreaseAmount||""} onChange={e=>update({mvuIncreaseAmount:e.target.value})}/></div>
+            </div>
+            <div style={{marginBottom:"12px"}}><label style={lbl}>Why? (Market Conditions, Comps, Improvements)</label><textarea placeholder="e.g. Comparable homes nearby sold for more this year, neighbourhood demand has grown..." rows={3} style={{...inp,resize:"vertical"}} value={s.mvuWhy||""} onChange={e=>update({mvuWhy:e.target.value})}/></div>
+            <div><label style={lbl}>Your Recommended Next Step</label><input type="text" placeholder="e.g. A free updated valuation, or a conversation about their options" style={inp} value={s.mvuNextStep||""} onChange={e=>update({mvuNextStep:e.target.value})}/></div>
+          </div>
+        )}
+
+        {isNeighbourhoodNews&&(
+          <div style={card}>
+            <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>📰 Neighbourhood News</h2>
+            <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginBottom:"16px"}}>What's happening in the neighbourhood that's relevant to them?</p>
+            <textarea placeholder="e.g. New light rail station approved two blocks away, a popular restaurant just opened, the area was named one of the city's fastest-growing..." rows={4} style={{...inp,resize:"vertical"}} value={s.neighbourhoodNewsContext||""} onChange={e=>update({neighbourhoodNewsContext:e.target.value})}/>
           </div>
         )}
 
@@ -1087,10 +1126,10 @@ Return ONLY JSON:
           />
         )}
 
-        {showWishlist&&(
+        {showWishlist&&!isViewingFollowUp&&(
           <div style={card}>
             <h2 style={{fontSize:"17px",fontWeight:"700",marginBottom:"4px",color:"#fff"}}>💭 Her Wishlist — what she really wants in a home</h2>
-            <p style={{fontSize:"12px",color:"#2AB8D4",fontWeight:"600",marginBottom:"12px",lineHeight:"1.5"}}>Important: fill this in — it helps us craft a powerful message that lands with the client. We only mention what this property actually has.</p>
+            <p style={{fontSize:"12px",color:"#2AB8D4",fontWeight:"600",marginBottom:"12px",lineHeight:"1.5"}}>Important: fill this in — it helps us craft a powerful message that lands with the client. We only mention what this property actually has that matches her wishes.</p>
             <textarea placeholder="e.g. 4 beds, gourmet kitchen, pool, near good schools, quiet street…" rows={3} style={{...inp,resize:"vertical"}} value={s.buyerWishlist||""} onChange={e=>update({buyerWishlist:e.target.value})}/>
           </div>
         )}
