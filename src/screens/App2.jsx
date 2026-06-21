@@ -122,7 +122,7 @@ const initState = (lang) => ({
   soldPricePerSqft:"", soldKeyFeatures:"",
   marketLocation:"", marketDirection:[], marketInsight:"", marketStats:"",
   reconnectSituation:[], reconnectOther:"", lookingFor:"",
-  introSource:null, introSourceContext:"", introComeAcross:[],
+  introSource:null, introSourceContext:"", introComeAcross:[], introRequestDetail:"",
   leadSource:null, leadSourceContext:"", knownAboutProperty:"", firstOutcomeGoal:"",
   daysOnMarket:"", priceReasons:[], sellerUrgency:[],
   expOrigPrice:"", expDays:"", expiredReasons:[], expiredReasonsOther:"", relistStrategy:[], relistDifferent:"",
@@ -329,6 +329,7 @@ ${buyerCtx}
 ${isSeller()?"SELLER SITUATION:"+s.sellerSituation.join(","):""}
 ${!isObjection&&s.customSituation?"AGENT CONTEXT: "+s.customSituation:""}
 ${showWishlist&&s.buyerWishlist?"BUYER WISHLIST: "+s.buyerWishlist+" | CRITICAL: Only mention wishlist items the property above ACTUALLY has. Never claim the property matches a want unless the property data confirms it. Stay silent on wishes the property doesn't meet.":""}
+${isFirstContact&&s.introRequestDetail?"REAL INBOUND REQUEST: "+s.introRequestDetail+" | This IS a genuine inbound inquiry — you may reference what they actually asked for.":""}
 ${isOpenHouse?"OPEN HOUSE: "+(s.openHouseDate||"date TBD")+" | "+(s.openHouseTime||"time TBD")+" | What makes it special: "+(s.openHouseSpecial||"not specified"):""}
 ${isMarketValueUpdate?"MARKET VALUE UPDATE: Address:"+(s.mvuAddress||"N/A")+"|Current Value:$"+(s.mvuCurrentValue||"N/A")+"|Increase:"+(s.mvuIncreaseAmount||"N/A")+"|Why:"+(s.mvuWhy||"not specified")+"|Recommended Next Step:"+(s.mvuNextStep||"not specified")+" | CRITICAL: Only state the value increase and reasons given above. Never invent market data.":""}
 ${isNeighbourhoodNews?"NEIGHBOURHOOD NEWS CONTEXT: "+(s.neighbourhoodNewsContext||"not specified")+" | CRITICAL: Only reference what is stated above. Never invent neighbourhood news or developments.":""}
@@ -408,6 +409,7 @@ CRITICAL RULES FOR BOTH VERSIONS:
 - Use ${s.clientName}'s name naturally — make it feel like a real, personal conversation, not a form letter
 - Use EVERY piece of context provided above (property details, buyer/seller situation, personal context, wishlist, agent context) to make this specific and compelling — a message that could be sent to anyone is a failed message
 - NEVER open with generic filler like "Thanks for your interest," "Hope you're well," "Just reaching out," or "I wanted to follow up" — these are weak and forgettable. Open with something specific to THIS person's real situation
+- Unless the context above clearly states the client requested or asked for something (look for "REAL INBOUND REQUEST"), treat this as the AGENT proactively reaching out. Never invent or imply the client made a request, inquiry, or asked a question that wasn't stated above (e.g. don't say "I saw your request" or "thanks for asking about" unless that's explicitly true). If a REAL INBOUND REQUEST is provided, you should reference it naturally and specifically — that's a real opportunity to be relevant.
 - Both versions must respect the chosen tone but be genuinely different in wording, angle, and structure — not just reworded copies of each other
 - Never invent market data, statistics, or facts not provided above
 - Every message MUST end with one simple, natural question that moves the relationship forward
@@ -423,6 +425,7 @@ CRITICAL RULES:
 - Use EVERY piece of context provided above (seller situation, personal context, expected price, agent context) to make this specific and compelling — never generic
 - Never sound like a template. Never open with "Thanks for your interest" — that's weak and forgettable
 - Create genuine urgency and value for booking the valuation NOW — sell the meeting, don't just announce it
+- This is the AGENT proactively reaching out and OFFERING the valuation. Never claim or imply the seller requested it, asked for it, or reached out first — do not say things like "I saw your request" or "thanks for requesting." The agent is initiating contact, not responding to one.
 - Never claim the valuation is already complete or already analyzed — it has not happened yet
 - Never invent market conditions, trends, or stats (e.g. "strong seller's market," "hot luxury segment") not explicitly given above
 - If no market data is provided, do not mention market conditions at all — lean on the property specifics and the seller's own situation instead
@@ -583,6 +586,13 @@ Return ONLY JSON:
               {value:"door_knock",label:"Door Knock"},{value:"area_farming",label:"Area Farming"},
               {value:"cold_dm",label:"Cold DM"},{value:"phone_inquiry",label:"Phone Inquiry"},
             ]} selected={s.introSource?[s.introSource]:[]} onToggle={v=>update({introSource:s.introSource===v?null:v})} single/>
+            {["online_lead","cold_dm","social_media","linkedin","phone_inquiry"].includes(s.introSource)&&(
+              <div style={{marginBottom:"12px",marginTop:"8px"}}>
+                <label style={lbl}>What Did They Actually Ask For?</label>
+                <p style={{fontSize:"11px",color:"rgba(255,255,255,0.4)",margin:"4px 0 6px",lineHeight:"1.5"}}>If this was a real inbound inquiry, be specific — the AI will only reference what's true here.</p>
+                <input type="text" placeholder="e.g. Requested more info on 123 Main St, asked about price, requested a viewing this weekend..." style={inp} value={s.introRequestDetail||""} onChange={e=>update({introRequestDetail:e.target.value})}/>
+              </div>
+            )}
             <div style={{marginBottom:"12px",marginTop:"8px"}}>
               <label style={lbl}>Add more context or specify how you got this contact</label>
               <input type="text" placeholder="e.g. Met at a property expo last month, mentioned actively searching for a 3-bed..." style={inp} value={s.introSourceContext||""} onChange={e=>update({introSourceContext:e.target.value})}/>
