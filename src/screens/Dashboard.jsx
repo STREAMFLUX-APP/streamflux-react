@@ -107,8 +107,8 @@ export default function Dashboard({ state, setScreen }) {
         <div style={{display:"grid",gridTemplateColumns:`repeat(${toolCols},1fr)`,gap:"1px",background:G.border,borderRadius:"14px",overflow:"visible",border:"1px solid rgba(255,255,255,0.25)",alignItems:"stretch"}}>
           {hasApp1 && <ToolCard num="APP 01" title={T.a1} sub="Generate 13 marketing outputs for any listing in minutes." btnLabel={g.newListing||"New Listing →"} onNew={()=>setScreen({screen:"app1"})} hist={listings} mode="app1" setScreen={setScreen} lang={state.lang} />}
           {hasApp2 && <ToolCard num="APP 02" title={T.a2} sub="Personalised outreach packages for any client, any situation." btnLabel={g.newClient||"New Client →"} onNew={()=>setScreen({screen:"app2"})} hist={clients} mode="app2" setScreen={setScreen} lang={state.lang} />}
-          {hasApp2 && <ToolCard num="APP 03" title={T.a3} sub="Work every client's follow-up in one place — nothing slips." btnLabel={isSpa?"📲 Seguimiento →":"📲 Follow-Up →"} onNew={()=>setScreen({screen:"followup"})} hist={needNow} mode="followup" setScreen={setScreen} lang={state.lang} />}
-          <ToolCard num="APP 04" title={T.a4} sub="Monthly client newsletter ready to send." btnLabel={isSpa?"📰 Nuevo Newsletter →":"📰 New Newsletter →"} onNew={()=>setScreen({screen:"app3",savedResult:null})} hist={newsletters} mode="newsletter" setScreen={setScreen} lang={state.lang} />
+          {hasApp2 && <ToolCard num="APP 03" title={T.a3} sub="Work every client's follow-up in one place — nothing slips." btnLabel={isSpa?"Seguimiento →":"Follow-Up →"} onNew={()=>setScreen({screen:"followup"})} hist={needNow} mode="followup" setScreen={setScreen} lang={state.lang} />}
+          <ToolCard num="APP 04" title={T.a4} sub="Monthly client newsletter ready to send." btnLabel={isSpa?"Nuevo Newsletter →":"New Newsletter →"} onNew={()=>setScreen({screen:"app3",savedResult:null})} hist={newsletters} mode="newsletter" setScreen={setScreen} lang={state.lang} />
         </div>
 
         {/* Trial bar */}
