@@ -418,21 +418,23 @@ Return ONLY JSON:
 {"v1_label":"Option 1","v1_whatsapp":"60-80 word WhatsApp. Specific, personal, uses real details above. Ends with easy question.","v1_sms":"SMS max 160 chars. Punchy and specific.","v1_voice":"Call script: OPENING (name, specific reason), CONTEXT (reference their real situation), VALUE (why this matters to them specifically), CLOSE (clear next step). Labelled.","v1_email_subject":"Subject under 10 words. Specific, not generic.","v1_email":"130-160 word email. Specific opener, real opportunity tied to their situation, clear CTA. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}.","v2_label":"Option 2","v2_whatsapp":"Different angle from v1. 60-80 word WhatsApp. Specific, personal. Ends with easy question.","v2_sms":"Different SMS max 160 chars. Punchy and specific.","v2_voice":"Different call script: OPENING (name, specific reason), CONTEXT, VALUE, CLOSE. Labelled.","v2_email_subject":"Different subject under 10 words. Specific, not generic.","v2_email":"Different 130-160 word email. Specific and personal. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
       if(isCMA)p1=`${ctx}\nSUBJECT:${s.cmaSubject.address}|${s.cmaSubject.propertyType||"property type not specified"}|$${s.cmaSubject.price}|${s.cmaSubject.beds}bed/${s.cmaSubject.baths}bath\nCOMPS:${s.cmaComps.map((c,i)=>`${i+1}. ${c.address} sold $${c.salePrice} ${c.saleDate}`).join("|")}${langI}
 
-You are an elite real estate sales coach trained in Grant Cardone and Ryan Serhant methodology. This is an OFFER to provide a free valuation — the valuation has NOT been done yet.
+You are an elite real estate sales coach trained in Grant Cardone and Ryan Serhant methodology. This is an OFFER to provide a free valuation — the valuation has NOT been done yet. Generate TWO genuinely different approaches so the agent can choose.
 
-CRITICAL RULES:
+CRITICAL RULES FOR BOTH VERSIONS:
 - Use ${s.clientName}'s name naturally — make it feel like a real, personal conversation, not a form letter
 - Use EVERY piece of context provided above (seller situation, personal context, expected price, agent context) to make this specific and compelling — never generic
 - Never sound like a template. Never open with "Thanks for your interest" — that's weak and forgettable
-- Create genuine urgency and value for booking the valuation NOW — sell the meeting, don't just announce it
 - This is the AGENT proactively reaching out and OFFERING the valuation. Never claim or imply the seller requested it, asked for it, or reached out first — do not say things like "I saw your request" or "thanks for requesting." The agent is initiating contact, not responding to one.
 - Never claim the valuation is already complete or already analyzed — it has not happened yet
 - Never invent market conditions, trends, or stats (e.g. "strong seller's market," "hot luxury segment") not explicitly given above
 - If no market data is provided, do not mention market conditions at all — lean on the property specifics and the seller's own situation instead
 - Every message MUST end with one simple, natural question that moves toward booking
 
+APPROACH 1 — VALUE & CLARITY: Sell the valuation as the key to making a confident, informed decision. Focus on removing uncertainty.
+APPROACH 2 — OPPORTUNITY & TIMING: Sell the valuation as a way to understand their current position and options right now. Focus on momentum and not missing the moment.
+
 Return ONLY JSON:
-{"whatsapp":"60-80 word WhatsApp. Specific, personal, sells the value of the valuation using real details above. Ends with a booking question.","sms":"SMS max 160 chars. Punchy, specific, ends with a booking question.","voice_script":"Call: OPENING (name), WHY THIS MATTERS TO THEM SPECIFICALLY, OFFER THE FREE VALUATION, BOOK THE MEETING. Labelled.","email_subject":"Subject under 10 words. Specific, not generic.","email_body":"140-160 word email. Specific and personal, references their real situation. Sells the value of the valuation, not just the offer. Ends with a clear booking question. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
+{"v1_label":"Value & Clarity","v1_whatsapp":"60-80 word WhatsApp. Specific, personal, sells the valuation as clarity. Ends with a booking question.","v1_sms":"SMS max 160 chars. Punchy, specific, ends with a booking question.","v1_voice":"Call: OPENING (name), WHY CLARITY MATTERS TO THEM SPECIFICALLY, OFFER THE FREE VALUATION, BOOK THE MEETING. Labelled.","v1_email_subject":"Subject under 10 words. Specific, not generic.","v1_email":"140-160 word email. Specific and personal, sells clarity and confidence. Ends with a clear booking question. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}.","v2_label":"Opportunity & Timing","v2_whatsapp":"Different angle from v1. 60-80 word WhatsApp. Specific, personal, sells timing/opportunity. Ends with a booking question.","v2_sms":"Different SMS max 160 chars. Punchy, specific, ends with a booking question.","v2_voice":"Different call script: OPENING (name), WHY NOW MATTERS TO THEM SPECIFICALLY, OFFER THE FREE VALUATION, BOOK THE MEETING. Labelled.","v2_email_subject":"Different subject under 10 words. Specific, not generic.","v2_email":"Different 140-160 word email. Specific and personal, sells timing and opportunity. Ends with a clear booking question. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
       const part1=await safe(p1,SYSTEM,2200)
       update({loadingMsg:"✦ Writing letter & follow-ups..."})
       const part2=await safe(`${ctx}${langI}
