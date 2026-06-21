@@ -90,6 +90,18 @@ export default function SavedResults({ state, setScreen, app }) {
 
         {/* ===== APP 2 (Messages / Email / Voice only) ===== */}
         {!isApp1 && <>
+          {fuStatus==="new" && (
+            <div style={{background:"rgba(42,184,212,0.05)",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
+              <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"0.18em",textTransform:"uppercase",color:"#2AB8D4",marginBottom:"8px",fontFamily:"DM Mono,monospace"}}>{isSpa?"Mensaje importante":"Important message"}</div>
+              <div style={{fontSize:"17px",fontWeight:"700",color:"rgba(255,255,255,0.92)",marginBottom:"10px",fontFamily:"DM Mono,monospace"}}>{saved.clientName||headerTitle}</div>
+              <p style={{fontSize:"14px",color:"rgba(255,255,255,0.7)",margin:"0 0 14px",lineHeight:"1.6"}}>{isSpa?"Pulsa el botón de abajo para activar a este cliente en tu app de Seguimiento — solo necesitas pulsarlo una vez que hayas enviado el mensaje.":"Hit the button below to activate this client in your Follow-Up app — you need to click it once you've sent the message."}</p>
+              <button onClick={()=>{persist({status:"awaiting",sentAt:Date.now()});setFuStatus("awaiting")}}
+                style={{background:"#2AB8D4",color:"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"800",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
+                {isSpa?"✓ Sí — lo envié":"✓ Yes — I sent it"}
+              </button>
+            </div>
+          )}
+
           {activeTab==="messages" && (isObj?(
             <>
               {["v1","v2","v3"].map(v=>(
