@@ -391,7 +391,7 @@ Return ONLY JSON:
           ...a1, ...a2, ...a3
         }
         update({loadingMsg:"✦ Building follow-up plan..."})
-        const fuResult = await safe(`CLIENT:${s.clientName}|OBJECTION:${objDetail}|SITUATION:${objSituation}|AGENT:${ag}${langI}\n\nCRITICAL: Never invent market data or facts not provided. Warm human follow-ups only. Each ends with gentle open question.\n\nReturn ONLY JSON:\n{"followup_1":"Day 3. 50-60 words. Warm check-in referencing their specific situation. No invented data. Ends with gentle open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented data. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual, human, no pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch, genuine care. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open. No pressure."}`,SYSTEM,900)
+        const fuResult = await safe(`CLIENT:${s.clientName}|OBJECTION:${objDetail}|SITUATION:${objSituation}|AGENT:${ag}${langI}\n\nCRITICAL: Never invent market data or facts not provided. Use ${s.clientName}'s name naturally and reference their real situation — never open with generic filler like "Just checking in" or "I wanted to follow up." Warm, human, specific follow-ups only. Each ends with gentle open question.\n\nReturn ONLY JSON:\n{"followup_1":"Day 3. 50-60 words. Warm check-in referencing their specific situation. No invented data. Ends with gentle open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented data. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual, human, no pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch, genuine care. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open. No pressure."}`,SYSTEM,900)
         const result = {...objResult,...fuResult}
         update({result,activeTab:"messages"})
         const recObj = SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
@@ -400,11 +400,52 @@ Return ONLY JSON:
         return
       }
 
-      let p1=`${ctx}${langI}\n\nGenerate TWO different versions of this outreach so the agent can choose. Both must respect the chosen tone, but be genuinely different in wording and angle.\n\nReturn ONLY JSON:\n{"v1_label":"Option 1","v1_whatsapp":"60-80 word WhatsApp. Warm, use ${s.clientName} first name. End with easy question.","v1_sms":"SMS max 160 chars.","v1_voice":"Call script: OPENING, REASON, VALUE PITCH, CLOSE. Labelled.","v1_email_subject":"Subject under 10 words.","v1_email":"130-160 word email. Opener, opportunity, CTA. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}.","v2_label":"Option 2","v2_whatsapp":"Different angle. 60-80 word WhatsApp. Use ${s.clientName} first name. End with easy question.","v2_sms":"Different SMS max 160 chars.","v2_voice":"Different call script: OPENING, REASON, VALUE PITCH, CLOSE. Labelled.","v2_email_subject":"Different subject under 10 words.","v2_email":"Different 130-160 word email. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
-      if(isCMA)p1=`${ctx}\nSUBJECT:${s.cmaSubject.address}|${s.cmaSubject.propertyType||"property type not specified"}|$${s.cmaSubject.price}|${s.cmaSubject.beds}bed/${s.cmaSubject.baths}bath\nCOMPS:${s.cmaComps.map((c,i)=>`${i+1}. ${c.address} sold $${c.salePrice} ${c.saleDate}`).join("|")}${langI}\n\nCRITICAL: This is an OFFER to provide a free valuation — the valuation has NOT been done yet. Never claim it's already complete or already analyzed. Never invent market conditions, trends, or claims (e.g. "strong seller's market," "hot luxury segment") that are not explicitly given above. If no market data is provided, do not mention market conditions at all — focus purely on offering the free valuation and inviting them to book it.\n\nReturn ONLY JSON:\n{"whatsapp":"60-80 word WhatsApp. Warm, OFFERS a free valuation, invites them to book it. No invented market claims.","sms":"SMS max 160 chars. Offers the valuation, invites booking.","voice_script":"Call: OPENING, OFFER FREE VALUATION, WHY IT HELPS THEM, BOOK MEETING. Labelled.","email_subject":"Subject under 10 words.","email_body":"140-160 word email. Offers the free valuation, explains the benefit, invites booking a time. Signed by ${ag}."}`;
+      let p1=`${ctx}${langI}
+
+You are an elite real estate sales coach trained in Grant Cardone and Ryan Serhant methodology. Generate TWO genuinely different versions of this outreach so the agent can choose.
+
+CRITICAL RULES FOR BOTH VERSIONS:
+- Use ${s.clientName}'s name naturally — make it feel like a real, personal conversation, not a form letter
+- Use EVERY piece of context provided above (property details, buyer/seller situation, personal context, wishlist, agent context) to make this specific and compelling — a message that could be sent to anyone is a failed message
+- NEVER open with generic filler like "Thanks for your interest," "Hope you're well," "Just reaching out," or "I wanted to follow up" — these are weak and forgettable. Open with something specific to THIS person's real situation
+- Both versions must respect the chosen tone but be genuinely different in wording, angle, and structure — not just reworded copies of each other
+- Never invent market data, statistics, or facts not provided above
+- Every message MUST end with one simple, natural question that moves the relationship forward
+
+Return ONLY JSON:
+{"v1_label":"Option 1","v1_whatsapp":"60-80 word WhatsApp. Specific, personal, uses real details above. Ends with easy question.","v1_sms":"SMS max 160 chars. Punchy and specific.","v1_voice":"Call script: OPENING (name, specific reason), CONTEXT (reference their real situation), VALUE (why this matters to them specifically), CLOSE (clear next step). Labelled.","v1_email_subject":"Subject under 10 words. Specific, not generic.","v1_email":"130-160 word email. Specific opener, real opportunity tied to their situation, clear CTA. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}.","v2_label":"Option 2","v2_whatsapp":"Different angle from v1. 60-80 word WhatsApp. Specific, personal. Ends with easy question.","v2_sms":"Different SMS max 160 chars. Punchy and specific.","v2_voice":"Different call script: OPENING (name, specific reason), CONTEXT, VALUE, CLOSE. Labelled.","v2_email_subject":"Different subject under 10 words. Specific, not generic.","v2_email":"Different 130-160 word email. Specific and personal. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
+      if(isCMA)p1=`${ctx}\nSUBJECT:${s.cmaSubject.address}|${s.cmaSubject.propertyType||"property type not specified"}|$${s.cmaSubject.price}|${s.cmaSubject.beds}bed/${s.cmaSubject.baths}bath\nCOMPS:${s.cmaComps.map((c,i)=>`${i+1}. ${c.address} sold $${c.salePrice} ${c.saleDate}`).join("|")}${langI}
+
+You are an elite real estate sales coach trained in Grant Cardone and Ryan Serhant methodology. This is an OFFER to provide a free valuation — the valuation has NOT been done yet.
+
+CRITICAL RULES:
+- Use ${s.clientName}'s name naturally — make it feel like a real, personal conversation, not a form letter
+- Use EVERY piece of context provided above (seller situation, personal context, expected price, agent context) to make this specific and compelling — never generic
+- Never sound like a template. Never open with "Thanks for your interest" — that's weak and forgettable
+- Create genuine urgency and value for booking the valuation NOW — sell the meeting, don't just announce it
+- Never claim the valuation is already complete or already analyzed — it has not happened yet
+- Never invent market conditions, trends, or stats (e.g. "strong seller's market," "hot luxury segment") not explicitly given above
+- If no market data is provided, do not mention market conditions at all — lean on the property specifics and the seller's own situation instead
+- Every message MUST end with one simple, natural question that moves toward booking
+
+Return ONLY JSON:
+{"whatsapp":"60-80 word WhatsApp. Specific, personal, sells the value of the valuation using real details above. Ends with a booking question.","sms":"SMS max 160 chars. Punchy, specific, ends with a booking question.","voice_script":"Call: OPENING (name), WHY THIS MATTERS TO THEM SPECIFICALLY, OFFER THE FREE VALUATION, BOOK THE MEETING. Labelled.","email_subject":"Subject under 10 words. Specific, not generic.","email_body":"140-160 word email. Specific and personal, references their real situation. Sells the value of the valuation, not just the offer. Ends with a clear booking question. Signed by ${ag}${s.agencyName?" from "+s.agencyName:""}."}`;
       const part1=await safe(p1,SYSTEM,2200)
       update({loadingMsg:"✦ Writing letter & follow-ups..."})
-      const part2=await safe(`${ctx}${langI}\n\nReturn ONLY JSON:\n{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words. Warm, personal, specific. Never invent data. Ends with open question.","followup_2":"Week 1. 50-60 words. Different angle. No invented facts. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual check-in. No pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep door open."}`,SYSTEM,1300)
+      const part2=await safe(`${ctx}${langI}
+
+You are an elite real estate sales coach trained in Grant Cardone and Ryan Serhant methodology.
+
+CRITICAL RULES:
+- Use ${s.clientName}'s name naturally throughout — this should read as a real, personal communication, not a template
+- Use EVERY piece of context provided above to make this specific to their real situation — generic copy that could apply to anyone is a failed result
+- NEVER open with generic filler like "I hope this finds you well," "Just checking in," or "I wanted to reach out" — open with something specific and real
+- Never invent market data, statistics, or facts not provided above
+- Each follow-up must take a genuinely different angle from the others, not reword the same idea
+- Every follow-up ends with one simple, natural open question
+
+Return ONLY JSON:
+{"formal_letter":"Formal letter 260-300 words. Dear ${s.clientName}, 4 paragraphs, specific to their real situation above. Sign: Warm regards,\\n${ag}${s.agencyName?"\\n"+s.agencyName:""}${s.agentPhone?"\\n"+s.agentPhone:""}","followup_1":"Day 3. 50-60 words. Specific, personal, references their real situation. Never invent data. Ends with open question.","followup_2":"Week 1. 50-60 words. Genuinely different angle from followup_1. No invented facts. Ends with open question.","followup_3":"Week 2. 40-50 words. Casual, human check-in. No pressure. Ends with question.","followup_4":"Month 1. 40-50 words. Warm touch, genuine care, specific to them. Ends with question.","followup_5":"Month 2. 30-40 words. Final warm message. Keep the door open. No pressure."}`,SYSTEM,1300)
       const result={...part1,...part2}
       update({result,activeTab:"messages"})
       const recNorm = SF.addClient({clientName:s.clientName,clientType:s.clientType,contactReason:s.contactReason,language:s.language,agentName:ag,result})
