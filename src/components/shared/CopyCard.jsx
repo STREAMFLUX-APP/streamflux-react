@@ -1,19 +1,16 @@
 import { useState } from 'react'
 import { G } from '../../globals.js'
-
 export function CopyCard({ title, content, icon, accentColor, lang="English" }) {
   const [copied, setCopied] = useState(false)
   accentColor = accentColor || G.aqua
-
   const handleCopy = () => {
     navigator.clipboard.writeText(content||"")
     setCopied(true)
     setTimeout(()=>setCopied(false), 1800)
   }
-
   return (
     <div style={{
-      background:G.bg, border:`1px solid ${G.aquaBorder}`,
+      background:"#ffffff", border:`1px solid ${G.aquaBorder}`,
       borderRadius:"10px", padding:"15px 17px", marginBottom:"10px",
       transition:"border-color 0.15s"
     }}
@@ -30,7 +27,7 @@ export function CopyCard({ title, content, icon, accentColor, lang="English" }) 
             background: copied ? G.aqua : "transparent",
             border:`1px solid ${G.aquaBorder}`,
             borderRadius:"6px",
-            color: copied ? "#fff" : G.aqua,
+            color: copied ? "#ffffff" : G.aqua,
             fontSize:"11px", padding:"4px 10px",
             cursor:"pointer", fontFamily:"inherit",
             transition:"all 0.15s", fontWeight:"600"
@@ -40,7 +37,7 @@ export function CopyCard({ title, content, icon, accentColor, lang="English" }) 
         </button>
       </div>
       <p style={{
-        color:"rgba(240,240,248,0.95)", fontSize:"14px",
+        color:"#1a1a1a", fontSize:"14px",
         lineHeight:"1.8", margin:"0", whiteSpace:"pre-wrap", fontFamily:"inherit"
       }}>
         {content||""}
