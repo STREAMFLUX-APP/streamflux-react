@@ -1,11 +1,11 @@
 // ── GLOBAL CONSTANTS ─────────────────────────────────────
 export const G = {
-  bg:"#060608", bg1:"#0c0c10", bg2:"#111118",
-  card:"#111", border:"#222", border2:"#252530",
+  bg:"#ffffff", bg1:"#f5f5f7", bg2:"#ebebed",
+  card:"#f5f5f7", border:"#e0e0e4", border2:"#e2e2e6",
   aqua:"#2AB8D4", aquaDim:"rgba(42,184,212,0.1)",
-  aquaBorder:"rgba(42,184,212,0.25)",
-  gold:"#D4A843", white:"#ffffff",
-  muted:"rgba(255,255,255,0.5)",
+  aquaBorder:"rgba(42,184,212,0.35)",
+  gold:"#D4A843", white:"#0a0a0a",
+  muted:"rgba(0,0,0,0.5)",
   green:"#3d9e5c", red:"#ef4444"
 };
 
@@ -128,8 +128,6 @@ export const SF = {
 };
 
 // ── FOLLOW-UP STATUS ──────────────────────────────────────
-// Derives the live status of a client for the Follow-Up Engine.
-// Returns one of: "new" | "awaiting" | "overdue" | "active" | "closed"
 export const followUpStatus = (client) => {
   const st = client?.status || "new";
   if (st === "closed") return "closed";
@@ -141,7 +139,6 @@ export const followUpStatus = (client) => {
   return "new";
 };
 
-// Visual meta for each status — colored dot + label (no emoji, on-brand).
 export const STATUS_META = {
   new:      { dot:"#5a5a66", label:"Not sent yet" },
   awaiting: { dot:"#D4A843", label:"Awaiting reply" },
@@ -152,28 +149,28 @@ export const STATUS_META = {
 
 // ── SHARED STYLES ─────────────────────────────────────────
 export const inputStyle = {
-  width:"100%", background:G.bg, border:`1px solid ${G.border2}`,
-  borderRadius:"8px", color:"rgba(255,255,255,0.65)", fontSize:"14px",
+  width:"100%", background:"#f0f0f2", border:"1px solid #e2e2e6",
+  borderRadius:"8px", color:"rgba(0,0,0,0.75)", fontSize:"14px",
   padding:"11px 14px", outline:"none", fontFamily:"inherit",
   boxSizing:"border-box", transition:"border-color 0.2s",
-  WebkitTextFillColor:"rgba(255,255,255,0.55)"
+  WebkitTextFillColor:"rgba(0,0,0,0.7)"
 };
 
 export const cardStyle = {
-  background:G.bg1, border:`1px solid ${G.border2}`, borderRadius:"12px",
+  background:"#f5f5f7", border:"1px solid #e2e2e6", borderRadius:"12px",
   padding:"22px", marginBottom:"16px",
-  boxShadow:"inset 0 1px 0 rgba(255,255,255,0.025),0 1px 3px rgba(0,0,0,0.3)"
+  boxShadow:"0 1px 3px rgba(0,0,0,0.06)"
 };
 
 export const labelStyle = {
   display:"block", fontSize:"10px", fontWeight:"700",
-  letterSpacing:"0.15em", color:"#ffffff",
+  letterSpacing:"0.15em", color:"#0a0a0a",
   textTransform:"uppercase", marginBottom:"5px"
 };
 
 export const btnStyle = (disabled, color) => ({
-  background: disabled ? "#1a1a1a" : color||G.aqua,
-  color: disabled ? G.muted : "#060608",
+  background: disabled ? "#e5e5e7" : color||G.aqua,
+  color: disabled ? "rgba(0,0,0,0.35)" : "#ffffff",
   border:"none", borderRadius:"8px", padding:"13px 24px",
   fontSize:"14px", fontWeight:"700",
   cursor: disabled ? "not-allowed" : "pointer",
