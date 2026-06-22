@@ -42,7 +42,7 @@ export default function App3({ state: appState, setScreen }) {
     update({loading:false})
   }
 
-  const inp = {width:"100%",background:G.bg,border:`1px solid ${G.border2}`,borderRadius:"8px",color:"rgba(255,255,255,0.65)",fontSize:"14px",padding:"11px 14px",outline:"none",fontFamily:"inherit",WebkitTextFillColor:"rgba(255,255,255,0.55)"}
+  const inp = {width:"100%",background:"#f0f0f2",border:`1px solid ${G.border2}`,borderRadius:"8px",color:"rgba(0,0,0,0.75)",fontSize:"14px",padding:"11px 14px",outline:"none",fontFamily:"inherit",WebkitTextFillColor:"rgba(0,0,0,0.7)"}
 
   // Nav
   const Nav = () => (
@@ -166,7 +166,7 @@ export default function App3({ state: appState, setScreen }) {
           <Chips label={isSpa?"Tono":"Tone"} options={TONES} selected={s.tone} onToggle={v=>update({tone:v})} single/>
         </div>
 
-        {s.error && <div style={{background:"#1a0808",border:"1px solid #3a1010",borderRadius:"8px",padding:"10px 14px",color:"#f87171",fontSize:"13px",marginBottom:"14px"}}>⚠ {s.error}</div>}
+        {s.error && <div style={{background:"#fff0f0",border:"1px solid rgba(239,68,68,0.3)",borderRadius:"8px",padding:"10px 14px",color:"#dc2626",fontSize:"13px",marginBottom:"14px"}}>⚠ {s.error}</div>}
 
         <button onClick={()=>{if(s.agentName&&s.city)generate()}} style={{...btnStyle(!(s.agentName&&s.city),"#22c55e"),width:"100%",fontSize:"15px"}}>
           {isSpa?"✦ Generar Newsletter":"✦ Generate Newsletter"}
