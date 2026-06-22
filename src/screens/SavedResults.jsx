@@ -90,7 +90,7 @@ export default function SavedResults({ state, setScreen, app }) {
 
         {/* ===== APP 2 (Messages / Email / Voice only) ===== */}
         {!isApp1 && <>
-          {fuStatus==="new" && (
+          {fuStatus==="new" ? (
             <div style={{background:"rgba(42,184,212,0.05)",border:"1px solid rgba(42,184,212,0.35)",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
               <div style={{fontSize:"10px",fontWeight:"700",letterSpacing:"0.18em",textTransform:"uppercase",color:"#2AB8D4",marginBottom:"8px",fontFamily:"DM Mono,monospace"}}>{isSpa?"Mensaje importante":"Important message"}</div>
               <div style={{fontSize:"17px",fontWeight:"700",color:"rgba(255,255,255,0.92)",marginBottom:"10px",fontFamily:"DM Mono,monospace"}}>{saved.clientName||headerTitle}</div>
@@ -98,6 +98,16 @@ export default function SavedResults({ state, setScreen, app }) {
               <button onClick={()=>{persist({status:"awaiting",sentAt:Date.now()});setFuStatus("awaiting")}}
                 style={{background:"#2AB8D4",color:"#060608",border:"none",borderRadius:"8px",padding:"13px 24px",fontSize:"14px",fontWeight:"800",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
                 {isSpa?"✓ Sí — lo envié":"✓ Yes — I sent it"}
+              </button>
+            </div>
+          ) : (
+            <div style={{background:"rgba(61,158,92,0.1)",border:"1px solid rgba(61,158,92,0.5)",borderRadius:"12px",padding:"18px 20px",marginBottom:"18px"}}>
+              <div style={{fontSize:"15px",fontWeight:"800",color:"#fff",marginBottom:"6px"}}>✅ {isSpa?`${saved.clientName||headerTitle} ya está en tu motor de Seguimiento`:`${saved.clientName||headerTitle} is now in your Follow-Up Engine`}</div>
+              <p style={{fontSize:"13px",color:"rgba(255,255,255,0.7)",margin:"0 0 6px",lineHeight:"1.6"}}>{isSpa?"Ábrelo cuando quieras para ver cada seguimiento, enviar el siguiente, o registrar su respuesta.":"Open it anytime to see every follow-up, send the next one, or log their reply."}</p>
+              <p style={{fontSize:"13px",color:"rgba(255,255,255,0.7)",margin:"0 0 14px",lineHeight:"1.6"}}>{isSpa?<>Lo encontrarás en <strong style={{color:"#fff"}}>Esperando Respuesta</strong>.</>:<>You'll find them under <strong style={{color:"#fff"}}>Waiting for Reply</strong>.</>}</p>
+              <button onClick={()=>setScreen({screen:"followup"})}
+                style={{background:"transparent",color:"#2AB8D4",border:"1px solid #2AB8D4",borderRadius:"8px",padding:"12px 22px",fontSize:"14px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%"}}>
+                {isSpa?"📲 Abrir Motor de Seguimiento →":"📲 Open Follow-Up Engine →"}
               </button>
             </div>
           )}
@@ -144,8 +154,6 @@ export default function SavedResults({ state, setScreen, app }) {
             <CopyCard title="Phone Call Script" content={r.voice_script||"No call script generated."} icon="" lang={lang}/></>
           ))}
 
-          {/* Quick link into the Follow-Up app for this client */}
-          <button onClick={()=>setScreen({screen:"followup"})} style={{background:"transparent",color:"#2AB8D4",border:"1px solid #2AB8D4",borderRadius:"8px",padding:"12px 22px",fontSize:"13px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",width:"100%",marginTop:"8px"}}>📲 Open Follow-Up Engine →</button>
         </>}
       </div>
     </div>
