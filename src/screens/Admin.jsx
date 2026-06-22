@@ -37,7 +37,7 @@ export default function Admin({ state: appState, setScreen }) {
         <button onClick={()=>setScreen({screen:"dashboard"})} style={{background:"transparent",color:G.muted,border:`1px solid ${G.border}`,borderRadius:"8px",padding:"6px 14px",fontSize:"12px",cursor:"pointer",fontFamily:"inherit"}}>← Dashboard</button>
       </div>
       <div style={{maxWidth:"900px",margin:"0 auto",padding:"32px 20px 60px"}}>
-        {msg && <div style={{background:msg.startsWith("✅")?"#0a1f0a":"#1a0808",border:`1px solid ${msg.startsWith("✅")?"#3d9e5c":"#3a1010"}`,borderRadius:"8px",padding:"10px 14px",color:msg.startsWith("✅")?"#4ade80":"#f87171",fontSize:"13px",marginBottom:"16px"}}>{msg}</div>}
+        {msg && <div style={{background:msg.startsWith("✅")?"#f0fff4":"#fff0f0",border:`1px solid ${msg.startsWith("✅")?"rgba(61,158,92,0.4)":"rgba(239,68,68,0.3)"}`,borderRadius:"8px",padding:"10px 14px",color:msg.startsWith("✅")?"#166534":"#dc2626",fontSize:"13px",marginBottom:"16px"}}>{msg}</div>}
 
         {!authed ? (
           <div style={cardStyle}>
@@ -47,7 +47,6 @@ export default function Admin({ state: appState, setScreen }) {
           </div>
         ) : (
           <>
-            {/* Add user */}
             <div style={cardStyle}>
               <h3 style={{fontSize:"16px",fontWeight:"700",color:G.white,marginBottom:"16px"}}>➕ Add New Client</h3>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"12px"}}>
@@ -70,7 +69,6 @@ export default function Admin({ state: appState, setScreen }) {
               <button onClick={addUser} style={btnStyle(false)}>Add Client →</button>
             </div>
 
-            {/* Users list */}
             <div style={cardStyle}>
               <h3 style={{fontSize:"16px",fontWeight:"700",color:G.white,marginBottom:"16px"}}>👥 All Clients ({users.length})</h3>
               {users.length===0 ? <p style={{color:G.muted,fontSize:"14px"}}>No clients yet.</p> : users.map(u=>{
@@ -78,14 +76,14 @@ export default function Admin({ state: appState, setScreen }) {
                 const trialActive = now < trial
                 const daysLeft = trialActive ? Math.ceil((trial-now)/(1000*60*60*24)) : 0
                 return (
-                  <div key={u.id} style={{background:"#0d0d0d",border:`1px solid ${G.border}`,borderRadius:"10px",padding:"14px 16px",marginBottom:"10px"}}>
+                  <div key={u.id} style={{background:"#efefef",border:`1px solid ${G.border}`,borderRadius:"10px",padding:"14px 16px",marginBottom:"10px"}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:"10px"}}>
                       <div>
                         <div style={{fontWeight:"700",color:G.white,fontSize:"14px"}}>{u.name}</div>
                         <div style={{color:G.muted,fontSize:"12px",marginTop:"2px"}}>{u.email}</div>
                         <div style={{display:"flex",gap:"8px",marginTop:"6px",flexWrap:"wrap"}}>
                           <span style={{fontSize:"11px",background:G.aquaDim,border:`1px solid ${G.aquaBorder}`,borderRadius:"100px",padding:"2px 10px",color:G.aqua,fontWeight:"600"}}>{u.plan}</span>
-                          {u.subscribed && <span style={{fontSize:"11px",background:"rgba(61,158,92,0.1)",border:"1px solid rgba(61,158,92,0.3)",borderRadius:"100px",padding:"2px 10px",color:"#4ade80",fontWeight:"600"}}>✓ Paid</span>}
+                          {u.subscribed && <span style={{fontSize:"11px",background:"rgba(61,158,92,0.1)",border:"1px solid rgba(61,158,92,0.3)",borderRadius:"100px",padding:"2px 10px",color:"#166534",fontWeight:"600"}}>✓ Paid</span>}
                           {trialActive&&!u.subscribed && <span style={{fontSize:"11px",background:"rgba(212,168,67,0.1)",border:"1px solid rgba(212,168,67,0.3)",borderRadius:"100px",padding:"2px 10px",color:G.gold,fontWeight:"600"}}>Trial: {daysLeft}d left</span>}
                           {!trialActive&&!u.subscribed && <span style={{fontSize:"11px",background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.3)",borderRadius:"100px",padding:"2px 10px",color:G.red,fontWeight:"600"}}>Trial Expired</span>}
                           {!u.active && <span style={{fontSize:"11px",background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.3)",borderRadius:"100px",padding:"2px 10px",color:G.red,fontWeight:"600"}}>Deactivated</span>}
